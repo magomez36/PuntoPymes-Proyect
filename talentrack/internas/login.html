@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="icon" href="../img/icono.jpeg" type="image/jpeg" />
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../js/script.js" defer></script>
+</head>
+<body>
+     <div class="login-page">
+        <div class="login-container">
+            <div class="login-header">
+                <img src="../img/logo.jpeg" alt="Logo" class="logo-small" />
+                <h1 class="login-title">Bienvenido de nuevo</h1>
+                <p class="login-subtitle">Inicia sesión para gestionar tu equipo.</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="username">Usuario</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">👤</span>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            class="form-input" 
+                            placeholder="Tu nombre de usuario"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Contraseña</label>
+                    <div class="input-wrapper">
+                        <span class="input-icon">🔒</span>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="form-input" 
+                            placeholder="••••••••"
+                            required
+                        >
+                        <span class="password-toggle" id="togglePassword">👁️</span>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="remember">
+                        <label class="checkbox-label" for="remember">Recordar Contraseña</label>
+                    </div>
+                    <a href="reseteoClave.html" class="forgot-password">¿Olvidé mi Contraseña?</a>
+                </div>
+
+                <button type="submit" class="login-button">Iniciar Sesión</button>
+            </form>
+
+            <a href="../index.html" class="back-link">← Volver al inicio</a>
+
+            <p class="footer-text">© 2025 UTPL. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>
