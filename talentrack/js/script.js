@@ -162,37 +162,9 @@ inputs.forEach(input => {
     });
 });
 
-// ============================================
-// DASHBOARD - INTERACTIVIDAD DE TARJETAS
-// ============================================
-const accessCards = document.querySelectorAll('.access-card');
-accessCards.forEach(card => {
-    card.addEventListener('click', function() {
-        const cardText = this.querySelector('.access-text').textContent.trim();
-        console.log('Tarjeta clickeada:', cardText);
-        
-        // Aquí puedes agregar navegación o funcionalidad específica
-        alert(`Navegando a: ${cardText}`);
-    });
-});
-
-// ============================================
-// DASHBOARD - ANIMACIÓN DE BARRAS DE GRÁFICO
-// ============================================
-const chartBars = document.querySelectorAll('.bar');
-chartBars.forEach(bar => {
-    const originalHeight = bar.style.height;
-    
-    bar.addEventListener('mouseenter', function() {
-        const currentHeight = parseInt(originalHeight);
-        this.style.height = (currentHeight + 20) + 'px';
-        this.style.transition = 'all 0.3s ease';
-    });
-    
-    bar.addEventListener('mouseleave', function() {
-        this.style.height = originalHeight;
-    });
-});
+// Removed dashboard-specific interactivity for access cards and chart bars
+// These elements are not present in the current HTML and the handlers
+// were removed as part of stylesheet/script cleanup.
 
 // ============================================
 // VERIFICAR SESIÓN AL CARGAR LA PÁGINA
@@ -288,3 +260,42 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// ============================================
+// FUNCIÓN PARA EL SIDEBAR
+// ============================================
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('hidden');
+    }
+}
+
+// ============================================
+// INTERACTIVIDAD DEL SIDEBAR
+// ============================================
+const sidebarItems = document.querySelectorAll('.sidebar-item');
+sidebarItems.forEach(item => {
+    item.addEventListener('click', function() {
+        // Remover clase active de todos los items
+        sidebarItems.forEach(i => i.classList.remove('active'));
+        // Agregar clase active al item clickeado
+        this.classList.add('active');
+    });
+});
+
+// ============================================
+// CIERRE DE SESIÓN EN SIDEBAR
+// ============================================
+const logoutSidebarItem = document.querySelector('.sidebar-item.logout');
+if (logoutSidebarItem) {
+    logoutSidebarItem.addEventListener('click', function() {
+        if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+            sessionStorage.removeItem('currentUser');
+            showSuccessMessage('Sesión cerrada correctamente');
+            setTimeout(() => {
+                window.location.href = '../index.html';
+            }, 1000);
+        }
+    });
+}
