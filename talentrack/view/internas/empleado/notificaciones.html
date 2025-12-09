@@ -6,6 +6,7 @@
     <title>Notificaciones - Punto Pymes</title>
     <link rel="icon" type="image/svg+xml" href="../../images/talentrack_small.svg">
     <link rel="stylesheet" href="../../css/styles.css">
+    <script src="../../js/script.js" defer></script>
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -157,81 +158,6 @@
         </main>
     </div>
 
-    <script src="../js/script.js"></script>
-    <script>
-        // Marcar notificación individual como leída
-        function markAsRead(id) {
-            const notification = document.querySelector(`.notification-item[data-id="${id}"]`);
-            if (notification) {
-                notification.classList.remove('unread');
-                notification.classList.add('read');
-                
-                const button = notification.querySelector('.btn-mark-read');
-                if (button) {
-                    button.outerHTML = '<span class="notification-status">Leída</span>';
-                }
-            }
-        }
-
-        // Marcar todas como leídas
-        function markAllAsRead() {
-            const unreadNotifications = document.querySelectorAll('.notification-item.unread');
-            unreadNotifications.forEach(notification => {
-                notification.classList.remove('unread');
-                notification.classList.add('read');
-                
-                const button = notification.querySelector('.btn-mark-read');
-                if (button) {
-                    button.outerHTML = '<span class="notification-status">Leída</span>';
-                }
-            });
-            
-            if (unreadNotifications.length > 0) {
-                alert(`${unreadNotifications.length} notificaciones marcadas como leídas`);
-            }
-        }
-
-        // Filtrar notificaciones
-        function filterNotifications(filter) {
-            const notifications = document.querySelectorAll('.notification-item');
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            
-            // Actualizar botones activos
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
-            
-            // Filtrar notificaciones
-            notifications.forEach(notification => {
-                switch(filter) {
-                    case 'all':
-                        notification.style.display = 'flex';
-                        break;
-                    case 'unread':
-                        notification.style.display = notification.classList.contains('unread') ? 'flex' : 'none';
-                        break;
-                    case 'archived':
-                        notification.style.display = 'none';
-                        break;
-                }
-            });
-        }
-
-        // Buscar notificaciones
-        function searchNotifications() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const notifications = document.querySelectorAll('.notification-item');
-            
-            notifications.forEach(notification => {
-                const title = notification.querySelector('.notification-title').textContent.toLowerCase();
-                const text = notification.querySelector('.notification-text').textContent.toLowerCase();
-                
-                if (title.includes(searchTerm) || text.includes(searchTerm)) {
-                    notification.style.display = 'flex';
-                } else {
-                    notification.style.display = 'none';
-                }
-            });
-        }
-    </script>
+    
 </body>
 </html>

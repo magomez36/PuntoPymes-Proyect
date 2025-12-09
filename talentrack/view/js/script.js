@@ -314,7 +314,7 @@ if (logoutSidebarItem) {
     });
 }
 // ============================================
-// FUNCIONES DE ASISTENCIA
+// FUNCIONES DE ASISTENCIA (limpieza y notificaciones)
 // ============================================
 
 function toggleSidebar() {
@@ -324,14 +324,188 @@ function toggleSidebar() {
     }
 }
 
-// Función para cerrar sesión
+// Asegurar que el item de logout en el sidebar cierre sesión
 document.addEventListener('DOMContentLoaded', function() {
-    const logoutBtn = document.querySelector('.sidebar-item.logout');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function() {
+    const logoutSidebarItem = document.querySelector('.sidebar-item.logout');
+    if (logoutSidebarItem) {
+        logoutSidebarItem.addEventListener('click', function() {
             if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-                window.location.href = 'login.html';
+                sessionStorage.removeItem('currentUser');
+                showSuccessMessage('Sesión cerrada correctamente');
+                setTimeout(() => {
+                    window.location.href = '../index.html';
+                }, 1000);
             }
         });
     }
 });
+
+// ============================================
+// Funciones de Notificaciones (fusionadas desde `scripts.js`)
+// ============================================
+
+function markAsRead(id) {
+    const notification = document.querySelector(`.notification-item[data-id="${id}"]`);
+    if (notification) {
+        notification.classList.remove('unread');
+        notification.classList.add('read');
+        
+        const button = notification.querySelector('.btn-mark-read');
+        if (button) {
+            button.outerHTML = '<span class="notification-status">Leída</span>';
+        }
+    }
+}
+
+function markAllAsRead() {
+    const unreadNotifications = document.querySelectorAll('.notification-item.unread');
+    unreadNotifications.forEach(notification => {
+        notification.classList.remove('unread');
+        notification.classList.add('read');
+        
+        const button = notification.querySelector('.btn-mark-read');
+        if (button) {
+            button.outerHTML = '<span class="notification-status">Leída</span>';
+        }
+    });
+    
+    if (unreadNotifications.length > 0) {
+        alert(`${unreadNotifications.length} notificaciones marcadas como leídas`);
+    }
+}
+
+function filterNotifications(filter) {
+    const notifications = document.querySelectorAll('.notification-item');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
+    // Actualizar botones activos
+    filterButtons.forEach(btn => btn.classList.remove('active'));
+    const activeBtn = document.querySelector(`[data-filter="${filter}"]`);
+    if (activeBtn) activeBtn.classList.add('active');
+    
+    // Filtrar notificaciones
+    notifications.forEach(notification => {
+        switch(filter) {
+            case 'all':
+                notification.style.display = 'flex';
+                break;
+            case 'unread':
+                notification.style.display = notification.classList.contains('unread') ? 'flex' : 'none';
+                break;
+            case 'archived':
+                notification.style.display = 'none';
+                break;
+        }
+    });
+}
+
+function searchNotifications() {
+    const input = document.getElementById('searchInput');
+    if (!input) return;
+    const searchTerm = input.value.toLowerCase();
+    const notifications = document.querySelectorAll('.notification-item');
+    
+    notifications.forEach(notification => {
+        const titleEl = notification.querySelector('.notification-title');
+        const textEl = notification.querySelector('.notification-text');
+        const title = titleEl ? titleEl.textContent.toLowerCase() : '';
+        const text = textEl ? textEl.textContent.toLowerCase() : '';
+        
+        if (title.includes(searchTerm) || text.includes(searchTerm)) {
+            notification.style.display = 'flex';
+        } else {
+            notification.style.display = 'none';
+        }
+    });
+}
+
+/* ==============================
+   Funciones de Asistencia (merge desde scripts.js)
+   Source: internas/empleado/asistencia.html
+   ============================== */
+
+// Actualizar fecha actual
+function updateCurrentDate() {
+    const date = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = date.toLocaleDateString('es-ES', options);
+    const el = document.getElementById('currentDate');
+    if (el) {
+        el.textContent = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+    }
+}
+
+// Variables de estado
+let checkInTime = null;
+let checkOutTime = null;
+let timerInterval = null;
+
+// Registrar entrada / salida y temporizador
+document.addEventListener('DOMContentLoaded', function() {
+    const btnCheckIn = document.getElementById('btnCheckIn');
+    const btnCheckOut = document.getElementById('btnCheckOut');
+    if (btnCheckIn) {
+        btnCheckIn.addEventListener('click', function() {
+            const now = new Date();
+            checkInTime = now;
+            this.disabled = true;
+            if (btnCheckOut) btnCheckOut.disabled = false;
+            startTimer();
+            alert(`Entrada registrada: ${now.toLocaleTimeString('es-ES', {hour: '2-digit', minute: '2-digit'})}`);
+        });
+    }
+
+    if (btnCheckOut) {
+        btnCheckOut.addEventListener('click', function() {
+            const now = new Date();
+            checkOutTime = now;
+            this.disabled = true;
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            const diff = checkOutTime - checkInTime;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            alert(`Salida registrada: ${now.toLocaleTimeString('es-ES', {hour: '2-digit', minute: '2-digit'})}\nHoras trabajadas: ${hours}h ${minutes}m`);
+            setTimeout(() => {
+                if (btnCheckIn) btnCheckIn.disabled = false;
+                checkInTime = null;
+                checkOutTime = null;
+                const td = document.getElementById('timeDisplay');
+                if (td) {
+                    const tv = td.querySelector('.time-value');
+                    if (tv) tv.textContent = '00:00 / 08:00';
+                }
+            }, 2000);
+        });
+    }
+
+    // Inicializar fecha
+    updateCurrentDate();
+});
+
+// Iniciar temporizador de horas trabajadas
+function startTimer() {
+    timerInterval = setInterval(() => {
+        if (!checkInTime) return;
+        const now = new Date();
+        const diff = now - checkInTime;
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const timeStr = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        const td = document.getElementById('timeDisplay');
+        if (td) {
+            const tv = td.querySelector('.time-value');
+            if (tv) tv.textContent = `${timeStr} / 08:00`;
+        }
+    }, 1000);
+}
+
+// Filtrar historial (UI placeholder)
+function filterHistory() {
+    const dateFromEl = document.getElementById('dateFrom');
+    const dateToEl = document.getElementById('dateTo');
+    const dateFrom = dateFromEl ? dateFromEl.value : '';
+    const dateTo = dateToEl ? dateToEl.value : '';
+    alert(`Filtrando registros desde ${dateFrom} hasta ${dateTo}`);
+}
