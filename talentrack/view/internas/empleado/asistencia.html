@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Asistencia - Punto Pymes</title>
-    <link rel="icon" type="image/svg+xml" href="../images/talentrack_small.svg">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="icon" type="image/svg+xml" href="../../images/talentrack_small.svg">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="header">
-        <div class="logo">
-            <img src="../images/talenTrackLogo_SVG.svg" alt="Logo"/>
+            <div class="logo">
+            <img src="../../images/talenTrackLogo_SVG.svg" alt="Logo"/>
             <span>Portal de Empleado</span>
         </div>
         <div class="header-right">
@@ -22,27 +23,27 @@
     <div class="layout">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-top">
-                <div class="sidebar-item" onclick="window.location.href='controlUsuario.html'">
+                <div class="sidebar-item" data-tooltip="Inicio" onclick="window.location.href='controlUsuario.html'">
                     <span class="sidebar-icon">🏠</span>
                     <span>INICIO</span>
                 </div>
-                <div class="sidebar-item"  onclick="window.location.href='notificaciones.html'">
+                <div class="sidebar-item" data-tooltip="Notificaciones" onclick="window.location.href='notificaciones.html'">
                     <span class="sidebar-icon">🔔</span>
                     <span>Notificaciones</span>
                 </div>
-                <div class="sidebar-item active">
+                <div class="sidebar-item active" data-tooltip="Asistencia">
                     <span class="sidebar-icon">✓</span>
                     <span>Asistencia</span>
                 </div>
-                <div class="sidebar-item">
+                <div class="sidebar-item" data-tooltip="Calendario">
                     <span class="sidebar-icon">📅</span>
                     <span>Calendario</span>
                 </div>
-                <div class="sidebar-item">
+                <div class="sidebar-item" data-tooltip="Permisos y Vacaciones">
                     <span class="sidebar-icon">🖐️</span>
                     <span>Permisos y Vacaciones</span>
                 </div>
-                <div class="sidebar-item">
+                <div class="sidebar-item" data-tooltip="Mis KPIs">
                     <span class="sidebar-icon">📈</span>
                     <span>Mis KPIs</span>
                 </div>

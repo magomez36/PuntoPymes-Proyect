@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control de Usuario</title>
-    <link rel="icon" type="image/png" href="../images/talentrack_small.svg">
-    <link rel="stylesheet" href="../css/styles.css">
-    <script src="../js/script.js" defer></script>
+    <link rel="icon" type="image/png" href="../../images/talentrack_small.svg">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="../../js/script.js" defer></script>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
 
 </head>
 <body>
     <div class="header">
-        <div class="logo">
-            <img src="../images/talenTrackLogo_SVG.svg" alt="Logo" />
+            <div class="logo">
+            <img src="../../images/talenTrackLogo_SVG.svg" alt="Logo" />
             <span>Gestión de Usuario</span>
         </div>
         <div class="header-right">
@@ -24,27 +25,27 @@
     <div class="layout">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-top">
-                <div class="sidebar-item active">
+                <div class="sidebar-item active" data-tooltip="Inicio">
                     <span class="sidebar-icon">🏠</span>
                     <span>Inicio</span>
                 </div>
-                <div class="sidebar-item"  onclick="window.location.href='notificaciones.html'">
+                <div class="sidebar-item" data-tooltip="Notificaciones" onclick="window.location.href='notificaciones.html'">
                     <span class="sidebar-icon">🔔</span>
                     <span>Notificaciones</span>
                 </div>
-                <div class="sidebar-item"  onclick="window.location.href='asistencia.html'">
+                <div class="sidebar-item" data-tooltip="Asistencia" onclick="window.location.href='asistencia.html'">
                     <span class="sidebar-icon">✓</span>
                     <span>Asistencia</span>
                 </div>
-                <div class="sidebar-item">
+                <div class="sidebar-item" data-tooltip="Calendario">
                     <span class="sidebar-icon">📅</span>
                     <span>Calendario</span>
                 </div>
-                <div class="sidebar-item">
+                <div class="sidebar-item" data-tooltip="Permisos y Vacaciones">
                     <span class="sidebar-icon">🏖️</span>
                     <span>Permisos y Vacaciones</span>
                 </div>
-                <div class="sidebar-item">
+                <div class="sidebar-item" data-tooltip="Mis KPIs">
                     <span class="sidebar-icon">📈</span>
                     <span>Mis KPIs</span>
                 </div>
@@ -67,7 +68,7 @@
         </aside>
 
         <main class="main-content" style="position: relative;" id="mainContent">
-            <h1 class="welcome-title">BIENVENIDO nombreusuario</h1>
+            <h1 class="welcome-title">Bienvenido, (Manager)</h1>
 
             <div class="cards-container">
                 <div class="card">
