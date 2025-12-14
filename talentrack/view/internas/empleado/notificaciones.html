@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,22 +7,22 @@
     <link rel="icon" type="image/svg+xml" href="../../images/talentrack_small.svg">
     <link rel="stylesheet" href="../../css/styles.css">
     <script src="../../js/script.js" defer></script>
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <!-- Boxicons -->
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <div class="layout">
+        <!-- Menu -->
         <aside class="sidebar" id="sidebar">
             <!-- Logo del sidebar -->
             <div class="sidebar-logo">
-                <img src="../../images/talentrack_small.svg" alt="Logo" />
-                <span class="sidebar-logo-text">TalentTrack</span>
+                <img src="../../images/talentrack_small.svg" alt="Logo Pequeño" class="logo-small" />
+                <img src="../../images/talenTrackLogo_SVG.svg" alt="Logo TalentTrack" class="logo-large" />
             </div>
             
             <div class="sidebar-top">
-                <div class="sidebar-item" data-tooltip="Inicio" onclick="window.location.href='controlUsuario.html'">
-                    <i class='bx bxs-home sidebar-icon-box' style='color:#d51e37'></i> 
+                <div class="sidebar-item" data-tooltip="Inicio" onclick="window.location.href='InicioEmpleado.html'">
+                    <i class='bx bxs-home sidebar-icon-box' style='color:#d51e37'></i>
                     <span>Inicio</span>
                 </div>
                 <div class="sidebar-item active" data-tooltip="Notificaciones">
@@ -30,7 +30,7 @@
                     <span>Notificaciones</span>
                 </div>
                 <div class="sidebar-item" data-tooltip="Asistencia" onclick="window.location.href='asistencia.html'">
-                    <i class='bx bx-check sidebar-icon-box' style='color:#d51e37'></i> 
+                    <i class='bx bx-check sidebar-icon-box' style='color:#d51e37'></i>
                     <span>Asistencia</span>
                 </div>
                 <div class="sidebar-item" data-tooltip="Calendario" onclick="window.location.href='calendario.html'">
@@ -38,11 +38,11 @@
                     <span>Calendario</span>
                 </div>
                 <div class="sidebar-item" data-tooltip="Permisos y Vacaciones" onclick="window.location.href='permisos_vacaciones.html'">
-                    <i class="bx bx-sun sidebar-icon-box" style='color:#d51e37'></i>
+                    <i class='bx bxs-umbrella sidebar-icon-box' style='color:#d51e37'></i>
                     <span>Permisos y Vacaciones</span>
                 </div>
-                <div class="sidebar-item" data-tooltip="Mis KPIs" onclick="window.location.href='mis_kpis.html'">
-                    <i class='bx bxs-bar-chart-alt-2 sidebar-icon-box' style='color:#d51e37'></i>
+                <div class="sidebar-item" data-tooltip="Mis KPIs" onclick="window.location.href='miskpis.html'">
+                    <i class='bx bxs-bar-chart-big sidebar-icon-box' style='color:#d51e37'></i>
                     <span>Mis KPIs</span>
                 </div>
             </div>
@@ -53,11 +53,11 @@
                     <span>Ayuda</span>
                 </div>
                 <div class="sidebar-item" data-tooltip="Perfil">
-                    <i class='bx bxs-user sidebar-icon-box' style='color:#495057'></i>
+                    <i class='bx bxs-user-circle sidebar-icon-box' style='color:#495057'></i> 
                     <span>Perfil</span>
                 </div>
                 <div class="sidebar-item logout" data-tooltip="Cerrar Sesión">
-                    <i class='bx bx-log-out sidebar-icon-box' style='color:#dc3545'></i>
+                    <i class='bx bxs-door-open sidebar-icon-box' style='color:#d51e37'></i> 
                     <span>Cerrar Sesión</span>
                 </div>
             </div>

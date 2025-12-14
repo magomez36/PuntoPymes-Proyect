@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="icon" type="image/png" href="../../images/talentrack_small.svg">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="../../js/script.js" defer></script>
+    <!-- Boxicons -->
+    <link href="https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Logo del sidebar -->
+            <div class="sidebar-logo">
+                <img src="../../images/talentrack_small.svg" alt="Logo Pequeño" class="logo-small" />
+                <img src="../../images/talenTrackLogo_SVG.svg" alt="Logo TalentTrack" class="logo-large" />
+            </div>
+            
+            <div class="sidebar-top">
+                <!-- Resumen -->
+                <div class="sidebar-section-label" style="color: #868988">Resumen</div>
+                <div class="sidebar-item active" data-tooltip="Inicio" onclick="window.location.href='inicioSuperAdmin.html'">
+                    <i class='bx bxs-home sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Inicio</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Dashboard" onclick="window.location.href='dashboardSuperAdmin.html'">
+                    <i class='bx bxs-dashboard sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Dashboard</span>
+                </div>
+
+                <!-- Gestión Empresas -->
+                <div class="sidebar-section-label" style="color: #868988">Gestión Empresas</div>
+                <div class="sidebar-item" data-tooltip="Empresas" onclick="window.location.href='empresasSuperAdmin.html'">
+                    <i class='bx bx-buildings sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Empresas</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Unidades Organizacionales">
+                    <i class='bx bx-sitemap sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Unidades Organizacionales</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Puestos">
+                    <i class='bx bxs-briefcase sidebar-icon-box' style='color:#ec1313'></i> 
+                    <span>Puestos</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Turnos">
+                    <i class='bx bxs-clock sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Turnos</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Reglas de Asistencia">
+                    <i class='bx bxs-check-square sidebar-icon-box' style='color:#ec1313'></i> 
+                    <span>Reglas de Asistencia</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Tipos de Ausencias">
+                    <i class='bx bx-calendar-x sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Tipos de Ausencias</span>
+                </div>
+
+                <!-- Rendimiento y Datos -->
+                <div class="sidebar-section-label" style="color: #868988">Rendimiento y Datos</div>
+                <div class="sidebar-item" data-tooltip="KPIs">
+                    <i class='bx bx-trending-up sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>KPIs</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Plantillas KPIs">
+                    <i class='bx bx-layout sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Plantillas KPIs</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Integraciones ERP">
+                    <i class='bx bxs-plug-connect sidebar-icon-box' style='color:#ec1313'></i>  
+                    <span>Integraciones ERP</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Reportes Programados">
+                    <i class='bx bx-file sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Reportes Programados</span>
+                </div>
+
+                <!-- Administración -->
+                <div class="sidebar-section-label" style="color: #868988">Administración</div>
+                <div class="sidebar-item" data-tooltip="Usuarios">
+                    <i class='bx bx-group sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Usuarios</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Roles">
+                    <i class='bx bxs-community sidebar-icon-box' style='color:#ec1313'></i> 
+                    <span>Roles</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Permisos">
+                    <i class='bx bxs-calendar-check sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Permisos</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Usuarios con Roles">
+                    <i class='bxr bxs-community sidebar-icon-box' style='color: #ec1313'></i> 
+                    <span>Usuarios con Roles</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Webhooks">
+                    <i class='bx bx-code-alt sidebar-icon-box' style='color:#ec1313'></i> 
+                    <span>Webhooks</span>
+                </div>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-item" data-tooltip="Ayuda">
+                    <i class='bx bx-help-circle sidebar-icon-box' style='color:#495057'></i>
+                    <span>Ayuda</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Perfil">
+                    <i class='bx bxs-user sidebar-icon-box' style='color:#495057'></i>
+                    <span>Perfil</span>
+                </div>
+                <div class="sidebar-item logout" data-tooltip="Cerrar Sesión">
+                    <i class='bxr bxs-door-open sidebar-icon-box' style='color:#ec1313'></i> 
+                    <span>Cerrar Sesión</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h2 class="header-title">Bienvenido, (Superadmin)</h2>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <i class='bx bx-search'></i>
+                        <input type="text" placeholder="Buscar...">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <div class="welcome-section">
+                    <h3>Aquí tienes un resumen conciso del estado actual del sistema.</h3>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class='bx bx-buildings'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Empresas Activas</h3>
+                            <div class="stat-value">128</div>
+                            <div class="stat-change">+5 nuevas este mes</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class='bx bx-group'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Usuarios Totales</h3>
+                            <div class="stat-value">15,721</div>
+                            <div class="stat-change">+2.1% último mes</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class='bx bx-cloud-check'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Estado del Sistema</h3>
+                            <div class="stat-value" style="color: #10b981;">Óptimo</div>
+                            <div class="stat-change" style="color: #6b7280;">Todos los servicios operativos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modules Section -->
+                <div class="modules-section">
+                    <h2>Resumen de Módulos</h2>
+                    <div class="modules-grid">
+                        <div class="module-card">
+                            <div>
+                                <div class="module-icon">
+                                    <i class='bx bx-cog'></i>
+                                </div>
+                                <h4>Configuración Global</h4>
+                                <p>Ajustes generales de la plataforma y parámetros del sistema.</p>
+                            </div>
+                            <div class="module-action">
+                                <span>Gestionar</span>
+                                <i class='bx bx-right-arrow-alt'></i>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div>
+                                <div class="module-icon">
+                                    <i class='bx bx-briefcase'></i>
+                                </div>
+                                <h4>Gestión Multiempresa</h4>
+                                <p>Administra todas las empresas clientes desde un solo lugar.</p>
+                            </div>
+                            <div class="module-action">
+                                <span>Ver Empresas</span>
+                                <i class='bx bx-right-arrow-alt'></i>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div>
+                                <div class="module-icon">
+                                    <i class='bx bx-user-circle'></i>
+                                </div>
+                                <h4>Control de Acceso</h4>
+                                <p>Define roles y permisos para los administradores del sistema.</p>
+                            </div>
+                            <div class="module-action">
+                                <span>Configurar Roles</span>
+                                <i class='bx bx-right-arrow-alt'></i>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div>
+                                <div class="module-icon">
+                                    <i class='bx bx-bar-chart-alt-2'></i>
+                                </div>
+                                <h4>Monitor de Sistema</h4>
+                                <p>Visualiza el rendimiento, logs y estado de los servicios.</p>
+                            </div>
+                            <div class="module-action">
+                                <span>Ver Estado</span>
+                                <i class='bx bx-right-arrow-alt'></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

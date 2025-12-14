@@ -1,124 +1,448 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control de Usuario</title>
+    <title>Dashboard de Métricas</title>
     <link rel="icon" type="image/png" href="../../images/talentrack_small.svg">
     <link rel="stylesheet" href="../../css/styles.css">
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <script src="../../js/script.js" defer></script>
-
+    <!-- Boxicons -->
+    <link href="https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="header">
-            <div class="logo">
-            <img src="../../images/talenTrackLogo_SVG.svg" alt="Logo" />
-            <span>Gestión de Usuario</span>
-        </div>
-        <div class="header-right">
-            <div class="notification">🔔</div>
-            <div class="avatar"></div>
-        </div>
-    </div>
-
     <div class="layout">
+        <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
+            <!-- Logo del sidebar -->
+            <div class="sidebar-logo">
+                <img src="../../images/talentrack_small.svg" alt="Logo Pequeño" class="logo-small" />
+                <img src="../../images/talenTrackLogo_SVG.svg" alt="Logo TalentTrack" class="logo-large" />
+            </div>
+            
             <div class="sidebar-top">
-                <div class="sidebar-item active" data-tooltip="Inicio">
-                    <span class="sidebar-icon">🏠</span>
+                <!-- Resumen -->
+                <div class="sidebar-section-label" style="color: #868988">Resumen</div>
+                <div class="sidebar-item" data-tooltip="Inicio" onclick="window.location.href='inicioSuperAdmin.html'">
+                    <i class='bx bxs-home sidebar-icon-box' style='color:#ec1313'></i>
                     <span>Inicio</span>
                 </div>
-                <div class="sidebar-item" data-tooltip="Notificaciones" onclick="window.location.href='notificaciones.html'">
-                    <span class="sidebar-icon">🔔</span>
-                    <span>Notificaciones</span>
+                <div class="sidebar-item active" data-tooltip="Dashboard" onclick="window.location.href='dashboardSuperAdmin.html'">
+                    <i class='bx bxs-dashboard sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Dashboard</span>
                 </div>
-                <div class="sidebar-item" data-tooltip="Asistencia" onclick="window.location.href='asistencia.html'">
-                    <span class="sidebar-icon">✓</span>
-                    <span>Asistencia</span>
+
+                <!-- Gestión Empresas -->
+                <div class="sidebar-section-label" style="color: #868988">Gestión Empresas</div>
+                <div class="sidebar-item" data-tooltip="Empresas" onclick="window.location.href='empresasSuperAdmin.html'">
+                    <i class='bx bx-buildings sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Empresas</span>
                 </div>
-                <div class="sidebar-item" data-tooltip="Calendario">
-                    <span class="sidebar-icon">📅</span>
-                    <span>Calendario</span>
+                <div class="sidebar-item" data-tooltip="Unidades Organizacionales">
+                    <i class='bx bx-sitemap sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Unidades Organizacionales</span>
                 </div>
-                <div class="sidebar-item" data-tooltip="Permisos y Vacaciones">
-                    <span class="sidebar-icon">🏖️</span>
-                    <span>Permisos y Vacaciones</span>
+                <div class="sidebar-item" data-tooltip="Puestos">
+                    <i class='bx bxs-briefcase sidebar-icon-box' style='color:#ec1313'></i> 
+                    <span>Puestos</span>
                 </div>
-                <div class="sidebar-item" data-tooltip="Mis KPIs">
-                    <span class="sidebar-icon">📈</span>
-                    <span>Mis KPIs</span>
+                <div class="sidebar-item" data-tooltip="Turnos">
+                    <i class='bx bxs-clock sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Turnos</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Reglas de Asistencia">
+                    <i class='bx bxs-check-square sidebar-icon-box' style='color:#ec1313'></i> 
+                    <span>Reglas de Asistencia</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Tipos de Ausencias">
+                    <i class='bx bx-calendar-x sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Tipos de Ausencias</span>
+                </div>
+
+                <!-- Rendimiento y Datos -->
+                <div class="sidebar-section-label" style="color: #868988">Rendimiento y Datos</div>
+                <div class="sidebar-item" data-tooltip="KPIs">
+                    <i class='bx bx-trending-up sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>KPIs</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Plantillas KPIs">
+                    <i class='bx bx-layout sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Plantillas KPIs</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Integraciones ERP">
+                    <i class='bx bxs-plug-connect sidebar-icon-box' style='color:#ec1313'></i>  
+                    <span>Integraciones ERP</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Reportes Programados">
+                    <i class='bx bx-file sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Reportes Programados</span>
+                </div>
+
+                <!-- Administración -->
+                <div class="sidebar-section-label" style="color: #868988">Administración</div>
+                <div class="sidebar-item" data-tooltip="Usuarios">
+                    <i class='bx bx-group sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Usuarios</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Roles">
+                    <i class='bx bxs-community sidebar-icon-box' style='color:#ec1313'></i> 
+                    <span>Roles</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Permisos">
+                    <i class='bx bxs-calendar-check sidebar-icon-box' style='color:#ec1313'></i>
+                    <span>Permisos</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Usuarios con Roles">
+                    <i class='bxr bxs-community sidebar-icon-box' style='color: #ec1313'></i> 
+                    <span>Usuarios con Roles</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Webhooks">
+                    <i class='bx bx-code-alt sidebar-icon-box' style='color:#ec1313'></i> 
+                    <span>Webhooks</span>
                 </div>
             </div>
 
             <div class="sidebar-bottom">
-                <div class="sidebar-item">
-                    <span class="sidebar-icon">❓</span>
-                    <span>AYUDA</span>
+                <div class="sidebar-item" data-tooltip="Ayuda">
+                    <i class='bx bx-help-circle sidebar-icon-box' style='color:#495057'></i>
+                    <span>Ayuda</span>
                 </div>
-                <div class="sidebar-item">
-                    <span class="sidebar-icon">👤</span>
+                <div class="sidebar-item" data-tooltip="Perfil">
+                    <i class='bx bxs-user sidebar-icon-box' style='color:#495057'></i>
                     <span>Perfil</span>
                 </div>
-                <div class="sidebar-item logout">
-                    <span class="sidebar-icon">🚪</span>
+                <div class="sidebar-item logout" data-tooltip="Cerrar Sesión">
+                    <i class='bxr bxs-door-open sidebar-icon-box' style='color:#ec1313'></i> 
                     <span>Cerrar Sesión</span>
                 </div>
             </div>
         </aside>
 
-        <main class="main-content" style="position: relative;" id="mainContent">
-            <h1 class="welcome-title">Bienvenido, (SuperAdmin)</h1>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h2 class="header-title">Dashboard de Métricas</h2>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <i class='bx bx-search'></i>
+                        <input type="text" placeholder="Buscar...">
+                    </div>
+                </div>
+            </header>
 
-            <div class="cards-container">
-                <div class="card">
-                    <h2 class="card-title">Mis Solicitudes Recientes</h2>
-                    
-                    <div class="request-item">
-                        <div class="request-header">
-                            <div class="request-name">Vacaciones</div>
-                            <span class="status-badge status-approved">Aprobado</span>
+            <!-- Content Area -->
+            <div class="dashboard-content">
+                <!-- Métricas Principales -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon users">
+                            <i class='bx bx-group'></i>
                         </div>
-                        <div class="request-date">15/08/2024 - 20/08/2024</div>
+                        <div class="metric-info">
+                            <h3>Usuarios Totales</h3>
+                            <div class="metric-value">15,721</div>
+                            <div class="metric-change positive">
+                                <i class='bx bx-up-arrow-alt'></i>
+                                +2.1% este mes
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="request-item">
-                        <div class="request-header">
-                            <div class="request-name">Día por Asuntos Propios</div>
-                            <span class="status-badge status-pending">Pendiente</span>
+                    <div class="metric-card">
+                        <div class="metric-icon companies">
+                            <i class='bx bx-buildings'></i>
                         </div>
-                        <div class="request-date">05/07/2024</div>
+                        <div class="metric-info">
+                            <h3>Empresas Activas</h3>
+                            <div class="metric-value">128</div>
+                            <div class="metric-change positive">
+                                <i class='bx bx-up-arrow-alt'></i>
+                                +5% este mes
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon health">
+                            <i class='bx bx-bar-chart-alt'></i>
+                        </div>
+                        <div class="metric-info">
+                            <h3>Salud del Sistema</h3>
+                            <div class="metric-value">99.9%</div>
+                            <div class="metric-status">
+                                <i class='bx bx-check-circle'></i>
+                                Estable
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-icon registrations">
+                            <i class='bx bx-trending-up'></i>
+                        </div>
+                        <div class="metric-info">
+                            <h3>Nuevos Registros (Hoy)</h3>
+                            <div class="metric-value">48</div>
+                            <div class="metric-change negative">
+                                <i class='bx bx-down-arrow-alt'></i>
+                                -10% vs ayer
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <h2 class="card-title">Próximos Eventos de la Empresa</h2>
-                    
-                    <div class="event-item">
-                        <div class="event-date">
-                            <div class="event-month">JUL</div>
-                            <div class="event-day">25</div>
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <!-- Resumen de Asistencia Diario -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class='bx bx-calendar-check'></i>
+                                Resumen de Asistencia Diario
+                            </h3>
+                            <div class="card-date">
+                                <span>24 Oct, 2023</span>
+                                <i class='bx bx-refresh'></i>
+                            </div>
                         </div>
-                        <div class="event-content">
-                            <div class="event-title">Fiesta Nacional</div>
-                            <div class="event-desc">Día festivo</div>
+
+                        <div class="attendance-stats">
+                            <div class="attendance-stat-item">
+                                <div class="stat-label">
+                                    <i class='bx bx-group'></i>
+                                    Total Empleados
+                                </div>
+                                <div class="stat-number">854</div>
+                            </div>
+
+                            <div class="attendance-stat-item">
+                                <div class="stat-label">
+                                    <i class='bx bx-time'></i>
+                                    Llegadas Tarde
+                                </div>
+                                <div class="stat-number orange">24</div>
+                            </div>
+
+                            <div class="attendance-stat-item">
+                                <div class="stat-label">
+                                    <i class='bx bx-time-five'></i>
+                                    Horas Extra
+                                </div>
+                                <div class="stat-number blue">42.5h</div>
+                            </div>
+
+                            <div class="attendance-stat-item highlight-green">
+                                <div class="stat-label">
+                                    <i class='bx bx-user-check'></i>
+                                    Presentes
+                                </div>
+                                <div class="stat-number-large">94%</div>
+                                <div class="stat-detail">802/854</div>
+                                <svg class="progress-ring" width="120" height="120">
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#d1fae5" stroke-width="8"/>
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="#10b981" stroke-width="8" 
+                                            stroke-dasharray="314" stroke-dashoffset="19" 
+                                            transform="rotate(-90 60 60)" stroke-linecap="round"/>
+                                </svg>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="event-item">
-                        <div class="event-date">
-                            <div class="event-month">AGO</div>
-                            <div class="event-day">15</div>
+                    <!-- Calendario de Ausencias -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class='bx bx-calendar-x'></i>
+                                Calendario de Ausencias
+                            </h3>
+                            <select class="week-selector">
+                                <option>Esta Semana</option>
+                                <option>Próxima Semana</option>
+                                <option>Este Mes</option>
+                            </select>
                         </div>
-                        <div class="event-content">
-                            <div class="event-title">Reunión Trimestral</div>
-                            <div class="event-desc">Evaluación de desempeño</div>
+
+                        <div class="absence-list">
+                            <div class="absence-item">
+                                <div class="absence-avatar-placeholder">RG</div>
+                                <div class="absence-info">
+                                    <div class="absence-name">Roberto Gómez</div>
+                                    <span class="absence-type vacation">Vacaciones</span>
+                                </div>
+                                <div class="absence-dates">
+                                    <div class="absence-date">23 - 27 Oct</div>
+                                    <div class="absence-status approved">
+                                        <i class='bx bx-check-circle'></i>
+                                        Aprobado
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="absence-item">
+                                <div class="absence-avatar-placeholder" style="background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);">MR</div>
+                                <div class="absence-info">
+                                    <div class="absence-name">María Rodríguez</div>
+                                    <span class="absence-type sick">Enfermedad</span>
+                                </div>
+                                <div class="absence-dates">
+                                    <div class="absence-date">24 Oct</div>
+                                    <div class="absence-status pending">
+                                        <i class='bx bx-time-five'></i>
+                                        Pendiente
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="absence-item">
+                                <div class="absence-avatar-placeholder" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">JD</div>
+                                <div class="absence-info">
+                                    <div class="absence-name">Juan Díaz</div>
+                                    <span class="absence-type personal">Permiso Personal</span>
+                                </div>
+                                <div class="absence-dates">
+                                    <div class="absence-date">25 Oct (PM)</div>
+                                    <div class="absence-status approved">
+                                        <i class='bx bx-check-circle'></i>
+                                        Aprobado
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Histórico KPI (Empleado) -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class='bx bx-line-chart'></i>
+                            Histórico KPI (Empleado)
+                        </h3>
+                        <div class="card-actions">
+                            <select class="department-selector">
+                                <option>Todos los Departamentos</option>
+                                <option>Ventas</option>
+                                <option>Marketing</option>
+                                <option>Soporte Técnico</option>
+                                <option>Desarrollo</option>
+                            </select>
+                            <a href="#" class="view-full-report">Ver reporte completo</a>
+                        </div>
+                    </div>
+
+                    <div class="kpi-table-container">
+                        <table class="kpi-table">
+                            <thead>
+                                <tr>
+                                    <th>Período</th>
+                                    <th>Empleado</th>
+                                    <th>KPI</th>
+                                    <th>Valor Actual</th>
+                                    <th>Meta</th>
+                                    <th>Estado</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Oct 2023</td>
+                                    <td>
+                                        <div class="employee-cell">
+                                            <div class="employee-avatar-letter">AL</div>
+                                            <div>
+                                                <div class="employee-name">Ana Lopez</div>
+                                                <div class="employee-role">Ventas Senior</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Ventas Mensuales</td>
+                                    <td class="value-cell">$45,200</td>
+                                    <td class="meta-cell">$40,000</td>
+                                    <td>
+                                        <span class="status-chip success">Completo</span>
+                                    </td>
+                                    <td>
+                                        <button class="action-btn">
+                                            <i class='bx bx-dots-vertical-rounded'></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Oct 2023</td>
+                                    <td>
+                                        <div class="employee-cell">
+                                            <div class="employee-avatar-letter" style="background: #3b82f6;">CR</div>
+                                            <div>
+                                                <div class="employee-name">Carlos Ruiz</div>
+                                                <div class="employee-role">Soporte Técnico</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Tickets Resueltos</td>
+                                    <td class="value-cell">142</td>
+                                    <td class="meta-cell">150</td>
+                                    <td>
+                                        <span class="status-chip warning">Incompleto</span>
+                                    </td>
+                                    <td>
+                                        <button class="action-btn">
+                                            <i class='bx bx-dots-vertical-rounded'></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Oct 2023</td>
+                                    <td>
+                                        <div class="employee-cell">
+                                            <div class="employee-avatar-letter" style="background: #6366f1;">SM</div>
+                                            <div>
+                                                <div class="employee-name">Sofía M.</div>
+                                                <div class="employee-role">Marketing Lead</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Leads Generados</td>
+                                    <td class="value-cell">850</td>
+                                    <td class="meta-cell">1000</td>
+                                    <td>
+                                        <span class="status-chip error">Incompleto</span>
+                                    </td>
+                                    <td>
+                                        <button class="action-btn">
+                                            <i class='bx bx-dots-vertical-rounded'></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Sep 2023</td>
+                                    <td>
+                                        <div class="employee-cell">
+                                            <div class="employee-avatar-letter lp">LP</div>
+                                            <div>
+                                                <div class="employee-name">Luis Perez</div>
+                                                <div class="employee-role">Desarrollador</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Sprint Velocity</td>
+                                    <td class="value-cell">42 pts</td>
+                                    <td class="meta-cell">40 pts</td>
+                                    <td>
+                                        <span class="status-chip success">Completo</span>
+                                    </td>
+                                    <td>
+                                        <button class="action-btn">
+                                            <i class='bx bx-dots-vertical-rounded'></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-    
 </body>
 </html>

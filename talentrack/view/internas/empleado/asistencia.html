@@ -7,65 +7,60 @@
     <link rel="icon" type="image/svg+xml" href="../../images/talentrack_small.svg">
     <link rel="stylesheet" href="../../css/styles.css">
     <script src="../../js/script.js" defer></script>
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Boxicons -->
+    <link href='https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-    <div class="header">
-            <div class="logo">
-            <img src="../../images/talenTrackLogo_SVG.svg" alt="Logo"/>
-            <span>Portal de Empleado</span>
-        </div>
-        <div class="header-right">
-            <div class="notification">🔔</div>
-            <div class="avatar"></div>
-        </div>
-    </div>
-
     <div class="layout">
-        <aside class="sidebar" id="sidebar">
+        <!-- Menu -->
+        <<aside class="sidebar" id="sidebar">
+            <!-- Logo del sidebar -->
+            <div class="sidebar-logo">
+                <img src="../../images/talentrack_small.svg" alt="Logo Pequeño" class="logo-small" />
+                <img src="../../images/talenTrackLogo_SVG.svg" alt="Logo TalentTrack" class="logo-large" />
+            </div>
+            
             <div class="sidebar-top">
-                <div class="sidebar-item" data-tooltip="Inicio" onclick="window.location.href='controlUsuario.html'">
-                    <span class="sidebar-icon">🏠</span>
-                    <span>INICIO</span>
+                <div class="sidebar-item" data-tooltip="Inicio" onclick="window.location.href='InicioEmpleado.html'">
+                    <i class='bx bxs-home sidebar-icon-box' style='color:#d51e37'></i>
+                    <span>Inicio</span>
                 </div>
                 <div class="sidebar-item" data-tooltip="Notificaciones" onclick="window.location.href='notificaciones.html'">
-                    <span class="sidebar-icon">🔔</span>
+                    <i class='bx bxs-bell sidebar-icon-box' style='color:#d51e37'></i>
                     <span>Notificaciones</span>
                 </div>
                 <div class="sidebar-item active" data-tooltip="Asistencia">
-                    <span class="sidebar-icon">✓</span>
+                    <i class='bx bx-check sidebar-icon-box' style='color:#d51e37'></i>
                     <span>Asistencia</span>
                 </div>
-                <div class="sidebar-item" data-tooltip="Calendario">
-                    <span class="sidebar-icon">📅</span>
+                <div class="sidebar-item" data-tooltip="Calendario" onclick="window.location.href='calendario.html'">
+                    <i class='bx bxs-calendar sidebar-icon-box' style='color:#d51e37'></i>
                     <span>Calendario</span>
                 </div>
-                <div class="sidebar-item" data-tooltip="Permisos y Vacaciones">
-                    <span class="sidebar-icon">🖐️</span>
+                <div class="sidebar-item" data-tooltip="Permisos y Vacaciones" onclick="window.location.href='permisos_vacaciones.html'">
+                    <i class='bx bxs-umbrella sidebar-icon-box' style='color:#d51e37'></i>
                     <span>Permisos y Vacaciones</span>
                 </div>
-                <div class="sidebar-item" data-tooltip="Mis KPIs">
-                    <span class="sidebar-icon">📈</span>
+                <div class="sidebar-item" data-tooltip="Mis KPIs" onclick="window.location.href='miskpis.html'">
+                    <i class='bx bxs-bar-chart-big sidebar-icon-box' style='color:#d51e37'></i>
                     <span>Mis KPIs</span>
                 </div>
             </div>
 
             <div class="sidebar-bottom">
-                <div class="sidebar-item">
-                    <span class="sidebar-icon">❓</span>
-                    <span>AYUDA</span>
+                <div class="sidebar-item" data-tooltip="Ayuda">
+                    <i class='bx bx-help-circle sidebar-icon-box' style='color:#495057'></i>
+                    <span>Ayuda</span>
                 </div>
-                <div class="sidebar-item">
-                    <span class="sidebar-icon">👤</span>
+                <div class="sidebar-item" data-tooltip="Perfil">
+                    <i class='bx bxs-user-circle sidebar-icon-box sidebar-icon-box' style='color:#495057'></i> 
                     <span>Perfil</span>
                 </div>
-                <div class="sidebar-item logout">
-                    <span class="sidebar-icon">🚪</span>
+                <div class="sidebar-item logout" data-tooltip="Cerrar Sesión">
+                    <i class='bx bxs-door-open bx-flip-vertical sidebar-icon-box' style='color:#d51e37'></i> 
                     <span>Cerrar Sesión</span>
                 </div>
             </div>
-
-            <button class="toggle-sidebar" onclick="toggleSidebar()">◀</button>
         </aside>
 
         <main class="main-content" id="mainContent">
@@ -79,7 +74,9 @@
                     
                     <div class="attendance-buttons">
                         <button class="btn-check-in" id="btnCheckIn">
-                            <span class="btn-icon">→</span>
+                            <span class="btn-icon">
+                                <i class='bx bxs-arrow-in-right-square-half' style='color:#fff'></i> 
+                            </span>
                             <div>
                                 <div class="btn-label">Registrar</div>
                                 <div class="btn-sublabel">Entrada</div>
@@ -87,7 +84,9 @@
                         </button>
                         
                         <button class="btn-check-out" id="btnCheckOut" disabled>
-                            <span class="btn-icon">←</span>
+                            <span class="btn-icon">
+                                <i class='bx bxs-arrow-in-left-square-half' style='color:#fff'></i> 
+                            </span>
                             <div>
                                 <div class="btn-label">Registrar</div>
                                 <div class="btn-sublabel">Salida</div>
