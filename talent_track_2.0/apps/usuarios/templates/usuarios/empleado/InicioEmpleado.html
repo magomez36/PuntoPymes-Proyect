@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="icon" type="image/png" href="../../images/talentrack_small.svg">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="../../js/script.js" defer></script>
+    <!-- Boxicons -->
+    <link href="https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="layout">
+        <!-- Menu -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Logo del sidebar -->
+            <div class="sidebar-logo">
+                <img src="../../images/talentrack_small.svg" alt="Logo Pequeño" class="logo-small" />
+                <img src="../../images/talenTrackLogo_SVG.svg" alt="Logo TalentTrack" class="logo-large" />
+            </div>
+            
+            <div class="sidebar-top">
+                <div class="sidebar-item active" data-tooltip="Inicio">
+                    <i class='bx bxs-home sidebar-icon-box' style='color:#d51e37'></i>
+                    <span>Inicio</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Notificaciones" onclick="window.location.href='notificaciones.html'">
+                    <i class='bx bxs-bell sidebar-icon-box' style='color:#d51e37'></i>
+                    <span>Notificaciones</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Asistencia" onclick="window.location.href='asistencia.html'">
+                    <i class='bx bx-check sidebar-icon-box' style='color:#d51e37'></i>
+                    <span>Asistencia</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Calendario" onclick="window.location.href='calendario.html'">
+                    <i class='bx bxs-calendar sidebar-icon-box' style='color:#d51e37'></i>
+                    <span>Calendario</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Permisos y Vacaciones" onclick="window.location.href='permisos_vacaciones.html'">
+                    <i class='bx bxs-umbrella sidebar-icon-box' style='color:#d51e37'></i>
+                    <span>Permisos y Vacaciones</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Mis KPIs" onclick="window.location.href='miskpis.html'">
+                    <i class='bx bxs-bar-chart-big sidebar-icon-box' style='color:#d51e37'></i>
+                    <span>Mis KPIs</span>
+                </div>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-item" data-tooltip="Ayuda">
+                    <i class='bx bx-help-circle sidebar-icon-box' style='color:#495057'></i>
+                    <span>Ayuda</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Perfil">
+                    <i class='bx bxs-user-circle sidebar-icon-box' style='color:#495057'></i> 
+                    <span>Perfil</span>
+                </div>
+                <div class="sidebar-item logout" data-tooltip="Cerrar Sesión">
+                    <i class='bx bxs-door-open sidebar-icon-box' style='color:#d51e37'></i> 
+                    <span>Cerrar Sesión</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content" id="mainContent">
+            <h1 class="welcome-title">Bienvenido, (empleado)</h1>
+
+            <div class="cards-container">
+                <div class="card">
+                    <h2 class="card-title">Mis Solicitudes Recientes</h2>
+                    
+                    <div class="request-item">
+                        <div class="request-header">
+                            <div class="request-name">Vacaciones</div>
+                            <span class="status-badge status-approved">Aprobado</span>
+                        </div>
+                        <div class="request-date">15/08/2024 - 20/08/2024</div>
+                    </div>
+
+                    <div class="request-item">
+                        <div class="request-header">
+                            <div class="request-name">Día por Asuntos Propios</div>
+                            <span class="status-badge status-pending">Pendiente</span>
+                        </div>
+                        <div class="request-date">05/07/2024</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">Próximos Eventos de la Empresa</h2>
+                    
+                    <div class="event-item">
+                        <div class="event-date">
+                            <div class="event-month">JUL</div>
+                            <div class="event-day">25</div>
+                        </div>
+                        <div class="event-content">
+                            <div class="event-title">Fiesta Nacional</div>
+                            <div class="event-desc">Día festivo</div>
+                        </div>
+                    </div>
+
+                    <div class="event-item">
+                        <div class="event-date">
+                            <div class="event-month">AGO</div>
+                            <div class="event-day">15</div>
+                        </div>
+                        <div class="event-content">
+                            <div class="event-title">Reunión Trimestral</div>
+                            <div class="event-desc">Evaluación de desempeño</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+</body>
+</html>

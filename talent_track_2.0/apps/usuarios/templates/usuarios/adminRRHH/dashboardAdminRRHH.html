@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Usuario</title>
+    <link rel="icon" type="image/png" href="../../images/talentrack_small.svg">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="../../js/script.js" defer></script>
+
+</head>
+<body>
+    <div class="header">
+            <div class="logo">
+            <img src="../../images/talenTrackLogo_SVG.svg" alt="Logo" />
+            <span>Gestión de Usuario</span>
+        </div>
+        <div class="header-right">
+            <div class="notification">🔔</div>
+            <div class="avatar"></div>
+        </div>
+    </div>
+
+    <div class="layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <div class="sidebar-item active" data-tooltip="Inicio">
+                    <span class="sidebar-icon">🏠</span>
+                    <span>Inicio</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Notificaciones" onclick="window.location.href='notificaciones.html'">
+                    <span class="sidebar-icon">🔔</span>
+                    <span>Notificaciones</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Asistencia" onclick="window.location.href='asistencia.html'">
+                    <span class="sidebar-icon">✓</span>
+                    <span>Asistencia</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Calendario">
+                    <span class="sidebar-icon">📅</span>
+                    <span>Calendario</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Permisos y Vacaciones">
+                    <span class="sidebar-icon">🏖️</span>
+                    <span>Permisos y Vacaciones</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Mis KPIs">
+                    <span class="sidebar-icon">📈</span>
+                    <span>Mis KPIs</span>
+                </div>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-item">
+                    <span class="sidebar-icon">❓</span>
+                    <span>AYUDA</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="sidebar-icon">👤</span>
+                    <span>Perfil</span>
+                </div>
+                <div class="sidebar-item logout">
+                    <span class="sidebar-icon">🚪</span>
+                    <span>Cerrar Sesión</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content" style="position: relative;" id="mainContent">
+            <h1 class="welcome-title">Bienvenido, (Admin RRHH)</h1>
+
+            <div class="cards-container">
+                <div class="card">
+                    <h2 class="card-title">Mis Solicitudes Recientes</h2>
+                    
+                    <div class="request-item">
+                        <div class="request-header">
+                            <div class="request-name">Vacaciones</div>
+                            <span class="status-badge status-approved">Aprobado</span>
+                        </div>
+                        <div class="request-date">15/08/2024 - 20/08/2024</div>
+                    </div>
+
+                    <div class="request-item">
+                        <div class="request-header">
+                            <div class="request-name">Día por Asuntos Propios</div>
+                            <span class="status-badge status-pending">Pendiente</span>
+                        </div>
+                        <div class="request-date">05/07/2024</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="card-title">Próximos Eventos de la Empresa</h2>
+                    
+                    <div class="event-item">
+                        <div class="event-date">
+                            <div class="event-month">JUL</div>
+                            <div class="event-day">25</div>
+                        </div>
+                        <div class="event-content">
+                            <div class="event-title">Fiesta Nacional</div>
+                            <div class="event-desc">Día festivo</div>
+                        </div>
+                    </div>
+
+                    <div class="event-item">
+                        <div class="event-date">
+                            <div class="event-month">AGO</div>
+                            <div class="event-day">15</div>
+                        </div>
+                        <div class="event-content">
+                            <div class="event-title">Reunión Trimestral</div>
+                            <div class="event-desc">Evaluación de desempeño</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+</body>
+</html>

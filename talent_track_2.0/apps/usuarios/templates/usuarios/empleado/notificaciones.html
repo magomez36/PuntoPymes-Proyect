@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificaciones - Punto Pymes</title>
+    <link rel="icon" type="image/svg+xml" href="../../images/talentrack_small.svg">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="../../js/script.js" defer></script>
+    <!-- Boxicons -->
+    <link href='https://cdn.boxicons.com/3.0.6/fonts/basic/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="layout">
+        <!-- Menu -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Logo del sidebar -->
+            <div class="sidebar-logo">
+                <img src="../../images/talentrack_small.svg" alt="Logo Pequeño" class="logo-small" />
+                <img src="../../images/talenTrackLogo_SVG.svg" alt="Logo TalentTrack" class="logo-large" />
+            </div>
+            
+            <div class="sidebar-top">
+                <div class="sidebar-item" data-tooltip="Inicio" onclick="window.location.href='InicioEmpleado.html'">
+                    <i class='bx bxs-home sidebar-icon-box' style='color:#d51e37'></i>
+                    <span>Inicio</span>
+                </div>
+                <div class="sidebar-item active" data-tooltip="Notificaciones">
+                    <i class='bx bxs-bell sidebar-icon-box' style='color:#d51e37'></i>
+                    <span>Notificaciones</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Asistencia" onclick="window.location.href='asistencia.html'">
+                    <i class='bx bx-check sidebar-icon-box' style='color:#d51e37'></i>
+                    <span>Asistencia</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Calendario" onclick="window.location.href='calendario.html'">
+                    <i class='bx bxs-calendar sidebar-icon-box' style='color:#d51e37'></i>
+                    <span>Calendario</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Permisos y Vacaciones" onclick="window.location.href='permisos_vacaciones.html'">
+                    <i class='bx bxs-umbrella sidebar-icon-box' style='color:#d51e37'></i>
+                    <span>Permisos y Vacaciones</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Mis KPIs" onclick="window.location.href='miskpis.html'">
+                    <i class='bx bxs-bar-chart-big sidebar-icon-box' style='color:#d51e37'></i>
+                    <span>Mis KPIs</span>
+                </div>
+            </div>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-item" data-tooltip="Ayuda">
+                    <i class='bx bx-help-circle sidebar-icon-box' style='color:#495057'></i>
+                    <span>Ayuda</span>
+                </div>
+                <div class="sidebar-item" data-tooltip="Perfil">
+                    <i class='bx bxs-user-circle sidebar-icon-box' style='color:#495057'></i> 
+                    <span>Perfil</span>
+                </div>
+                <div class="sidebar-item logout" data-tooltip="Cerrar Sesión">
+                    <i class='bx bxs-door-open sidebar-icon-box' style='color:#d51e37'></i> 
+                    <span>Cerrar Sesión</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content" id="mainContent">
+            <div class="notifications-header">
+                <div>
+                    <h1 class="page-title">Notificaciones</h1>
+                    <p class="page-subtitle">Revisa tus alertas y actualizaciones importantes.</p>
+                </div>
+                <button class="btn-mark-all-read" onclick="markAllAsRead()">
+                    Marcar todas como leídas
+                </button>
+            </div>
+
+            <!-- Barra de búsqueda y filtros -->
+            <div class="notifications-controls">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="Buscar notificaciones..." id="searchInput" onkeyup="searchNotifications()">
+                </div>
+
+                <div class="notification-filters">
+                    <button class="filter-btn active" data-filter="all" onclick="filterNotifications('all')">Todas</button>
+                    <button class="filter-btn" data-filter="unread" onclick="filterNotifications('unread')">No leídas</button>
+                    <button class="filter-btn" data-filter="archived" onclick="filterNotifications('archived')">Archivadas</button>
+                </div>
+            </div>
+
+            <!-- Lista de notificaciones -->
+            <div class="notifications-list" id="notificationsList">
+                <!-- Notificación 1 - No leída -->
+                <div class="notification-item unread" data-id="1">
+                    <div class="notification-icon notification-icon-document">
+                        📄
+                    </div>
+                    <div class="notification-content">
+                        <h3 class="notification-title">Nueva política de vacaciones actualizada</h3>
+                        <p class="notification-text">Se ha publicado la versión 2.1 de la política de vacaciones. Por favor, revísala para estar al tanto de los cambios.</p>
+                        <span class="notification-time">Hace 5 minutos</span>
+                    </div>
+                    <button class="btn-mark-read" onclick="markAsRead(1)">Marcar como leída</button>
+                </div>
+
+                <!-- Notificación 2 - No leída -->
+                <div class="notification-item unread" data-id="2">
+                    <div class="notification-icon notification-icon-calendar">
+                        📅
+                    </div>
+                    <div class="notification-content">
+                        <h3 class="notification-title">Recordatorio: Evaluación de desempeño de Juan Pérez</h3>
+                        <p class="notification-text">La fecha límite para completar la evaluación de desempeño es mañana.</p>
+                        <span class="notification-time">Hace 2 horas</span>
+                    </div>
+                    <button class="btn-mark-read" onclick="markAsRead(2)">Marcar como leída</button>
+                </div>
+
+                <!-- Notificación 3 - Leída -->
+                <div class="notification-item read" data-id="3">
+                    <div class="notification-icon notification-icon-approval">
+                        👍
+                    </div>
+                    <div class="notification-content">
+                        <h3 class="notification-title">Aprobación de solicitud de días libres</h3>
+                        <p class="notification-text">Tu solicitud de vacaciones del 15 al 18 de Agosto ha sido aprobada.</p>
+                        <span class="notification-time">Ayer</span>
+                    </div>
+                    <span class="notification-status">Leída</span>
+                </div>
+
+                <!-- Notificación 4 - Leída -->
+                <div class="notification-item read" data-id="4">
+                    <div class="notification-icon notification-icon-celebration">
+                        🎉
+                    </div>
+                    <div class="notification-content">
+                        <h3 class="notification-title">¡Feliz aniversario de trabajo!</h3>
+                        <p class="notification-text">¡Felicidades por tus 3 años en la empresa! Agradecemos tu dedicación y esfuerzo.</p>
+                        <span class="notification-time">Hace 2 días</span>
+                    </div>
+                    <span class="notification-status">Leída</span>
+                </div>
+
+                <!-- Notificación 5 - Leída -->
+                <div class="notification-item read" data-id="5">
+                    <div class="notification-icon notification-icon-info">
+                        ℹ️
+                    </div>
+                    <div class="notification-content">
+                        <h3 class="notification-title">Actualización del sistema</h3>
+                        <p class="notification-text">El sistema estará en mantenimiento el próximo sábado de 2:00 AM a 6:00 AM.</p>
+                        <span class="notification-time">Hace 3 días</span>
+                    </div>
+                    <span class="notification-status">Leída</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    
+</body>
+</html>
