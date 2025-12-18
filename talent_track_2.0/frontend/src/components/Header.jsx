@@ -26,7 +26,7 @@ const Header = () => {
               <a href="#recursos">Recursos</a>
               <a href="#soporte">Soporte</a>
             </div>
-            <a href="/login" className="btn-login">Inicio de Sesión</a>
+            <a href="../login" className="btn-login">Iniciar Sesion</a>
           </nav>
 
           <button className="menu-toggle" onClick={toggleMenu}>
