@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar'; // <--- IMPORTANTE: Importamos el Sidebar
-import logoEmpresaDefault from '../../../../backend/media/logo_empresa/default_logo_empresa.svg'; // Asegúrate de que la ruta es correcta
+//import logoEmpresaDefault from '../../../../../backend/media/logos_Empresas/logo_empresa_deafult.svg'; // Asegúrate de que la ruta es correcta
 
 const EmpresasSuperAdmin = () => {
   return (
