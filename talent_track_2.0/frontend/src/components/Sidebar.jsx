@@ -1,42 +1,67 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-// Asegúrate de ajustar las rutas de tus imágenes
+import { Link, useLocation } from 'react-router-dom';
 import logoSmall from '../assets/img/talentrack_small.svg';
 import logoLarge from '../assets/img/talenTrackLogo_SVG.svg';
+import 'boxicons/css/boxicons.min.css';
 
 const Sidebar = () => {
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  const getActiveClass = (path) => {
+    // Lógica para EMPRESAS (se mantiene activa en sub-rutas)
+    if (path === '/admin/empresas') {
+      if (
+        currentPath === '/admin/empresas' || 
+        currentPath === '/admin/create-company' ||
+        currentPath.includes('/admin/editar-empresa') ||
+        currentPath.includes('/admin/ver-empresa')
+      ) {
+        return 'sidebar-item active';
+      }
+    }
+
+    // Lógica para coincidencia exacta (Dashboard, Inicio, etc.)
+    if (currentPath === path) {
+      return 'sidebar-item active';
+    }
+
+    return 'sidebar-item';
+  };
+
   return (
     <aside className="sidebar" id="sidebar">
-      {/* Logo del sidebar */}
       <div className="sidebar-logo">
         <img src={logoSmall} alt="Logo Pequeño" className="logo-small" />
         <img src={logoLarge} alt="Logo TalentTrack" className="logo-large" />
       </div>
 
       <div className="sidebar-top">
-        {/* Resumen */}
         <div className="sidebar-section-label" style={{ color: '#868988' }}>Resumen</div>
         
-        {/* Usamos Link en lugar de onclick */}
-        <Link to="/admin/dashboard" className="sidebar-item active" data-tooltip="Inicio">
+        {/* --- 1. INICIO (Agregado de vuelta) --- */}
+        {/* Nota: Si "Inicio" y "Dashboard" llevan al mismo sitio, ambos se pondrán rojos a la vez. 
+            Si quieres que Inicio lleve a otra ruta, cambia el "to". */}
+        <Link to="/admin/dashboard" className={getActiveClass('/admin/inicio')} data-tooltip="Inicio">
           <i className='bx bxs-home sidebar-icon-box' style={{ color: '#ec1313' }}></i>
           <span>Inicio</span>
         </Link>
         
-        <Link to="/admin/dashboard" className="sidebar-item" data-tooltip="Dashboard">
+        {/* --- 2. DASHBOARD --- */}
+        <Link to="/admin/dashboard" className={getActiveClass('/admin/dashboard')} data-tooltip="Dashboard">
           <i className='bx bxs-dashboard sidebar-icon-box' style={{ color: '#ec1313' }}></i>
           <span>Dashboard</span>
         </Link>
 
-        {/* Gestión Empresas */}
+        {/* --- GESTIÓN EMPRESAS --- */}
         <div className="sidebar-section-label" style={{ color: '#868988' }}>Gestión Empresas</div>
         
-        <Link to="/admin/empresas" className="sidebar-item" data-tooltip="Empresas">
+        <Link to="/admin/empresas" className={getActiveClass('/admin/empresas')} data-tooltip="Empresas">
           <i className='bx bx-buildings sidebar-icon-box' style={{ color: '#ec1313' }}></i>
           <span>Empresas</span>
         </Link>
 
-        {/* Nota: Dejaré los demás items como divs por ahora, pero deberías cambiarlos a <Link> cuando crees esas páginas */}
+        {/* --- RESTO DE ITEMS (Placeholders) --- */}
         <div className="sidebar-item" data-tooltip="Unidades Organizacionales">
           <i className='bx bx-sitemap sidebar-icon-box' style={{ color: '#ec1313' }}></i>
           <span>Unidades Organizacionales</span>
@@ -58,7 +83,7 @@ const Sidebar = () => {
           <span>Tipos de Ausencias</span>
         </div>
 
-        {/* Rendimiento y Datos */}
+        {/* --- RENDIMIENTO --- */}
         <div className="sidebar-section-label" style={{ color: '#868988' }}>Rendimiento y Datos</div>
         <div className="sidebar-item" data-tooltip="KPIs">
           <i className='bx bx-trending-up sidebar-icon-box' style={{ color: '#ec1313' }}></i>
@@ -77,7 +102,7 @@ const Sidebar = () => {
           <span>Reportes Programados</span>
         </div>
 
-        {/* Administración */}
+        {/* --- ADMINISTRACIÓN --- */}
         <div className="sidebar-section-label" style={{ color: '#868988' }}>Administración</div>
         <div className="sidebar-item" data-tooltip="Usuarios">
           <i className='bx bx-group sidebar-icon-box' style={{ color: '#ec1313' }}></i>
@@ -110,7 +135,7 @@ const Sidebar = () => {
           <i className='bx bxs-user sidebar-icon-box' style={{ color: '#495057' }}></i>
           <span>Perfil</span>
         </div>
-        {/* El logout suele llevar al login */}
+        
         <Link to="/login" className="sidebar-item logout" data-tooltip="Cerrar Sesión">
           <i className='bx bxs-door-open sidebar-icon-box' style={{ color: '#ec1313' }}></i>
           <span>Cerrar Sesión</span>

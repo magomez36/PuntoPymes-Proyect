@@ -1,43 +1,84 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Importamos useNavigate
+import React, { useState, useEffect } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
 
-const CrearEmpresaSuperAdmin = () => {
-  const navigate = useNavigate(); // Hook para redireccionar
-  
-  // Estados del formulario
+const EditarEmpresaSuperAdmin = () => {
+  const { id } = useParams(); 
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
+  // ESTADO DEL FORMULARIO
   const [formData, setFormData] = useState({
     razonSocial: '',
     nombreEmpresa: '',
     ruc: '',
-    paisId: '',      // Guardaremos el ID (ej: 8)
-    monedaId: '',    // Guardaremos el ID (ej: 8)
-    monedaNombre: '' // Solo para mostrar en el input (readOnly)
+    paisId: '',       // Guardamos el ID (ej: 8) para el backend
+    monedaId: '',     // Guardamos el ID (ej: 8) para el backend
+    monedaNombre: '', // Texto para mostrar en el input (readOnly)
+    estado: 1         // 1: Activo, 2: Inactivo (según tu lógica)
   });
 
-  // Mapa de Configuración: "Nombre País" -> { ID País, ID Moneda, Nombre Moneda }
-  // Basado en tu JSON anterior: Ec(8), Bo(2), Cl(3), Co(4), Mx(13)
+  // --- 1. MAPA DE CONFIGURACIÓN (Vital para traducir IDs <-> Nombres) ---
   const configuracionPaises = {
     "Ecuador":        { paisId: 8,  monedaId: 8,  monedaNombre: "Dólar estadounidense (USD)" },
     "Bolivia":        { paisId: 2,  monedaId: 2,  monedaNombre: "Boliviano (BOB)" },
     "Chile":          { paisId: 3,  monedaId: 3,  monedaNombre: "Peso chileno (CLP)" },
     "Colombia":       { paisId: 4,  monedaId: 4,  monedaNombre: "Peso colombiano (COP)" },
     "Mexico":         { paisId: 13, monedaId: 13, monedaNombre: "Peso mexicano (MXN)" },
-    // Valores por defecto para otros (ajustar según tu BD)
-    "Estados Unidos": { paisId: 1,  monedaId: 1,  monedaNombre: "Dólar (USD)" }, 
+    "Estados Unidos": { paisId: 1,  monedaId: 1,  monedaNombre: "Dólar (USD)" },
     "Peru":           { paisId: 5,  monedaId: 5,  monedaNombre: "Sol (PEN)" },
     "España":         { paisId: 6,  monedaId: 6,  monedaNombre: "Euro (EUR)" }
   };
 
-  // Maneja cambios en inputs de texto (Razón Social, RUC, Nombre)
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  // Función auxiliar: Dado un ID (ej: 8), encuentra el Nombre ("Ecuador")
+  // Sirve para seleccionar la opción correcta en el <select> al cargar los datos
+  const getPaisNombreById = (id) => {
+    return Object.keys(configuracionPaises).find(
+      key => configuracionPaises[key].paisId === id
+    ) || "";
   };
 
-  // Maneja cambio de País (Actualiza IDs y Texto de Moneda)
+  // --- 2. CARGAR DATOS (GET) ---
+  useEffect(() => {
+    const fetchEmpresa = async () => {
+      try {
+        // Ajusta esta URL a tu endpoint de lectura (GET)
+        const response = await fetch(`http://127.0.0.1:8000/api/listado-empresas/${id}/`);
+        
+        if (!response.ok) throw new Error("Error cargando empresa");
+        
+        const data = await response.json();
+
+        // Rellenamos el formulario con los datos recibidos
+        setFormData({
+          razonSocial: data.razon_social,
+          nombreEmpresa: data.nombre_comercial,
+          ruc: data.ruc_nit,
+          paisId: data.pais,     // El backend devuelve número (8)
+          monedaId: data.moneda, // El backend devuelve número (8)
+          monedaNombre: data.moneda_nombre, 
+          estado: data.estado    // El backend devuelve número (1)
+        });
+        setLoading(false);
+
+      } catch (error) {
+        console.error("Error:", error);
+        alert("No se pudieron cargar los datos.");
+        navigate('/admin/empresas');
+      }
+    };
+
+    if (id) fetchEmpresa();
+  }, [id, navigate]);
+
+  // --- 3. MANEJADORES DE CAMBIOS ---
+  
+  // Para inputs de texto normales
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Para el cambio de País (Actualiza IDs automáticamente)
   const handlePaisChange = (e) => {
     const nombrePais = e.target.value;
     const config = configuracionPaises[nombrePais];
@@ -52,23 +93,24 @@ const CrearEmpresaSuperAdmin = () => {
     }
   };
 
-  // ENVÍO AL BACKEND
+  // --- 4. ENVIAR DATOS (PUT) ---
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 1. Preparamos el JSON tal como lo pide tu ejemplo
+    // CONSTRUCCIÓN DEL JSON EXACTO
     const payload = {
       razon_social: formData.razonSocial,
       nombre_comercial: formData.nombreEmpresa,
       ruc_nit: formData.ruc,
-      pais: formData.paisId,     // Envía número (ej: 8)
-      moneda: formData.monedaId, // Envía número (ej: 8)
-      estado: 1                  // Por defecto creamos como Activo (1)
+      pais: formData.paisId,                // Envía ID numérico (ej: 8)
+      moneda: formData.monedaId,            // Envía ID numérico (ej: 8)
+      estado: parseInt(formData.estado, 10) // Asegura que sea número entero (1 o 2)
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/crear-empresa/', {
-        method: 'POST', // Usamos POST para crear
+      // URL de actualización
+      const response = await fetch(`http://127.0.0.1:8000/api/actualizar-empresa/${id}/`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -76,18 +118,23 @@ const CrearEmpresaSuperAdmin = () => {
       });
 
       if (response.ok) {
-        alert('Empresa creada exitosamente');
-        navigate('/admin/empresas'); // Volver al listado
+        alert('Empresa actualizada correctamente');
+        navigate('/admin/empresas');
       } else {
         const errorData = await response.json();
-        console.error("Error del servidor:", errorData);
-        alert('Error al crear empresa. Revisa la consola.');
+        console.error("Error backend:", errorData);
+        alert('Error al actualizar.');
       }
     } catch (error) {
-      console.error("Error de red:", error);
-      alert('Error de conexión con el servidor.');
+      console.error("Error red:", error);
+      alert('Error de conexión.');
     }
   };
+
+  if (loading) return <div className="layout"><div className="main-content">Cargando...</div></div>;
+
+  // Calculamos el nombre del país actual para el value del select HTML
+  const paisNombreActual = getPaisNombreById(formData.paisId);
 
   return (
     <div className="layout">
@@ -104,27 +151,25 @@ const CrearEmpresaSuperAdmin = () => {
             <span className="breadcrumb-separator">/</span>
             <Link to="/admin/empresas" className="breadcrumb-item">Gestión de Empresas</Link>
             <span className="breadcrumb-separator">/</span>
-            <span className="breadcrumb-item active">Crear Empresa</span>
+            <span className="breadcrumb-item active">Editar Empresa</span>
           </nav>
 
           <div className="form-card">
             <div className="form-header">
-              <h2 className="form-title">Nueva Empresa</h2>
-              <p className="form-description">Complete los datos para registrar la empresa en el sistema.</p>
+              <h2 className="form-title">Editar Empresa</h2>
+              <p className="form-description">Modifique los datos necesarios.</p>
             </div>
 
-            {/* Agregamos onSubmit al formulario */}
             <form className="company-form" onSubmit={handleSubmit}>
               
-              {/* LOGO (Nota: Por ahora no se envía en el JSON, requiere FormData si quieres subir archivos) */}
+              {/* LOGO (Visual por ahora) */}
               <div className="form-section">
-                <label className="form-label">Logo de la Empresa</label>
-                <div className="upload-area">
-                  <i className='bx bx-image-add upload-icon'></i>
-                  <div className="upload-text">
-                    <span className="upload-link">Subir imagen</span>
-                  </div>
-                  <input type="file" hidden />
+                <label className="form-label">Logo Actual</label>
+                <div style={{display:'flex', alignItems:'center', gap:'15px'}}>
+                   <div style={{width:'50px', height:'50px', background:'#f0f0f0', borderRadius:'8px', display:'flex', alignItems:'center', justifyContent:'center'}}>
+                      <i className='bx bx-image' style={{fontSize:'24px', color:'#999'}}></i>
+                   </div>
+                   <span className="upload-link" style={{fontSize:'14px'}}>Cambiar imagen (Próximamente)</span>
                 </div>
               </div>
 
@@ -138,9 +183,9 @@ const CrearEmpresaSuperAdmin = () => {
                       type="text" 
                       name="razonSocial"
                       className="form-input-field" 
-                      placeholder="Ej. Innovate Corp S.A." 
-                      required
+                      value={formData.razonSocial}
                       onChange={handleChange}
+                      required
                     />
                   </div>
                 </div>
@@ -153,9 +198,9 @@ const CrearEmpresaSuperAdmin = () => {
                       type="text" 
                       name="nombreEmpresa"
                       className="form-input-field" 
-                      placeholder="Ej. Innovate Corp" 
-                      required
+                      value={formData.nombreEmpresa}
                       onChange={handleChange}
+                      required
                     />
                   </div>
                 </div>
@@ -171,9 +216,9 @@ const CrearEmpresaSuperAdmin = () => {
                       type="text" 
                       name="ruc"
                       className="form-input-field" 
-                      placeholder="Ej. 1234567890" 
-                      required
+                      value={formData.ruc}
                       onChange={handleChange}
+                      required
                     />
                   </div>
                 </div>
@@ -184,10 +229,9 @@ const CrearEmpresaSuperAdmin = () => {
                     className="form-select-field" 
                     required 
                     onChange={handlePaisChange}
-                    defaultValue=""
+                    value={paisNombreActual} 
                   >
                     <option value="" disabled>Seleccionar País</option>
-                    {/* Generamos las opciones desde nuestro objeto de configuración */}
                     {Object.keys(configuracionPaises).map(paisName => (
                       <option key={paisName} value={paisName}>{paisName}</option>
                     ))}
@@ -195,7 +239,7 @@ const CrearEmpresaSuperAdmin = () => {
                 </div>
               </div>
 
-              {/* MONEDA (Automática) */}
+              {/* MONEDA y ESTADO */}
               <div className="form-row">
                 <div className="form-section">
                   <label className="form-label">Moneda Principal</label>
@@ -204,12 +248,25 @@ const CrearEmpresaSuperAdmin = () => {
                     <input 
                       type="text" 
                       className="form-input-field" 
-                      placeholder="Seleccione un país primero" 
-                      value={formData.monedaNombre} // Muestra el nombre (ej: Dolar)
+                      value={formData.monedaNombre}
                       readOnly 
                       style={{ backgroundColor: '#f9fafb', cursor: 'not-allowed' }} 
                     />
                   </div>
+                </div>
+
+                <div className="form-section">
+                  <label className="form-label">Estado</label>
+                  <select 
+                    name="estado" 
+                    className="form-select-field"
+                    value={formData.estado}
+                    onChange={handleChange}
+                  >
+                    {/* Asumiendo que 1=Activo, 2=Inactivo en tu DB */}
+                    <option value="1">Activo</option>
+                    <option value="2">Inactivo</option>
+                  </select>
                 </div>
               </div>
 
@@ -218,7 +275,7 @@ const CrearEmpresaSuperAdmin = () => {
                   Cancelar
                 </Link>
                 <button type="submit" className="btn-save">
-                  <i className='bx bx-save'></i> Crear Empresa
+                  <i className='bx bx-save'></i> Guardar Cambios
                 </button>
               </div>
             </form>
@@ -229,4 +286,4 @@ const CrearEmpresaSuperAdmin = () => {
   );
 };
 
-export default CrearEmpresaSuperAdmin;
+export default EditarEmpresaSuperAdmin;

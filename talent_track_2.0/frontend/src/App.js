@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // imports de css y layouts...
 import './assets/css/styles.css';
+import 'boxicons/css/boxicons.min.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
@@ -16,6 +17,8 @@ import InicioSuperAdmin from './pages/superAdmin/InicioSuperAdmin';
 import EmpresasSuperAdmin from './pages/superAdmin/EmpresasSuperAdmin';
 import CrearEmpresaSuperAdmin from './pages/superAdmin/CrearEmpresaSuperAdmin';
 import DashboardSuperAdmin from './pages/superAdmin/DashboardSuperAdmin';
+import VerEmpresaSuperAdmin from './pages/superAdmin/VerEmpresaSuperAdmin';
+import EditarEmpresaSuperAdmin from './pages/superAdmin/EditarEmpresaSuperAdmin';
 
 const PublicLayout = ({ children }) => {
   return (
@@ -54,6 +57,10 @@ function App() {
           <Route path="/admin/empresas" element={<EmpresasSuperAdmin />} />
           
           <Route path="/admin/crear-empresa" element={<CrearEmpresaSuperAdmin />} />
+
+          <Route path="/admin/ver-empresa/:id" element={<VerEmpresaSuperAdmin />} />
+
+          <Route path="/admin/editar-empresa/:id" element={<EditarEmpresaSuperAdmin />} />
 
         </Routes>
       </div>
