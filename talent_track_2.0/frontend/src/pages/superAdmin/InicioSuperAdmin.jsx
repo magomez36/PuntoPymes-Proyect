@@ -1,109 +1,62 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import Sidebar from '../../components/Sidebar';
 
 const InicioSuperAdmin = () => {
   return (
-    <div className="content-area">
-      <div className="welcome-section">
-        <h3>Aquí tienes un resumen conciso del estado actual del sistema.</h3>
-      </div>
+    <div className="layout">
+      <Sidebar />
 
-      {/* Stats Cards */}
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-icon">
-            <i className='bx bx-buildings'></i>
+      <main className="main-content">
+        <header className="header">
+          <h2 className="header-title">Bienvenido, Super Admin</h2>
+        </header>
+
+        <div className="content-area">
+          
+          {/* Banner de Bienvenida */}
+          <div className="form-card" style={{ background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)', color: 'white' }}>
+            <div style={{ padding: '20px' }}>
+              <h1 style={{ fontSize: '28px', marginBottom: '10px' }}>Hola de nuevo 👋</h1>
+              <p style={{ opacity: 0.8, maxWidth: '600px', lineHeight: '1.6' }}>
+                Estás en el panel de administración global de <strong>TalentTrack</strong>. 
+                Desde aquí puedes gestionar todas las empresas inquilinas, supervisar el uso de la plataforma y configurar los parámetros globales del sistema.
+              </p>
+              <div style={{ marginTop: '20px' }}>
+                 <Link to="/admin/empresas" className="btn-save" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'white', color: '#0f172a', border: 'none' }}>
+                    <i className='bx bx-rocket'></i> Ir a Empresas
+                 </Link>
+              </div>
+            </div>
           </div>
-          <div className="stat-info">
-            <h3>Empresas Activas</h3>
-            <div className="stat-value">128</div>
-            <div className="stat-change">+5 nuevas este mes</div>
+
+          {/* Accesos Rápidos */}
+          <h3 style={{ marginTop: '30px', marginBottom: '15px', color: '#333' }}>Accesos Rápidos</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '20px' }}>
+            
+            <Link to="/admin/crear-empresa" className="form-card" style={{ padding: '20px', textAlign: 'center', textDecoration: 'none', color: 'inherit', transition: 'transform 0.2s' }}>
+              <i className='bx bx-plus-circle' style={{ fontSize: '40px', color: '#dc3545', marginBottom: '10px' }}></i>
+              <h4 style={{ margin: 0 }}>Nueva Empresa</h4>
+            </Link>
+
+            <Link to="/admin/usuarios" className="form-card" style={{ padding: '20px', textAlign: 'center', textDecoration: 'none', color: 'inherit' }}>
+              <i className='bx bx-user-plus' style={{ fontSize: '40px', color: '#0d6efd', marginBottom: '10px' }}></i>
+              <h4 style={{ margin: 0 }}>Crear Usuario</h4>
+            </Link>
+
+            <div className="form-card" style={{ padding: '20px', textAlign: 'center', cursor: 'pointer' }}>
+              <i className='bx bx-cog' style={{ fontSize: '40px', color: '#6c757d', marginBottom: '10px' }}></i>
+              <h4 style={{ margin: 0 }}>Configuración</h4>
+            </div>
+
+            <div className="form-card" style={{ padding: '20px', textAlign: 'center', cursor: 'pointer' }}>
+              <i className='bx bx-support' style={{ fontSize: '40px', color: '#198754', marginBottom: '10px' }}></i>
+              <h4 style={{ margin: 0 }}>Soporte</h4>
+            </div>
+
           </div>
         </div>
-
-        <div className="stat-card">
-          <div className="stat-icon">
-            <i className='bx bx-group'></i>
-          </div>
-          <div className="stat-info">
-            <h3>Usuarios Totales</h3>
-            <div className="stat-value">15,721</div>
-            <div className="stat-change">+2.1% último mes</div>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon">
-            <i className='bx bx-cloud-check'></i>
-          </div>
-          <div className="stat-info">
-            <h3>Estado del Sistema</h3>
-            <div className="stat-value" style={{ color: '#10b981' }}>Óptimo</div>
-            <div className="stat-change" style={{ color: '#6b7280' }}>Todos los servicios operativos</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Modules Section */}
-      <div className="modules-section">
-        <h2>Resumen de Módulos</h2>
-        <div className="modules-grid">
-          <div className="module-card">
-            <div>
-              <div className="module-icon">
-                <i className='bx bx-cog'></i>
-              </div>
-              <h4>Configuración Global</h4>
-              <p>Ajustes generales de la plataforma y parámetros del sistema.</p>
-            </div>
-            <div className="module-action">
-              <span>Gestionar</span>
-              <i className='bx bx-right-arrow-alt'></i>
-            </div>
-          </div>
-
-          <div className="module-card">
-            <div>
-              <div className="module-icon">
-                <i className='bx bx-briefcase'></i>
-              </div>
-              <h4>Gestión Multiempresa</h4>
-              <p>Administra todas las empresas clientes desde un solo lugar.</p>
-            </div>
-            <div className="module-action">
-              <span>Ver Empresas</span>
-              <i className='bx bx-right-arrow-alt'></i>
-            </div>
-          </div>
-
-          <div className="module-card">
-            <div>
-              <div className="module-icon">
-                <i className='bx bx-user-circle'></i>
-              </div>
-              <h4>Control de Acceso</h4>
-              <p>Define roles y permisos para los administradores del sistema.</p>
-            </div>
-            <div className="module-action">
-              <span>Configurar Roles</span>
-              <i className='bx bx-right-arrow-alt'></i>
-            </div>
-          </div>
-
-          <div className="module-card">
-            <div>
-              <div className="module-icon">
-                <i className='bx bx-bar-chart-alt-2'></i>
-              </div>
-              <h4>Monitor de Sistema</h4>
-              <p>Visualiza el rendimiento, logs y estado de los servicios.</p>
-            </div>
-            <div className="module-action">
-              <span>Ver Estado</span>
-              <i className='bx bx-right-arrow-alt'></i>
-            </div>
-          </div>
-        </div>
-      </div>
+      </main>
     </div>
   );
 };

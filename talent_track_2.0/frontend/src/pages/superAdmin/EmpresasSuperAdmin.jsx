@@ -29,36 +29,31 @@ const EmpresasSuperAdmin = () => {
     }
   };
 
-  // 2. FUNCIÓN ACTUALIZADA: Toggle Estado con Backend
+  // 2. FUNCIÓN ACTUALIZADA: Toggle Estado con la URL CORRECTA
   const toggleEstado = async (id, estadoNombreActual) => {
     const accion = estadoNombreActual === 'activo' ? 'desactivar' : 'activar';
     
     if (!window.confirm(`¿Estás seguro de que deseas ${accion} esta empresa?`)) return;
 
     try {
-      // Llamada PATCH al backend
-      // Asumimos que la ruta incluye el ID: /api/toggle-estado-empresa/5/
-      const response = await fetch(`http://127.0.0.1:8000/api/toggle-estado-empresa/${id}/`, {
+      // --- CAMBIO APLICADO AQUÍ ---
+      // Usamos la ruta correcta: /api/empresas/{id}/toggle-estado/
+      const response = await fetch(`http://127.0.0.1:8000/api/empresas/${id}/toggle-estado/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          // Si usas tokens de autenticación, irían aquí: 'Authorization': `Bearer ${token}`
+          // 'Authorization': `Bearer ${token}` // Si usaras token
         },
-        // En un toggle, a veces no hace falta body, pero si tu backend lo pide vacío, lo mandamos vacío.
-        // Opcional: Si el backend espera explícitamente el nuevo estado, lo enviaríamos aquí.
-        // body: JSON.stringify({ estado: ... }) 
+        body: JSON.stringify({}) // Body vacío
       });
 
       if (response.ok) {
-        // Opción A: Recargar toda la lista (Más seguro, pero una petición extra)
-        // fetchEmpresas(); 
-
-        // Opción B (Recomendada): Actualizar localmente para que sea instantáneo
+        // Opción B: Actualizar localmente para que sea instantáneo
         setEmpresas(prevEmpresas => prevEmpresas.map(emp => {
           if (emp.id === id) {
-            // Invertimos la lógica localmente para reflejar el cambio visual
+            // Invertimos la lógica localmente
             const nuevoEstadoNombre = emp.estado_nombre === 'activo' ? 'inactivo' : 'activo';
-            const nuevoEstadoId = emp.estado === 1 ? 2 : 1; // Asumiendo 1=Activo, 2=Inactivo
+            const nuevoEstadoId = emp.estado === 1 ? 2 : 1; 
             
             return { 
               ...emp, 
@@ -68,9 +63,6 @@ const EmpresasSuperAdmin = () => {
           }
           return emp;
         }));
-
-        // Feedback visual sutil (opcional)
-        // alert(`Empresa ${accion === 'activar' ? 'activada' : 'desactivada'} correctamente.`);
 
       } else {
         const errorText = await response.text();
@@ -105,7 +97,7 @@ const EmpresasSuperAdmin = () => {
               <h1 className="page-main-title">Listado de Empresas</h1>
               <p className="page-subtitle">Visualiza, crea, modifica y administra el estado de las empresas.</p>
             </div>
-            <Link to="/admin/create-company" className="btn-create-company" style={{ textDecoration: 'none' }}>
+            <Link to="/admin/crear-empresa" className="btn-create-company" style={{ textDecoration: 'none' }}>
               <i className='bx bx-plus'></i> Crear Empresa
             </Link>
           </div>
@@ -152,11 +144,7 @@ const EmpresasSuperAdmin = () => {
                     <tr key={empresa.id}>
                       <td>
                         <img 
-                          src={ logoEmpresa
-                            //empresa.logo_url && empresa.logo_url.includes('http') 
-                            //  ? empresa.logo_url 
-                            //  : `${BACKEND_BASE}${empresa.logo_url ? empresa.logo_url.replace('../../', '/') : ''}`
-                          }
+                          src={logoEmpresa} // Usamos la imagen por defecto como tenías configurado
                           alt="Logo"
                           style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #eee' }}
                           onError={(e) => { e.target.style.display = 'none'; }}
@@ -182,7 +170,7 @@ const EmpresasSuperAdmin = () => {
                              <i className='bx bx-edit-alt'></i>
                           </Link>
 
-                          {/* BOTÓN CAMBIAR ESTADO CONECTADO AL BACKEND */}
+                          {/* BOTÓN CAMBIAR ESTADO */}
                           <button 
                             className="btn-action" 
                             title={empresa.estado_nombre === 'activo' ? "Desactivar Empresa" : "Activar Empresa"}
