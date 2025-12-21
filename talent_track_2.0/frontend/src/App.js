@@ -1,13 +1,21 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// imports de css y componentes...
+// imports de css y layouts...
 import './assets/css/styles.css';
 import Header from './components/Header';
-import Home from './pages/public/Home';
 import Footer from './components/Footer';
+
+// Paginas Publicas
+import Home from './pages/public/Home';
 import Login from './pages/auth/Login';
 import ResetPassword from './pages/auth/ResetPassword';
+
+// Paginas de Super Admin
+import InicioSuperAdmin from './pages/superAdmin/InicioSuperAdmin';
+import EmpresasSuperAdmin from './pages/superAdmin/EmpresasSuperAdmin';
+import CrearEmpresaSuperAdmin from './pages/superAdmin/CrearEmpresaSuperAdmin';
+import DashboardSuperAdmin from './pages/superAdmin/DashboardSuperAdmin';
 
 const PublicLayout = ({ children }) => {
   return (
@@ -28,22 +36,24 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          {/* 1. HOME: SÍ lleva PublicLayout (queremos menú y footer) */}
-          <Route 
-            path="/" 
-            element={
-              <PublicLayout>
-                <Home />
-              </PublicLayout>
-            } 
-          />
-
-          {/* 2. LOGIN: NO lleva PublicLayout (queremos pantalla limpia) */}
-          {/* Fíjate que aquí quité las etiquetas <PublicLayout> */}
+          
+          {/* ----- RUTAS PÚBLICAS ----- */}
+          <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+          
+          {/* Login y Reset no llevan layout */}
           <Route path="/login" element={<Login />} />
-
-          {/* 3. RESET PASSWORD: NO lleva PublicLayout */}
           <Route path="/reset-password" element={<ResetPassword />} />
+
+          {/* ----- RUTAS DE ADMINISTRACIÓN ----- */}
+          {/* Aquí cargamos los componentes directamente, sin envolverlos en PrivateLayout */}
+          
+          <Route path="/admin/inicio" element={<InicioSuperAdmin />} />
+          
+          <Route path="/admin/dashboard" element={<DashboardSuperAdmin />} />
+          
+          <Route path="/admin/empresas" element={<EmpresasSuperAdmin />} />
+          
+          <Route path="/admin/crear-empresa" element={<CrearEmpresaSuperAdmin />} />
 
         </Routes>
       </div>

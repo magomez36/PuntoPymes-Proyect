@@ -35,7 +35,7 @@ const Login = () => {
     <div className="login-page">
       <div className="login-container">
         <div className="logo-container">
-          <img src={logo} alt="Logo" className="logo-image" style={{ width: '100px', marginBottom: '20px' }} />
+          <img src={logo} alt="Logo" className="logo-image" style={{ width: '200px', marginBottom: '10px' }} />
           <h1 className="login-title">Bienvenido de nuevo</h1>
           <p className="login-subtitle">Inicia sesión para gestionar tu equipo.</p>
         </div>
@@ -100,11 +100,11 @@ const Login = () => {
           <button type="submit" className="login-button">Iniciar Sesión</button>
         </form>
 
-        <Link to="/" className="back-link" style={{ display: 'block', marginTop: '20px', color: '#868988', textDecoration: 'none' }}>
+        <Link to="/" className="back-link" style={{ display: 'block', marginTop: '0px', color: '#1506e4ff', textDecoration: 'none' }}>
           ← Volver al inicio
         </Link>
 
-        <p className="footer-text" style={{ marginTop: '30px' }}>© 2025 UTPL. Todos los derechos reservados.</p>
+        <p className="footer-text" style={{ marginTop: '10px' }}>© 2025 UTPL. Todos los derechos reservados.</p>
       </div>
     </div>
   );

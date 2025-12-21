@@ -62,12 +62,12 @@ body:not(.has-sidebar) .layout {
 }
 
 /* ============================================
-   PÁGINA PRINCIPAL - INDEX
+   PÁGINA PRINCIPAL - INDEX (VERSIÓN CORREGIDA)
    ============================================ */
 
 header {
     background-color: var(--color-white);
-    padding: 15px 0;
+    padding: 12px 0;  /* ✅ CORREGIDO: 15px → 12px */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     position: sticky;
     top: 0;
@@ -75,29 +75,30 @@ header {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 0 40px;
+    padding: 0 24px;  /* ✅ CORREGIDO: 40px → 24px */
 }
 
 .header-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 30px;
+    gap: 20px;  /* ✅ CORREGIDO: 30px → 20px */
 }
 
 .logo-section {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 12px;  /* ✅ CORREGIDO: 24px → 12px (si tienes texto del logo) */
     flex-shrink: 0;
 }
 
 .logo-section img,
 .logo-main {
-    width: 100px;
-    height: 100px;
+    width: auto;      /* ✅ CORREGIDO: 200px → auto */
+    height: 45px;     /* ✅ CORREGIDO: 100px → 45px (CAMBIO PRINCIPAL) */
+    max-width: 180px; /* ✅ NUEVO: límite de ancho */
     object-fit: contain;
     transition: transform 0.3s ease;
 }
@@ -116,14 +117,14 @@ header {
 .nav-menu {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 28px;  /* ✅ CORREGIDO: 40px → 28px */
     flex: 1;
     justify-content: flex-end;
 }
 
 .nav-links {
     display: flex;
-    gap: 30px;
+    gap: 24px;  /* ✅ CORREGIDO: 30px → 24px */
     align-items: center;
 }
 
@@ -580,7 +581,7 @@ header {
 
 .header {
     background-color: var(--color-white);
-    padding: 15px 40px;
+    padding: 15px 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
