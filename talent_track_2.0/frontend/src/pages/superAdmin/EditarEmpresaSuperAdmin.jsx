@@ -15,23 +15,33 @@ const EditarEmpresaSuperAdmin = () => {
     paisId: '',       // Guardamos el ID (ej: 8) para el backend
     monedaId: '',     // Guardamos el ID (ej: 8) para el backend
     monedaNombre: '', // Texto para mostrar en el input (readOnly)
-    estado: 1         // 1: Activo, 2: Inactivo (según tu lógica)
+    estado: 1         // 1: Activo, 2: Inactivo
   });
 
-  // --- 1. MAPA DE CONFIGURACIÓN (Vital para traducir IDs <-> Nombres) ---
+  // --- 1. MAPA DE CONFIGURACIÓN COMPLETO (19 Países) ---
   const configuracionPaises = {
-    "Ecuador":        { paisId: 8,  monedaId: 8,  monedaNombre: "Dólar estadounidense (USD)" },
-    "Bolivia":        { paisId: 2,  monedaId: 2,  monedaNombre: "Boliviano (BOB)" },
-    "Chile":          { paisId: 3,  monedaId: 3,  monedaNombre: "Peso chileno (CLP)" },
-    "Colombia":       { paisId: 4,  monedaId: 4,  monedaNombre: "Peso colombiano (COP)" },
-    "Mexico":         { paisId: 13, monedaId: 13, monedaNombre: "Peso mexicano (MXN)" },
-    "Estados Unidos": { paisId: 1,  monedaId: 1,  monedaNombre: "Dólar (USD)" },
-    "Peru":           { paisId: 5,  monedaId: 5,  monedaNombre: "Sol (PEN)" },
-    "España":         { paisId: 6,  monedaId: 6,  monedaNombre: "Euro (EUR)" }
+    "Argentina":            { paisId: 1,  monedaId: 1,  monedaNombre: "Peso argentino (ARS)" },
+    "Bolivia":              { paisId: 2,  monedaId: 2,  monedaNombre: "Boliviano (BOB)" },
+    "Chile":                { paisId: 3,  monedaId: 3,  monedaNombre: "Peso chileno (CLP)" },
+    "Colombia":             { paisId: 4,  monedaId: 4,  monedaNombre: "Peso colombiano (COP)" },
+    "Costa Rica":           { paisId: 5,  monedaId: 5,  monedaNombre: "Colón costarricense (CRC)" },
+    "Cuba":                 { paisId: 6,  monedaId: 6,  monedaNombre: "Peso cubano (CUP)" },
+    "República Dominicana": { paisId: 7,  monedaId: 7,  monedaNombre: "Peso dominicano (DOP)" },
+    "Ecuador":              { paisId: 8,  monedaId: 8,  monedaNombre: "Dólar estadounidense (USD)" },
+    "El Salvador":          { paisId: 9,  monedaId: 9,  monedaNombre: "Dólar estadounidense (USD)" },
+    "España":               { paisId: 10, monedaId: 10, monedaNombre: "Euro (EUR)" },
+    "Guatemala":            { paisId: 11, monedaId: 11, monedaNombre: "Quetzal (GTQ)" },
+    "Honduras":             { paisId: 12, monedaId: 12, monedaNombre: "Lempira (HNL)" },
+    "México":               { paisId: 13, monedaId: 13, monedaNombre: "Peso mexicano (MXN)" },
+    "Nicaragua":            { paisId: 14, monedaId: 14, monedaNombre: "Córdoba nicaragüense (NIO)" },
+    "Panamá":               { paisId: 15, monedaId: 15, monedaNombre: "Balboa (PAB) y Dólar (USD)" },
+    "Paraguay":             { paisId: 16, monedaId: 16, monedaNombre: "Guaraní paraguayo (PYG)" },
+    "Perú":                 { paisId: 17, monedaId: 17, monedaNombre: "Sol peruano (PEN)" },
+    "Uruguay":              { paisId: 18, monedaId: 18, monedaNombre: "Peso uruguayo (UYU)" },
+    "Venezuela":            { paisId: 19, monedaId: 19, monedaNombre: "Bolívar venezolano (VES)" }
   };
 
-  // Función auxiliar: Dado un ID (ej: 8), encuentra el Nombre ("Ecuador")
-  // Sirve para seleccionar la opción correcta en el <select> al cargar los datos
+  // Función auxiliar: Dado un ID numérico, encuentra el Nombre del país
   const getPaisNombreById = (id) => {
     return Object.keys(configuracionPaises).find(
       key => configuracionPaises[key].paisId === id
@@ -42,22 +52,21 @@ const EditarEmpresaSuperAdmin = () => {
   useEffect(() => {
     const fetchEmpresa = async () => {
       try {
-        // Ajusta esta URL a tu endpoint de lectura (GET)
         const response = await fetch(`http://127.0.0.1:8000/api/listado-empresas/${id}/`);
         
         if (!response.ok) throw new Error("Error cargando empresa");
         
         const data = await response.json();
 
-        // Rellenamos el formulario con los datos recibidos
+        // Rellenamos el formulario
         setFormData({
           razonSocial: data.razon_social,
           nombreEmpresa: data.nombre_comercial,
           ruc: data.ruc_nit,
-          paisId: data.pais,     // El backend devuelve número (8)
-          monedaId: data.moneda, // El backend devuelve número (8)
+          paisId: data.pais,     
+          monedaId: data.moneda, 
           monedaNombre: data.moneda_nombre, 
-          estado: data.estado    // El backend devuelve número (1)
+          estado: data.estado
         });
         setLoading(false);
 
@@ -73,12 +82,11 @@ const EditarEmpresaSuperAdmin = () => {
 
   // --- 3. MANEJADORES DE CAMBIOS ---
   
-  // Para inputs de texto normales
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Para el cambio de País (Actualiza IDs automáticamente)
+  // Actualiza Moneda e IDs al cambiar País
   const handlePaisChange = (e) => {
     const nombrePais = e.target.value;
     const config = configuracionPaises[nombrePais];
@@ -97,18 +105,16 @@ const EditarEmpresaSuperAdmin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // CONSTRUCCIÓN DEL JSON EXACTO
     const payload = {
       razon_social: formData.razonSocial,
       nombre_comercial: formData.nombreEmpresa,
       ruc_nit: formData.ruc,
-      pais: formData.paisId,                // Envía ID numérico (ej: 8)
-      moneda: formData.monedaId,            // Envía ID numérico (ej: 8)
-      estado: parseInt(formData.estado, 10) // Asegura que sea número entero (1 o 2)
+      pais: formData.paisId,             // Envía ID numérico (ej: 8)
+      moneda: formData.monedaId,         // Envía ID numérico (ej: 8)
+      estado: parseInt(formData.estado, 10) 
     };
 
     try {
-      // URL de actualización
       const response = await fetch(`http://127.0.0.1:8000/api/actualizar-empresa/${id}/`, {
         method: 'PUT',
         headers: {
@@ -133,7 +139,7 @@ const EditarEmpresaSuperAdmin = () => {
 
   if (loading) return <div className="layout"><div className="main-content">Cargando...</div></div>;
 
-  // Calculamos el nombre del país actual para el value del select HTML
+  // Calculamos el nombre del país actual para seleccionarlo en el <select>
   const paisNombreActual = getPaisNombreById(formData.paisId);
 
   return (
@@ -147,8 +153,6 @@ const EditarEmpresaSuperAdmin = () => {
 
         <div className="content-area">
           <nav className="breadcrumb">
-            <Link to="/admin/dashboard" className="breadcrumb-item">Dashboard</Link>
-            <span className="breadcrumb-separator">/</span>
             <Link to="/admin/empresas" className="breadcrumb-item">Gestión de Empresas</Link>
             <span className="breadcrumb-separator">/</span>
             <span className="breadcrumb-item active">Editar Empresa</span>
@@ -232,6 +236,7 @@ const EditarEmpresaSuperAdmin = () => {
                     value={paisNombreActual} 
                   >
                     <option value="" disabled>Seleccionar País</option>
+                    {/* Generación dinámica de opciones ordenadas por ID o alfabéticamente */}
                     {Object.keys(configuracionPaises).map(paisName => (
                       <option key={paisName} value={paisName}>{paisName}</option>
                     ))}
@@ -263,7 +268,6 @@ const EditarEmpresaSuperAdmin = () => {
                     value={formData.estado}
                     onChange={handleChange}
                   >
-                    {/* Asumiendo que 1=Activo, 2=Inactivo en tu DB */}
                     <option value="1">Activo</option>
                     <option value="2">Inactivo</option>
                   </select>
