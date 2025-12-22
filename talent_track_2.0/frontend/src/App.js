@@ -52,11 +52,11 @@ function App() {
           <Route path="/admin/inicio" element={<InicioSuperAdmin />} />
           <Route path="/admin/dashboard" element={<DashboardSuperAdmin />} />
           <Route path="/admin/empresas" element={<EmpresasSuperAdmin />} />
-          <Route path="/admin/crear-empresa" element={<CrearEmpresaSuperAdmin />} />
 
           {/* Rutas con parámetros (ID)*/}
-          <Route path="/admin/ver-empresa/:id" element={<VerEmpresaSuperAdmin />} />
-          <Route path="/admin/editar-empresa/:id" element={<EditarEmpresaSuperAdmin />} />
+          <Route path="/admin/empresas/crear-empresa" element={<CrearEmpresaSuperAdmin />} />
+          <Route path="/admin/empresas/ver-empresa/:id" element={<VerEmpresaSuperAdmin />} />
+          <Route path="/admin/empresas/editar-empresa/:id" element={<EditarEmpresaSuperAdmin />} />
 
           {/* -------RUTA 404 (Cualquier otra cosa)-------- */}
           <Route path="*" element={<div style={{textAlign:'center', marginTop:'50px'}}><h1>404</h1><p>Página no encontrada</p></div>} />

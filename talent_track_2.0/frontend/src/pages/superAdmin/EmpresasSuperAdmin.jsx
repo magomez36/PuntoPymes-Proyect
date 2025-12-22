@@ -162,11 +162,11 @@ const EmpresasSuperAdmin = () => {
                       </td>
                       <td>
                         <div className="action-buttons">
-                          <Link to={`/admin/ver-empresa/${empresa.id}`} className="btn-action" title="Ver">
+                          <Link to={`/admin/empresas/ver-empresa/${empresa.id}`} className="btn-action" title="Ver">
                              <i className='bx bx-show'></i>
                           </Link>
-                          
-                          <Link to={`/admin/editar-empresa/${empresa.id}`} className="btn-action" title="Editar">
+
+                          <Link to={`/admin/empresas/editar-empresa/${empresa.id}`} className="btn-action" title="Editar">
                              <i className='bx bx-edit-alt'></i>
                           </Link>
 
