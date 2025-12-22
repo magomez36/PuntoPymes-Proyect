@@ -4,7 +4,6 @@ from django.db import models
 from django.db import models
 from apps.core.models import Empresa
 from apps.empleados.models import Empleado
-from apps.usuarios.models import Usuario
 
 class TipoAusencia(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -38,7 +37,7 @@ class SolicitudAusencia(models.Model):
 class AprobacionAusencia(models.Model):
     id = models.BigAutoField(primary_key=True)
     solicitud = models.ForeignKey(SolicitudAusencia, on_delete=models.PROTECT)
-    aprobador = models.ForeignKey(Usuario, on_delete=models.PROTECT)
+    aprobador = models.ForeignKey('usuarios.Usuario', on_delete=models.PROTECT)
     accion = models.SmallIntegerField()
     comentario = models.TextField()
     fecha = models.DateTimeField()
