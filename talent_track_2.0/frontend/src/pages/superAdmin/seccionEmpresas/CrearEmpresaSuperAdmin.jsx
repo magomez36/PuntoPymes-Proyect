@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // Importamos useNavigate
-import Sidebar from '../../components/Sidebar';
+import Sidebar from '../../../components/Sidebar';
 
 const CrearEmpresaSuperAdmin = () => {
   const navigate = useNavigate(); // Hook para redireccionar

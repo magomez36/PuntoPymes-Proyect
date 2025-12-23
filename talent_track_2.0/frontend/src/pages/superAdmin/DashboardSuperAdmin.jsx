@@ -1,89 +1,350 @@
 import React from 'react';
-import Sidebar from '../../components/Sidebar';
+import Sidebar from '../../components/Sidebar'; // Asegúrate que la ruta sea correcta
 import 'boxicons/css/boxicons.min.css';
+import '../../assets/css/styles.css'; // Importamos tus estilos globales
 
 const DashboardSuperAdmin = () => {
   return (
     <div className="layout">
-      {/* 1. Sidebar Fijo */}
+      {/* 1. Sidebar Component (Reemplaza al aside de HTML) */}
       <Sidebar />
 
-      {/* 2. Contenido Principal */}
+      {/* 2. Main Content */}
       <main className="main-content">
-        
-        {/* Header Común */}
+        {/* Header */}
         <header className="header">
-          <h2 className="header-title">Dashboard General</h2>
+          <h2 className="header-title">Dashboard de Métricas</h2>
           <div className="header-actions">
             <div className="search-box">
               <i className='bx bx-search'></i>
               <input type="text" placeholder="Buscar..." />
             </div>
-            {/* Avatar o Notificaciones podrían ir aquí */}
           </div>
         </header>
 
-        <div className="content-area">
-          {/* Tarjetas de Resumen (Stats) */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '30px' }}>
-            
-            {/* Card 1: Empresas */}
-            <div className="form-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '20px' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#e0f2fe', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0284c7', fontSize: '28px' }}>
+        {/* Content Area */}
+        <div className="dashboard-content" style={{ marginTop: '30px' }}>
+          
+          {/* Métricas Principales */}
+          <div className="metrics-grid">
+            <div className="metric-card">
+              <div className="metric-icon users">
+                <i className='bx bx-group'></i>
+              </div>
+              <div className="metric-info">
+                <h3>Usuarios Totales</h3>
+                <div className="metric-value">15,721</div>
+                <div className="metric-change positive">
+                  <i className='bx bx-up-arrow-alt'></i>
+                  +2.1% este mes
+                </div>
+              </div>
+            </div>
+
+            <div className="metric-card">
+              <div className="metric-icon companies">
                 <i className='bx bx-buildings'></i>
               </div>
-              <div>
-                <h3 style={{ margin: 0, fontSize: '24px', color: '#333' }}>12</h3>
-                <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>Empresas Activas</p>
+              <div className="metric-info">
+                <h3>Empresas Activas</h3>
+                <div className="metric-value">128</div>
+                <div className="metric-change positive">
+                  <i className='bx bx-up-arrow-alt'></i>
+                  +5% este mes
+                </div>
               </div>
             </div>
 
-            {/* Card 2: Usuarios */}
-            <div className="form-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '20px' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#16a34a', fontSize: '28px' }}>
-                <i className='bx bx-user-voice'></i>
+            <div className="metric-card">
+              <div className="metric-icon health">
+                <i className='bx bx-bar-chart-alt'></i>
               </div>
-              <div>
-                <h3 style={{ margin: 0, fontSize: '24px', color: '#333' }}>1,240</h3>
-                <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>Usuarios Totales</p>
-              </div>
-            </div>
-
-            {/* Card 3: Ingresos (Ejemplo) */}
-            <div className="form-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '20px' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#ffedd5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ea580c', fontSize: '28px' }}>
-                <i className='bx bx-dollar-circle'></i>
-              </div>
-              <div>
-                <h3 style={{ margin: 0, fontSize: '24px', color: '#333' }}>$45k</h3>
-                <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>Ingresos Mensuales</p>
+              <div className="metric-info">
+                <h3>Salud del Sistema</h3>
+                <div className="metric-value">99.9%</div>
+                <div className="metric-status">
+                  <i className='bx bx-check-circle'></i>
+                  Estable
+                </div>
               </div>
             </div>
 
-            {/* Card 4: Alertas */}
-            <div className="form-card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '20px' }}>
-              <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#fee2e2', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#dc2626', fontSize: '28px' }}>
-                <i className='bx bx-error-circle'></i>
+            <div className="metric-card">
+              <div className="metric-icon registrations">
+                <i className='bx bx-trending-up'></i>
               </div>
-              <div>
-                <h3 style={{ margin: 0, fontSize: '24px', color: '#333' }}>3</h3>
-                <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>Alertas Críticas</p>
+              <div className="metric-info">
+                <h3>Nuevos Registros (Hoy)</h3>
+                <div className="metric-value">48</div>
+                <div className="metric-change negative">
+                  <i className='bx bx-down-arrow-alt'></i>
+                  -10% vs ayer
+                </div>
               </div>
             </div>
-
           </div>
 
-          {/* Gráfico o Tabla Reciente (Placeholder) */}
-          <div className="form-card">
-            <h3 className="form-title">Actividad Reciente</h3>
-            <p className="form-description">Últimos movimientos registrados en la plataforma.</p>
+          {/* Dashboard Grid */}
+          <div className="dashboard-grid">
             
-            <div style={{ marginTop: '20px', padding: '20px', background: '#f8f9fa', borderRadius: '8px', textAlign: 'center', color: '#888' }}>
-              <i className='bx bx-bar-chart-alt-2' style={{ fontSize: '40px', marginBottom: '10px' }}></i>
-              <p>Aquí podrías colocar gráficas de rendimiento o tablas de auditoría.</p>
+            {/* Resumen de Asistencia Diario */}
+            <div className="dashboard-card">
+              <div className="card-header">
+                <h3 className="card-title">
+                  <i className='bx bx-calendar-check'></i>
+                  Resumen de Asistencia Diario
+                </h3>
+                <div className="card-date">
+                  <span>24 Oct, 2023</span>
+                  <i className='bx bx-refresh'></i>
+                </div>
+              </div>
+
+              <div className="attendance-stats">
+                <div className="attendance-stat-item">
+                  <div className="stat-label">
+                    <i className='bx bx-group'></i>
+                    Total Empleados
+                  </div>
+                  <div className="stat-number">854</div>
+                </div>
+
+                <div className="attendance-stat-item">
+                  <div className="stat-label">
+                    <i className='bx bx-time'></i>
+                    Llegadas Tarde
+                  </div>
+                  <div className="stat-number orange">24</div>
+                </div>
+
+                <div className="attendance-stat-item">
+                  <div className="stat-label">
+                    <i className='bx bx-time-five'></i>
+                    Horas Extra
+                  </div>
+                  <div className="stat-number blue">42.5h</div>
+                </div>
+
+                <div className="attendance-stat-item highlight-green">
+                  <div className="stat-label">
+                    <i className='bx bx-user-check'></i>
+                    Presentes
+                  </div>
+                  <div className="stat-number-large">94%</div>
+                  <div className="stat-detail">802/854</div>
+                  
+                  {/* SVG Convertido a React */}
+                  <svg className="progress-ring" width="120" height="120">
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="#d1fae5" strokeWidth="8"/>
+                    <circle 
+                      cx="60" 
+                      cy="60" 
+                      r="50" 
+                      fill="none" 
+                      stroke="#10b981" 
+                      strokeWidth="8" 
+                      strokeDasharray="314" 
+                      strokeDashoffset="19" 
+                      transform="rotate(-90 60 60)" 
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            {/* Calendario de Ausencias */}
+            <div className="dashboard-card">
+              <div className="card-header">
+                <h3 className="card-title">
+                  <i className='bx bx-calendar-x'></i>
+                  Calendario de Ausencias
+                </h3>
+                <select className="week-selector" defaultValue="Esta Semana">
+                  <option>Esta Semana</option>
+                  <option>Próxima Semana</option>
+                  <option>Este Mes</option>
+                </select>
+              </div>
+
+              <div className="absence-list">
+                <div className="absence-item">
+                  <div className="absence-avatar-placeholder">RG</div>
+                  <div className="absence-info">
+                    <div className="absence-name">Roberto Gómez</div>
+                    <span className="absence-type vacation">Vacaciones</span>
+                  </div>
+                  <div className="absence-dates">
+                    <div className="absence-date">23 - 27 Oct</div>
+                    <div className="absence-status approved">
+                      <i className='bx bx-check-circle'></i>
+                      Aprobado
+                    </div>
+                  </div>
+                </div>
+
+                <div className="absence-item">
+                  <div className="absence-avatar-placeholder" style={{ background: 'linear-gradient(135deg, #ec4899 0%, #be185d 100%)' }}>MR</div>
+                  <div className="absence-info">
+                    <div className="absence-name">María Rodríguez</div>
+                    <span className="absence-type sick">Enfermedad</span>
+                  </div>
+                  <div className="absence-dates">
+                    <div className="absence-date">24 Oct</div>
+                    <div className="absence-status pending">
+                      <i className='bx bx-time-five'></i>
+                      Pendiente
+                    </div>
+                  </div>
+                </div>
+
+                <div className="absence-item">
+                  <div className="absence-avatar-placeholder" style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' }}>JD</div>
+                  <div className="absence-info">
+                    <div className="absence-name">Juan Díaz</div>
+                    <span className="absence-type personal">Permiso Personal</span>
+                  </div>
+                  <div className="absence-dates">
+                    <div className="absence-date">25 Oct (PM)</div>
+                    <div className="absence-status approved">
+                      <i className='bx bx-check-circle'></i>
+                      Aprobado
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
+          {/* Histórico KPI (Empleado) */}
+          <div className="dashboard-card">
+            <div className="card-header">
+              <h3 className="card-title">
+                <i className='bx bx-line-chart'></i>
+                Histórico KPI (Empleado)
+              </h3>
+              <div className="card-actions">
+                <select className="department-selector" defaultValue="Todos los Departamentos">
+                  <option>Todos los Departamentos</option>
+                  <option>Ventas</option>
+                  <option>Marketing</option>
+                  <option>Soporte Técnico</option>
+                  <option>Desarrollo</option>
+                </select>
+                <a href="#" className="view-full-report" onClick={(e) => e.preventDefault()}>Ver reporte completo</a>
+              </div>
+            </div>
+
+            <div className="kpi-table-container">
+              <table className="kpi-table">
+                <thead>
+                  <tr>
+                    <th>Período</th>
+                    <th>Empleado</th>
+                    <th>KPI</th>
+                    <th>Valor Actual</th>
+                    <th>Meta</th>
+                    <th>Estado</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Oct 2023</td>
+                    <td>
+                      <div className="employee-cell">
+                        <div className="employee-avatar-letter">AL</div>
+                        <div>
+                          <div className="employee-name">Ana Lopez</div>
+                          <div className="employee-role">Ventas Senior</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Ventas Mensuales</td>
+                    <td className="value-cell">$45,200</td>
+                    <td className="meta-cell">$40,000</td>
+                    <td>
+                      <span className="status-chip success">Completo</span>
+                    </td>
+                    <td>
+                      <button className="action-btn">
+                        <i className='bx bx-dots-vertical-rounded'></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Oct 2023</td>
+                    <td>
+                      <div className="employee-cell">
+                        <div className="employee-avatar-letter" style={{ background: '#3b82f6' }}>CR</div>
+                        <div>
+                          <div className="employee-name">Carlos Ruiz</div>
+                          <div className="employee-role">Soporte Técnico</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Tickets Resueltos</td>
+                    <td className="value-cell">142</td>
+                    <td className="meta-cell">150</td>
+                    <td>
+                      <span className="status-chip warning">Incompleto</span>
+                    </td>
+                    <td>
+                      <button className="action-btn">
+                        <i className='bx bx-dots-vertical-rounded'></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Oct 2023</td>
+                    <td>
+                      <div className="employee-cell">
+                        <div className="employee-avatar-letter" style={{ background: '#6366f1' }}>SM</div>
+                        <div>
+                          <div className="employee-name">Sofía M.</div>
+                          <div className="employee-role">Marketing Lead</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Leads Generados</td>
+                    <td className="value-cell">850</td>
+                    <td className="meta-cell">1000</td>
+                    <td>
+                      <span className="status-chip error">Incompleto</span>
+                    </td>
+                    <td>
+                      <button className="action-btn">
+                        <i className='bx bx-dots-vertical-rounded'></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Sep 2023</td>
+                    <td>
+                      <div className="employee-cell">
+                        <div className="employee-avatar-letter lp">LP</div>
+                        <div>
+                          <div className="employee-name">Luis Perez</div>
+                          <div className="employee-role">Desarrollador</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>Sprint Velocity</td>
+                    <td className="value-cell">42 pts</td>
+                    <td className="meta-cell">40 pts</td>
+                    <td>
+                      <span className="status-chip success">Completo</span>
+                    </td>
+                    <td>
+                      <button className="action-btn">
+                        <i className='bx bx-dots-vertical-rounded'></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </main>
     </div>

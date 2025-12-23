@@ -15,10 +15,10 @@ import ResetPassword from './pages/auth/ResetPassword';
 // Paginas de Super Admin
 import InicioSuperAdmin from './pages/superAdmin/InicioSuperAdmin';
 import EmpresasSuperAdmin from './pages/superAdmin/EmpresasSuperAdmin';
-import CrearEmpresaSuperAdmin from './pages/superAdmin/CrearEmpresaSuperAdmin';
+import CrearEmpresaSuperAdmin from './pages/superAdmin/seccionEmpresas/CrearEmpresaSuperAdmin';
 import DashboardSuperAdmin from './pages/superAdmin/DashboardSuperAdmin';
-import VerEmpresaSuperAdmin from './pages/superAdmin/VerEmpresaSuperAdmin';
-import EditarEmpresaSuperAdmin from './pages/superAdmin/EditarEmpresaSuperAdmin';
+import VerEmpresaSuperAdmin from './pages/superAdmin/seccionEmpresas/VerEmpresaSuperAdmin';
+import EditarEmpresaSuperAdmin from './pages/superAdmin/seccionEmpresas/EditarEmpresaSuperAdmin';
 
 const PublicLayout = ({ children }) => {
   return (

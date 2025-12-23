@@ -91,7 +91,7 @@ const EmpresasSuperAdmin = () => {
           </div>
         </header>
 
-        <div className="content-area">
+        <div className="content-area" style={{ marginTop: '30px' }}>
           <div className="page-header-section">
             <div>
               <h1 className="page-main-title">Listado de Empresas</h1>
