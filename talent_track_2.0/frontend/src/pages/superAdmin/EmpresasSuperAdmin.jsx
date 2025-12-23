@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import logoEmpresa from '../../assets/img/logos_Empresas/logo_empresa_deafult.svg'; // Imagen por defecto  
+import logoEmpresa from '../../assets/img/logos_Empresas/logo_empresa_deafult.svg'; 
 import Sidebar from '../../components/Sidebar';
+import '../../assets/css/modal.css';
 
 const EmpresasSuperAdmin = () => {
   const [empresas, setEmpresas] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // --- ESTADO PARA EL MODAL ---
+  const [showModal, setShowModal] = useState(false);
+  const [empresaSeleccionada, setEmpresaSeleccionada] = useState(null);
+
   // URLs de tu API
   const API_URL = 'http://127.0.0.1:8000/api/listado-empresas/';
-  //const BACKEND_BASE = 'http://127.0.0.1:8000'; // Para las imágenes
 
-  // 1. Cargar empresas al inicio
   useEffect(() => {
     fetchEmpresas();
   }, []);
@@ -29,50 +32,52 @@ const EmpresasSuperAdmin = () => {
     }
   };
 
-  // 2. FUNCIÓN ACTUALIZADA: Toggle Estado con la URL CORRECTA
-  const toggleEstado = async (id, estadoNombreActual) => {
-    const accion = estadoNombreActual === 'activo' ? 'desactivar' : 'activar';
-    
-    if (!window.confirm(`¿Estás seguro de que deseas ${accion} esta empresa?`)) return;
+  // --- LÓGICA DEL MODAL ---
+  
+  // 1. Abrir Modal (Prepara los datos pero no ejecuta nada aún)
+  const iniciarCambioEstado = (empresa) => {
+    setEmpresaSeleccionada(empresa);
+    setShowModal(true);
+  };
+
+  // 2. Cerrar Modal
+  const cerrarModal = () => {
+    setShowModal(false);
+    setEmpresaSeleccionada(null);
+  };
+
+  // 3. Confirmar Acción (Se ejecuta al dar click en "Confirmar" en el modal)
+  const confirmarCambioEstado = async () => {
+    if (!empresaSeleccionada) return;
+
+    const { id, estado_nombre } = empresaSeleccionada;
+    // const accion = estado_nombre === 'activo' ? 'desactivar' : 'activar'; // Para logs si quieres
 
     try {
-      // --- CAMBIO APLICADO AQUÍ ---
-      // Usamos la ruta correcta: /api/empresas/{id}/toggle-estado/
       const response = await fetch(`http://127.0.0.1:8000/api/empresas/${id}/toggle-estado/`, {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Authorization': `Bearer ${token}` // Si usaras token
-        },
-        body: JSON.stringify({}) // Body vacío
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}) 
       });
 
       if (response.ok) {
-        // Opción B: Actualizar localmente para que sea instantáneo
         setEmpresas(prevEmpresas => prevEmpresas.map(emp => {
           if (emp.id === id) {
-            // Invertimos la lógica localmente
             const nuevoEstadoNombre = emp.estado_nombre === 'activo' ? 'inactivo' : 'activo';
             const nuevoEstadoId = emp.estado === 1 ? 2 : 1; 
-            
-            return { 
-              ...emp, 
-              estado_nombre: nuevoEstadoNombre,
-              estado: nuevoEstadoId
-            };
+            return { ...emp, estado_nombre: nuevoEstadoNombre, estado: nuevoEstadoId };
           }
           return emp;
         }));
-
+        cerrarModal(); // Cerramos el modal tras el éxito
       } else {
         const errorText = await response.text();
         console.error("Error del servidor:", errorText);
-        alert("No se pudo cambiar el estado. Revisa la consola.");
+        alert("No se pudo cambiar el estado.");
       }
-
     } catch (error) {
       console.error("Error de red:", error);
-      alert("Error de conexión al intentar cambiar el estado.");
+      alert("Error de conexión.");
     }
   };
 
@@ -91,7 +96,7 @@ const EmpresasSuperAdmin = () => {
           </div>
         </header>
 
-        <div className="content-area" style={{ marginTop: '30px' }}>
+        <div className="content-area">
           <div className="page-header-section">
             <div>
               <h1 className="page-main-title">Listado de Empresas</h1>
@@ -102,7 +107,6 @@ const EmpresasSuperAdmin = () => {
             </Link>
           </div>
 
-          {/* Filtros */}
           <div className="filters-section">
             <div className="search-filter">
               <i className='bx bx-search'></i>
@@ -132,7 +136,8 @@ const EmpresasSuperAdmin = () => {
                     <th>PAIS</th>
                     <th>MONEDA</th>
                     <th>ESTADO</th>
-                    <th>ACCIONES</th>
+                    {/* CAMBIO: Texto centrado en el header */}
+                    <th style={{ textAlign: 'center' }}>ACCIONES</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -144,10 +149,9 @@ const EmpresasSuperAdmin = () => {
                     <tr key={empresa.id}>
                       <td>
                         <img 
-                          src={logoEmpresa} // Usamos la imagen por defecto como tenías configurado
+                          src={logoEmpresa} 
                           alt="Logo"
                           style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #eee' }}
-                          onError={(e) => { e.target.style.display = 'none'; }}
                         />
                       </td>
                       <td>{empresa.razon_social}</td>
@@ -160,25 +164,44 @@ const EmpresasSuperAdmin = () => {
                           {empresa.estado_nombre ? empresa.estado_nombre.charAt(0).toUpperCase() + empresa.estado_nombre.slice(1) : ''}
                         </span>
                       </td>
-                      <td>
-                        <div className="action-buttons">
-                          <Link to={`/admin/empresas/ver-empresa/${empresa.id}`} className="btn-action" title="Ver">
-                             <i className='bx bx-show'></i>
+                      
+                      {/* CAMBIO: Celda centrada y nuevos iconos */}
+                      <td style={{ textAlign: 'center' }}>
+                        <div className="action-buttons" style={{ justifyContent: 'center' }}>
+                          
+                          {/* Ver (Icono Sólido) */}
+                          <Link to={`/admin/empresas/ver-empresa/${empresa.id}`} className="btn-action" title="Ver Detalles">
+                             <i className='bx bxs-show'></i>
                           </Link>
-
+                          
+                          {/* Editar (Icono Sólido) */}
                           <Link to={`/admin/empresas/editar-empresa/${empresa.id}`} className="btn-action" title="Editar">
-                             <i className='bx bx-edit-alt'></i>
+                             <i className='bx bxs-edit-alt'></i>
                           </Link>
 
-                          {/* BOTÓN CAMBIAR ESTADO */}
+                          {/* Cambiar Estado (Usa Modal) */}
                           <button 
                             className="btn-action" 
-                            title={empresa.estado_nombre === 'activo' ? "Desactivar Empresa" : "Activar Empresa"}
-                            onClick={() => toggleEstado(empresa.id, empresa.estado_nombre)}
-                            style={{ backgroundColor: '#fff3cd', color: '#ffc107', border: 'none', cursor: 'pointer' }}
+                            title={empresa.estado_nombre === 'activo' ? "Desactivar" : "Activar"}
+                            onClick={() => iniciarCambioEstado(empresa)}
+                            style={{ 
+                                backgroundColor: empresa.estado_nombre === 'activo' ? '#fff3cd' : '#d1f4e0', 
+                                color: empresa.estado_nombre === 'activo' ? '#ffc107' : '#0f5132',
+                                border: 'none'
+                            }}
                           >
                             <i className='bx bx-revision'></i>
                           </button>
+
+                          {/* CAMBIO: Botón Eliminar (Icono Sólido + Estilo Danger) */}
+                          <button 
+                            className="btn-action btn-danger" 
+                            title="Eliminar (Próximamente)"
+                            onClick={() => alert("Funcionalidad de eliminar pendiente")}
+                          >
+                             <i className='bx bxs-trash'></i>
+                          </button>
+
                         </div>
                       </td>
                     </tr>
@@ -189,10 +212,32 @@ const EmpresasSuperAdmin = () => {
             
             <div className="pagination-section">
               <div className="pagination-info">Mostrando {empresas.length} resultados</div>
-              {/* Controles de paginación... */}
             </div>
           </div>
         </div>
+
+        {/* --- MODAL PERSONALIZADO (Renderizado condicional) --- */}
+        {showModal && empresaSeleccionada && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+               <div className="modal-icon">
+                 <i className='bx bx-error-circle'></i>
+               </div>
+               <h3 className="modal-title">¿Estás seguro?</h3>
+               <p className="modal-text">
+                 Vas a <strong>{empresaSeleccionada.estado_nombre === 'activo' ? 'desactivar' : 'activar'}</strong> la empresa:
+                 <br/>
+                 "{empresaSeleccionada.nombre_comercial}"
+               </p>
+               
+               <div className="modal-actions">
+                 <button className="btn-modal-cancel" onClick={cerrarModal}>Cancelar</button>
+                 <button className="btn-modal-confirm" onClick={confirmarCambioEstado}>Confirmar Cambio</button>
+               </div>
+            </div>
+          </div>
+        )}
+
       </main>
     </div>
   );
