@@ -110,8 +110,6 @@ const CrearEmpresaSuperAdmin = () => {
 
         <div className="content-area">
           <nav className="breadcrumb">
-            <Link to="/admin/dashboard" className="breadcrumb-item">Dashboard</Link>
-            <span className="breadcrumb-separator">/</span>
             <Link to="/admin/empresas" className="breadcrumb-item">Gestión de Empresas</Link>
             <span className="breadcrumb-separator">/</span>
             <span className="breadcrumb-item active">Crear Empresa</span>

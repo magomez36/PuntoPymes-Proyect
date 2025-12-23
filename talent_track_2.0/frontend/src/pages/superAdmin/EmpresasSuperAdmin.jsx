@@ -97,7 +97,7 @@ const EmpresasSuperAdmin = () => {
               <h1 className="page-main-title">Listado de Empresas</h1>
               <p className="page-subtitle">Visualiza, crea, modifica y administra el estado de las empresas.</p>
             </div>
-            <Link to="/admin/crear-empresa" className="btn-create-company" style={{ textDecoration: 'none' }}>
+            <Link to="/admin/empresas/crear-empresa" className="btn-create-company" style={{ textDecoration: 'none' }}>
               <i className='bx bx-plus'></i> Crear Empresa
             </Link>
           </div>
