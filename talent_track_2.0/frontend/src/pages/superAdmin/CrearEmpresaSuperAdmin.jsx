@@ -18,15 +18,25 @@ const CrearEmpresaSuperAdmin = () => {
   // Mapa de Configuración: "Nombre País" -> { ID País, ID Moneda, Nombre Moneda }
   // Basado en tu JSON anterior: Ec(8), Bo(2), Cl(3), Co(4), Mx(13)
   const configuracionPaises = {
-    "Ecuador":        { paisId: 8,  monedaId: 8,  monedaNombre: "Dólar estadounidense (USD)" },
-    "Bolivia":        { paisId: 2,  monedaId: 2,  monedaNombre: "Boliviano (BOB)" },
-    "Chile":          { paisId: 3,  monedaId: 3,  monedaNombre: "Peso chileno (CLP)" },
-    "Colombia":       { paisId: 4,  monedaId: 4,  monedaNombre: "Peso colombiano (COP)" },
-    "Mexico":         { paisId: 13, monedaId: 13, monedaNombre: "Peso mexicano (MXN)" },
-    // Valores por defecto para otros (ajustar según tu BD)
-    "Estados Unidos": { paisId: 1,  monedaId: 1,  monedaNombre: "Dólar (USD)" }, 
-    "Peru":           { paisId: 5,  monedaId: 5,  monedaNombre: "Sol (PEN)" },
-    "España":         { paisId: 6,  monedaId: 6,  monedaNombre: "Euro (EUR)" }
+    "Argentina":            { paisId: 1,  monedaId: 1,  monedaNombre: "Peso argentino (ARS)" },
+    "Bolivia":              { paisId: 2,  monedaId: 2,  monedaNombre: "Boliviano (BOB)" },
+    "Chile":                { paisId: 3,  monedaId: 3,  monedaNombre: "Peso chileno (CLP)" },
+    "Colombia":             { paisId: 4,  monedaId: 4,  monedaNombre: "Peso colombiano (COP)" },
+    "Costa Rica":           { paisId: 5,  monedaId: 5,  monedaNombre: "Colón costarricense (CRC)" },
+    "Cuba":                 { paisId: 6,  monedaId: 6,  monedaNombre: "Peso cubano (CUP)" },
+    "República Dominicana": { paisId: 7,  monedaId: 7,  monedaNombre: "Peso dominicano (DOP)" },
+    "Ecuador":              { paisId: 8,  monedaId: 8,  monedaNombre: "Dólar estadounidense (USD)" },
+    "El Salvador":          { paisId: 9,  monedaId: 9,  monedaNombre: "Dólar estadounidense (USD)" },
+    "España":               { paisId: 10, monedaId: 10, monedaNombre: "Euro (EUR)" },
+    "Guatemala":            { paisId: 11, monedaId: 11, monedaNombre: "Quetzal (GTQ)" },
+    "Honduras":             { paisId: 12, monedaId: 12, monedaNombre: "Lempira (HNL)" },
+    "México":               { paisId: 13, monedaId: 13, monedaNombre: "Peso mexicano (MXN)" },
+    "Nicaragua":            { paisId: 14, monedaId: 14, monedaNombre: "Córdoba nicaragüense (NIO)" },
+    "Panamá":               { paisId: 15, monedaId: 15, monedaNombre: "Balboa (PAB) y Dólar (USD)" },
+    "Paraguay":             { paisId: 16, monedaId: 16, monedaNombre: "Guaraní paraguayo (PYG)" },
+    "Perú":                 { paisId: 17, monedaId: 17, monedaNombre: "Sol peruano (PEN)" },
+    "Uruguay":              { paisId: 18, monedaId: 18, monedaNombre: "Peso uruguayo (UYU)" },
+    "Venezuela":            { paisId: 19, monedaId: 19, monedaNombre: "Bolívar venezolano (VES)" }
   };
 
   // Maneja cambios en inputs de texto (Razón Social, RUC, Nombre)

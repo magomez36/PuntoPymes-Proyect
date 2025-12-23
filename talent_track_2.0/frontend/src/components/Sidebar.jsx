@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+// Ajusta la ruta de tus imágenes según tu estructura de carpetas
 import logoSmall from '../assets/img/talentrack_small.svg';
 import logoLarge from '../assets/img/talenTrackLogo_SVG.svg';
 import 'boxicons/css/boxicons.min.css';
@@ -8,20 +9,22 @@ const Sidebar = () => {
   const location = useLocation();
   const currentPath = location.pathname;
 
+  // Lógica para resaltar el botón activo
   const getActiveClass = (path) => {
-    // Lógica para EMPRESAS (se mantiene activa en sub-rutas)
+    
+    // CASO EMPRESAS: Se mantiene activo en sub-rutas (crear, editar, ver)
     if (path === '/admin/empresas') {
       if (
         currentPath === '/admin/empresas' || 
-        currentPath === '/admin/create-company' ||
-        currentPath.includes('/admin/editar-empresa') ||
-        currentPath.includes('/admin/ver-empresa')
+        currentPath.includes('/admin/empresas/crear-empresa') ||
+        currentPath.includes('/admin/empresas/editar-empresa') ||
+        currentPath.includes('/admin/empresas/ver-empresa')
       ) {
         return 'sidebar-item active';
       }
     }
 
-    // Lógica para coincidencia exacta (Dashboard, Inicio, etc.)
+    // CASO GENERAL: Coincidencia exacta
     if (currentPath === path) {
       return 'sidebar-item active';
     }
@@ -31,29 +34,28 @@ const Sidebar = () => {
 
   return (
     <aside className="sidebar" id="sidebar">
+      {/* Logo del sidebar */}
       <div className="sidebar-logo">
         <img src={logoSmall} alt="Logo Pequeño" className="logo-small" />
         <img src={logoLarge} alt="Logo TalentTrack" className="logo-large" />
       </div>
 
       <div className="sidebar-top">
+        
+        {/* --- SECCIÓN RESUMEN --- */}
         <div className="sidebar-section-label" style={{ color: '#868988' }}>Resumen</div>
         
-        {/* --- 1. INICIO (Agregado de vuelta) --- */}
-        {/* Nota: Si "Inicio" y "Dashboard" llevan al mismo sitio, ambos se pondrán rojos a la vez. 
-            Si quieres que Inicio lleve a otra ruta, cambia el "to". */}
-        <Link to="/admin/dashboard" className={getActiveClass('/admin/inicio')} data-tooltip="Inicio">
+        <Link to="/admin/inicio" className={getActiveClass('/admin/inicio')} data-tooltip="Inicio">
           <i className='bx bxs-home sidebar-icon-box' style={{ color: '#ec1313' }}></i>
           <span>Inicio</span>
         </Link>
         
-        {/* --- 2. DASHBOARD --- */}
         <Link to="/admin/dashboard" className={getActiveClass('/admin/dashboard')} data-tooltip="Dashboard">
           <i className='bx bxs-dashboard sidebar-icon-box' style={{ color: '#ec1313' }}></i>
           <span>Dashboard</span>
         </Link>
 
-        {/* --- GESTIÓN EMPRESAS --- */}
+        {/* --- SECCIÓN GESTIÓN EMPRESAS --- */}
         <div className="sidebar-section-label" style={{ color: '#868988' }}>Gestión Empresas</div>
         
         <Link to="/admin/empresas" className={getActiveClass('/admin/empresas')} data-tooltip="Empresas">
@@ -61,7 +63,7 @@ const Sidebar = () => {
           <span>Empresas</span>
         </Link>
 
-        {/* --- RESTO DE ITEMS (Placeholders) --- */}
+        {/* Items sin ruta definida aún (se quedan como divs o Links vacíos) */}
         <div className="sidebar-item" data-tooltip="Unidades Organizacionales">
           <i className='bx bx-sitemap sidebar-icon-box' style={{ color: '#ec1313' }}></i>
           <span>Unidades Organizacionales</span>
@@ -83,7 +85,7 @@ const Sidebar = () => {
           <span>Tipos de Ausencias</span>
         </div>
 
-        {/* --- RENDIMIENTO --- */}
+        {/* --- SECCIÓN RENDIMIENTO Y DATOS --- */}
         <div className="sidebar-section-label" style={{ color: '#868988' }}>Rendimiento y Datos</div>
         <div className="sidebar-item" data-tooltip="KPIs">
           <i className='bx bx-trending-up sidebar-icon-box' style={{ color: '#ec1313' }}></i>
@@ -102,7 +104,7 @@ const Sidebar = () => {
           <span>Reportes Programados</span>
         </div>
 
-        {/* --- ADMINISTRACIÓN --- */}
+        {/* --- SECCIÓN ADMINISTRACIÓN --- */}
         <div className="sidebar-section-label" style={{ color: '#868988' }}>Administración</div>
         <div className="sidebar-item" data-tooltip="Usuarios">
           <i className='bx bx-group sidebar-icon-box' style={{ color: '#ec1313' }}></i>
@@ -117,7 +119,8 @@ const Sidebar = () => {
           <span>Permisos</span>
         </div>
         <div className="sidebar-item" data-tooltip="Usuarios con Roles">
-          <i className='bx bxs-user-detail sidebar-icon-box' style={{ color: '#ec1313' }}></i>
+          {/* Nota: En tu HTML tenías 'bxr', eso suele ser error, lo corregí a 'bx' */}
+          <i className='bx bxs-community sidebar-icon-box' style={{ color: '#ec1313' }}></i>
           <span>Usuarios con Roles</span>
         </div>
         <div className="sidebar-item" data-tooltip="Webhooks">
@@ -136,6 +139,7 @@ const Sidebar = () => {
           <span>Perfil</span>
         </div>
         
+        {/* Enlace para cerrar sesión */}
         <Link to="/login" className="sidebar-item logout" data-tooltip="Cerrar Sesión">
           <i className='bx bxs-door-open sidebar-icon-box' style={{ color: '#ec1313' }}></i>
           <span>Cerrar Sesión</span>

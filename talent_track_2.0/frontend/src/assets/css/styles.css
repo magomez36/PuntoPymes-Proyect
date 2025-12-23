@@ -3,6 +3,7 @@
    ============================================ */
 
 :root {
+    /* Variables de Colores */
     --color-white: #ffffff;
     --color-gray: #868988;
     --color-red: #d51e37;
@@ -10,6 +11,18 @@
     --color-light-pink: #f2bec5;
     --color-dark-red: #a81729;
     --color-darker-red: #8b1322;
+
+    /* Nuevos Parametros (Sidebar Moderno)*/
+    --sidebar-width-collapsed: 72px;
+    --sidebar-width-expanded: 260px;
+    --sidebar-bg: #ffffff;
+    --sidebar-hover-item: #f3f4f6;
+    --color-primary-light: rgba(213, 30, 55, 0.08);
+    --color-text-main: #374151;
+    --color-text-muted: #9ca7db;
+    --color-border: #e5e7eb;
+    --transition-speed: 0.3s;
+
 }
 
 * {
