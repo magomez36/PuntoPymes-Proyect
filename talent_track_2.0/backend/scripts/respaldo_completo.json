@@ -8,7 +8,7 @@
             "ruc_nit": "0999999999999",
             "pais": 8,
             "moneda": 8,
-            "logo_url": "../../../../backend/media/logo_empresa/default_logo_empresa.svg",
+            "logo_url": "",
             "estado": 1,
             "creada_el": "2025-12-17 22:05:56+00:00"
         },
@@ -20,7 +20,7 @@
             "ruc_nit": "1234567890123",
             "pais": 2,
             "moneda": 2,
-            "logo_url": "../../../../backend/media/logo_empresa/default_logo_empresa.svg",
+            "logo_url": "",
             "estado": 1,
             "creada_el": "2025-12-17 22:38:04+00:00"
         },
@@ -32,7 +32,7 @@
             "ruc_nit": "9876543210987",
             "pais": 3,
             "moneda": 3,
-            "logo_url": "../../../../backend/media/logo_empresa/default_logo_empresa.svg",
+            "logo_url": "",
             "estado": 1,
             "creada_el": "2025-12-17 22:39:44+00:00"
         },
@@ -44,7 +44,7 @@
             "ruc_nit": "1122334455667",
             "pais": 4,
             "moneda": 4,
-            "logo_url": "../../../../backend/media/logo_empresa/default_logo_empresa.svg",
+            "logo_url": "",
             "estado": 2,
             "creada_el": "2025-12-17 22:41:25+00:00"
         },
@@ -56,7 +56,7 @@
             "ruc_nit": "5566778899001",
             "pais": 13,
             "moneda": 13,
-            "logo_url": "../../../../backend/media/logo_empresa/default_logo_empresa.svg",
+            "logo_url": "",
             "estado": 1,
             "creada_el": "2025-12-17 22:43:09+00:00"
         }
@@ -213,6 +213,166 @@
             "descripcion": "Funciones especializadas según el área",
             "nivel": "operativo",
             "salario_referencial": "1600.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 2,
+            "unidad_id": 3,
+            "nombre": "Manager",
+            "descripcion": "Lidera el equipo y aprueba solicitudes clave",
+            "nivel": "táctico",
+            "salario_referencial": "2300.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 6,
+            "empresa_id": 2,
+            "unidad_id": 4,
+            "nombre": "Administrador RRHH",
+            "descripcion": "Gestiona empleados, ausencias y KPIs",
+            "nivel": "estratégico",
+            "salario_referencial": "2600.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 7,
+            "empresa_id": 2,
+            "unidad_id": 4,
+            "nombre": "Auditor",
+            "descripcion": "Revisa registros y genera informes de control",
+            "nivel": "táctico",
+            "salario_referencial": "2400.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 8,
+            "empresa_id": 2,
+            "unidad_id": 4,
+            "nombre": "Analista",
+            "descripcion": "Apoya operaciones del área",
+            "nivel": "operativo",
+            "salario_referencial": "1500.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 9,
+            "empresa_id": 3,
+            "unidad_id": 5,
+            "nombre": "Manager",
+            "descripcion": "Lidera el equipo y aprueba solicitudes clave",
+            "nivel": "táctico",
+            "salario_referencial": "2300.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 10,
+            "empresa_id": 3,
+            "unidad_id": 6,
+            "nombre": "Administrador RRHH",
+            "descripcion": "Gestiona empleados, ausencias y KPIs",
+            "nivel": "estratégico",
+            "salario_referencial": "2600.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 11,
+            "empresa_id": 3,
+            "unidad_id": 6,
+            "nombre": "Auditor",
+            "descripcion": "Revisa registros y genera informes de control",
+            "nivel": "táctico",
+            "salario_referencial": "2400.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 12,
+            "empresa_id": 3,
+            "unidad_id": 6,
+            "nombre": "Analista",
+            "descripcion": "Apoya operaciones del área",
+            "nivel": "operativo",
+            "salario_referencial": "1500.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 13,
+            "empresa_id": 4,
+            "unidad_id": 7,
+            "nombre": "Manager",
+            "descripcion": "Lidera el equipo y aprueba solicitudes clave",
+            "nivel": "táctico",
+            "salario_referencial": "2300.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 14,
+            "empresa_id": 4,
+            "unidad_id": 8,
+            "nombre": "Administrador RRHH",
+            "descripcion": "Gestiona empleados, ausencias y KPIs",
+            "nivel": "estratégico",
+            "salario_referencial": "2600.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 15,
+            "empresa_id": 4,
+            "unidad_id": 8,
+            "nombre": "Auditor",
+            "descripcion": "Revisa registros y genera informes de control",
+            "nivel": "táctico",
+            "salario_referencial": "2400.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 16,
+            "empresa_id": 4,
+            "unidad_id": 8,
+            "nombre": "Analista",
+            "descripcion": "Apoya operaciones del área",
+            "nivel": "operativo",
+            "salario_referencial": "1500.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 17,
+            "empresa_id": 5,
+            "unidad_id": 9,
+            "nombre": "Manager",
+            "descripcion": "Lidera el equipo y aprueba solicitudes clave",
+            "nivel": "táctico",
+            "salario_referencial": "2300.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 18,
+            "empresa_id": 5,
+            "unidad_id": 10,
+            "nombre": "Administrador RRHH",
+            "descripcion": "Gestiona empleados, ausencias y KPIs",
+            "nivel": "estratégico",
+            "salario_referencial": "2600.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 19,
+            "empresa_id": 5,
+            "unidad_id": 10,
+            "nombre": "Auditor",
+            "descripcion": "Revisa registros y genera informes de control",
+            "nivel": "táctico",
+            "salario_referencial": "2400.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 20,
+            "empresa_id": 5,
+            "unidad_id": 10,
+            "nombre": "Analista",
+            "descripcion": "Apoya operaciones del área",
+            "nivel": "operativo",
+            "salario_referencial": "1500.00"
         }
     ],
     "empleado": [
@@ -575,26 +735,2555 @@
             "fecha_ingreso": "2020-02-10",
             "foto_url": "/foto_Empleado_default.png",
             "estado": 3
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 21,
+            "empresa_id": 2,
+            "unidad_id": 3,
+            "puesto_id": 5,
+            "manager_id": null,
+            "nombres": "Ana",
+            "apellidos": "Gómez",
+            "documento": null,
+            "email": "ana.gomez@innovatech.com",
+            "telefono": "0980294262",
+            "direccion": "Dirección 100",
+            "fecha_nacimiento": "1993-07-06",
+            "fecha_ingreso": "2021-05-14",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 22,
+            "empresa_id": 2,
+            "unidad_id": 4,
+            "puesto_id": 6,
+            "manager_id": 21,
+            "nombres": "Juan",
+            "apellidos": "Pérez",
+            "documento": null,
+            "email": "juan.perez@innovatech.com",
+            "telefono": "0995165252",
+            "direccion": "Dirección 101",
+            "fecha_nacimiento": "2001-11-18",
+            "fecha_ingreso": "2024-04-27",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 23,
+            "empresa_id": 2,
+            "unidad_id": 4,
+            "puesto_id": 7,
+            "manager_id": 21,
+            "nombres": "María",
+            "apellidos": "Quispe",
+            "documento": null,
+            "email": "maria.quispe@innovatech.com",
+            "telefono": "0941355180",
+            "direccion": "Dirección 102",
+            "fecha_nacimiento": "1992-05-21",
+            "fecha_ingreso": "2025-12-23",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 24,
+            "empresa_id": 2,
+            "unidad_id": 4,
+            "puesto_id": 8,
+            "manager_id": 21,
+            "nombres": "Carlos",
+            "apellidos": "Rojas",
+            "documento": null,
+            "email": "carlos.rojas@innovatech.com",
+            "telefono": "0981675253",
+            "direccion": "Dirección 103",
+            "fecha_nacimiento": "1992-08-23",
+            "fecha_ingreso": "2021-02-20",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 25,
+            "empresa_id": 2,
+            "unidad_id": 4,
+            "puesto_id": 8,
+            "manager_id": 21,
+            "nombres": "Sofía",
+            "apellidos": "Lagos",
+            "documento": null,
+            "email": "sofia.lagos@innovatech.com",
+            "telefono": "0956820307",
+            "direccion": "Dirección 104",
+            "fecha_nacimiento": "1989-02-21",
+            "fecha_ingreso": "2023-07-06",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 26,
+            "empresa_id": 3,
+            "unidad_id": 5,
+            "puesto_id": 9,
+            "manager_id": null,
+            "nombres": "Diego",
+            "apellidos": "Soto",
+            "documento": null,
+            "email": "diego.soto@solucioneschile.com",
+            "telefono": "0916321514",
+            "direccion": "Dirección 100",
+            "fecha_nacimiento": "1994-05-03",
+            "fecha_ingreso": "2021-06-15",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 27,
+            "empresa_id": 3,
+            "unidad_id": 6,
+            "puesto_id": 10,
+            "manager_id": 26,
+            "nombres": "Valentina",
+            "apellidos": "Arce",
+            "documento": null,
+            "email": "valentina.arce@solucioneschile.com",
+            "telefono": "0986541873",
+            "direccion": "Dirección 101",
+            "fecha_nacimiento": "2000-01-22",
+            "fecha_ingreso": "2025-09-03",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 28,
+            "empresa_id": 3,
+            "unidad_id": 6,
+            "puesto_id": 11,
+            "manager_id": 26,
+            "nombres": "Mateo",
+            "apellidos": "Vargas",
+            "documento": null,
+            "email": "mateo.vargas@solucioneschile.com",
+            "telefono": "0945854982",
+            "direccion": "Dirección 102",
+            "fecha_nacimiento": "1988-04-22",
+            "fecha_ingreso": "2021-02-22",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 29,
+            "empresa_id": 3,
+            "unidad_id": 6,
+            "puesto_id": 12,
+            "manager_id": 26,
+            "nombres": "Camila",
+            "apellidos": "Molina",
+            "documento": null,
+            "email": "camila.molina@solucioneschile.com",
+            "telefono": "0911123236",
+            "direccion": "Dirección 103",
+            "fecha_nacimiento": "1987-11-01",
+            "fecha_ingreso": "2022-01-19",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 30,
+            "empresa_id": 3,
+            "unidad_id": 6,
+            "puesto_id": 12,
+            "manager_id": 26,
+            "nombres": "Andrés",
+            "apellidos": "Salas",
+            "documento": null,
+            "email": "andres.salas@solucioneschile.com",
+            "telefono": "0924050291",
+            "direccion": "Dirección 104",
+            "fecha_nacimiento": "1990-01-04",
+            "fecha_ingreso": "2021-11-25",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 31,
+            "empresa_id": 4,
+            "unidad_id": 7,
+            "puesto_id": 13,
+            "manager_id": null,
+            "nombres": "Lucía",
+            "apellidos": "Reyes",
+            "documento": null,
+            "email": "lucia.reyes@consultoracol.com",
+            "telefono": "0948931524",
+            "direccion": "Dirección 100",
+            "fecha_nacimiento": "1997-08-22",
+            "fecha_ingreso": "2024-01-20",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 32,
+            "empresa_id": 4,
+            "unidad_id": 8,
+            "puesto_id": 14,
+            "manager_id": 31,
+            "nombres": "Pedro",
+            "apellidos": "Fernández",
+            "documento": null,
+            "email": "pedro.fernandez@consultoracol.com",
+            "telefono": "0979083037",
+            "direccion": "Dirección 101",
+            "fecha_nacimiento": "1996-01-16",
+            "fecha_ingreso": "2021-02-08",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 33,
+            "empresa_id": 4,
+            "unidad_id": 8,
+            "puesto_id": 15,
+            "manager_id": 31,
+            "nombres": "Paula",
+            "apellidos": "Castillo",
+            "documento": null,
+            "email": "paula.castillo@consultoracol.com",
+            "telefono": "0964963162",
+            "direccion": "Dirección 102",
+            "fecha_nacimiento": "1982-06-28",
+            "fecha_ingreso": "2024-04-08",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 34,
+            "empresa_id": 4,
+            "unidad_id": 8,
+            "puesto_id": 16,
+            "manager_id": 31,
+            "nombres": "Jorge",
+            "apellidos": "Moreno",
+            "documento": null,
+            "email": "jorge.moreno@consultoracol.com",
+            "telefono": "0965877648",
+            "direccion": "Dirección 103",
+            "fecha_nacimiento": "1984-01-07",
+            "fecha_ingreso": "2023-09-11",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 35,
+            "empresa_id": 4,
+            "unidad_id": 8,
+            "puesto_id": 16,
+            "manager_id": 31,
+            "nombres": "Laura",
+            "apellidos": "Silva",
+            "documento": null,
+            "email": "laura.silva@consultoracol.com",
+            "telefono": "0910931435",
+            "direccion": "Dirección 104",
+            "fecha_nacimiento": "1993-11-11",
+            "fecha_ingreso": "2022-12-03",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 36,
+            "empresa_id": 5,
+            "unidad_id": 9,
+            "puesto_id": 17,
+            "manager_id": null,
+            "nombres": "Ana",
+            "apellidos": "Gómez",
+            "documento": null,
+            "email": "ana.gomez@desarrollodigital.com",
+            "telefono": "0974168347",
+            "direccion": "Dirección 100",
+            "fecha_nacimiento": "1981-07-08",
+            "fecha_ingreso": "2024-02-02",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 37,
+            "empresa_id": 5,
+            "unidad_id": 10,
+            "puesto_id": 18,
+            "manager_id": 36,
+            "nombres": "Juan",
+            "apellidos": "Pérez",
+            "documento": null,
+            "email": "juan.perez@desarrollodigital.com",
+            "telefono": "0923877850",
+            "direccion": "Dirección 101",
+            "fecha_nacimiento": "1993-02-19",
+            "fecha_ingreso": "2021-10-24",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 38,
+            "empresa_id": 5,
+            "unidad_id": 10,
+            "puesto_id": 19,
+            "manager_id": 36,
+            "nombres": "María",
+            "apellidos": "Quispe",
+            "documento": null,
+            "email": "maria.quispe@desarrollodigital.com",
+            "telefono": "0972918846",
+            "direccion": "Dirección 102",
+            "fecha_nacimiento": "1980-11-08",
+            "fecha_ingreso": "2021-11-22",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 39,
+            "empresa_id": 5,
+            "unidad_id": 10,
+            "puesto_id": 20,
+            "manager_id": 36,
+            "nombres": "Carlos",
+            "apellidos": "Rojas",
+            "documento": null,
+            "email": "carlos.rojas@desarrollodigital.com",
+            "telefono": "0971820707",
+            "direccion": "Dirección 103",
+            "fecha_nacimiento": "1989-05-26",
+            "fecha_ingreso": "2024-12-14",
+            "foto_url": null,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 40,
+            "empresa_id": 5,
+            "unidad_id": 10,
+            "puesto_id": 20,
+            "manager_id": 36,
+            "nombres": "Sofía",
+            "apellidos": "Lagos",
+            "documento": null,
+            "email": "sofia.lagos@desarrollodigital.com",
+            "telefono": "0961498174",
+            "direccion": "Dirección 104",
+            "fecha_nacimiento": "1986-03-10",
+            "fecha_ingreso": "2023-01-27",
+            "foto_url": null,
+            "estado": 1
         }
     ],
-    "contrato": [],
-    "documento_empleado": [],
-    "turno": [],
-    "asignacion_turno": [],
-    "regla_asistencia": [],
-    "geocerca": [],
-    "dispositivo_empleado": [],
-    "evento_asistencia": [],
-    "jornada_calculada": [],
-    "tipo_ausencia": [],
-    "solicitud_ausencia": [],
+    "contrato": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "empleado_id": 1,
+            "turno_base_id": null,
+            "tipo": 1,
+            "fecha_inicio": "2024-01-01",
+            "fecha_fin": null,
+            "salario_base": "2500.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 1,
+            "empleado_id": 2,
+            "turno_base_id": null,
+            "tipo": 1,
+            "fecha_inicio": "2024-01-01",
+            "fecha_fin": null,
+            "salario_base": "2500.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 1,
+            "empleado_id": 3,
+            "turno_base_id": null,
+            "tipo": 1,
+            "fecha_inicio": "2024-01-01",
+            "fecha_fin": null,
+            "salario_base": "2500.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 2,
+            "empleado_id": 21,
+            "turno_base_id": null,
+            "tipo": 3,
+            "fecha_inicio": "2023-12-16",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "1500.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 2,
+            "empleado_id": 22,
+            "turno_base_id": null,
+            "tipo": 1,
+            "fecha_inicio": "2023-07-14",
+            "fecha_fin": null,
+            "salario_base": "2600.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 6,
+            "empresa_id": 2,
+            "empleado_id": 23,
+            "turno_base_id": null,
+            "tipo": 2,
+            "fecha_inicio": "2023-08-21",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "1800.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 7,
+            "empresa_id": 2,
+            "empleado_id": 24,
+            "turno_base_id": null,
+            "tipo": 3,
+            "fecha_inicio": "2023-10-13",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "1800.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 8,
+            "empresa_id": 2,
+            "empleado_id": 25,
+            "turno_base_id": null,
+            "tipo": 3,
+            "fecha_inicio": "2023-06-27",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "1800.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 9,
+            "empresa_id": 3,
+            "empleado_id": 26,
+            "turno_base_id": null,
+            "tipo": 2,
+            "fecha_inicio": "2023-03-09",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "2200.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 10,
+            "empresa_id": 3,
+            "empleado_id": 27,
+            "turno_base_id": null,
+            "tipo": 2,
+            "fecha_inicio": "2023-05-21",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "2200.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 11,
+            "empresa_id": 3,
+            "empleado_id": 28,
+            "turno_base_id": null,
+            "tipo": 1,
+            "fecha_inicio": "2023-08-19",
+            "fecha_fin": null,
+            "salario_base": "1500.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 12,
+            "empresa_id": 3,
+            "empleado_id": 29,
+            "turno_base_id": null,
+            "tipo": 3,
+            "fecha_inicio": "2023-09-19",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "2200.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 13,
+            "empresa_id": 3,
+            "empleado_id": 30,
+            "turno_base_id": null,
+            "tipo": 1,
+            "fecha_inicio": "2023-10-08",
+            "fecha_fin": null,
+            "salario_base": "1800.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 14,
+            "empresa_id": 4,
+            "empleado_id": 31,
+            "turno_base_id": null,
+            "tipo": 2,
+            "fecha_inicio": "2023-01-24",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "2200.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 15,
+            "empresa_id": 4,
+            "empleado_id": 32,
+            "turno_base_id": null,
+            "tipo": 2,
+            "fecha_inicio": "2023-01-26",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "2200.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 16,
+            "empresa_id": 4,
+            "empleado_id": 33,
+            "turno_base_id": null,
+            "tipo": 1,
+            "fecha_inicio": "2023-06-16",
+            "fecha_fin": null,
+            "salario_base": "2600.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 17,
+            "empresa_id": 4,
+            "empleado_id": 34,
+            "turno_base_id": null,
+            "tipo": 3,
+            "fecha_inicio": "2023-04-08",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "2600.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 18,
+            "empresa_id": 4,
+            "empleado_id": 35,
+            "turno_base_id": null,
+            "tipo": 3,
+            "fecha_inicio": "2023-04-22",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "1400.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 19,
+            "empresa_id": 5,
+            "empleado_id": 36,
+            "turno_base_id": null,
+            "tipo": 3,
+            "fecha_inicio": "2023-09-27",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "2600.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 20,
+            "empresa_id": 5,
+            "empleado_id": 37,
+            "turno_base_id": null,
+            "tipo": 3,
+            "fecha_inicio": "2023-08-27",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "2600.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 21,
+            "empresa_id": 5,
+            "empleado_id": 38,
+            "turno_base_id": null,
+            "tipo": 1,
+            "fecha_inicio": "2023-11-21",
+            "fecha_fin": null,
+            "salario_base": "1500.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 22,
+            "empresa_id": 5,
+            "empleado_id": 39,
+            "turno_base_id": null,
+            "tipo": 1,
+            "fecha_inicio": "2023-11-02",
+            "fecha_fin": null,
+            "salario_base": "1500.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 23,
+            "empresa_id": 5,
+            "empleado_id": 40,
+            "turno_base_id": null,
+            "tipo": 3,
+            "fecha_inicio": "2023-08-09",
+            "fecha_fin": "2025-12-31",
+            "salario_base": "1500.00",
+            "jornada_semanal_horas": 40,
+            "estado": 1
+        }
+    ],
+    "documento_empleado": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "empleado_id": 1,
+            "tipo": 1,
+            "archivo_url": null,
+            "observaciones": "Contrato firmado",
+            "cargado_el": "2025-12-10 09:00:00+00:00",
+            "vigente": true
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 2,
+            "empleado_id": 22,
+            "tipo": 3,
+            "archivo_url": null,
+            "observaciones": "Certificado de ingreso",
+            "cargado_el": "2025-12-10 09:00:00+00:00",
+            "vigente": true
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 3,
+            "empleado_id": 27,
+            "tipo": 3,
+            "archivo_url": null,
+            "observaciones": "Certificado de ingreso",
+            "cargado_el": "2025-12-10 09:00:00+00:00",
+            "vigente": true
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 4,
+            "empleado_id": 32,
+            "tipo": 3,
+            "archivo_url": null,
+            "observaciones": "Certificado de ingreso",
+            "cargado_el": "2025-12-10 09:00:00+00:00",
+            "vigente": true
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 5,
+            "empleado_id": 37,
+            "tipo": 3,
+            "archivo_url": null,
+            "observaciones": "Certificado de ingreso",
+            "cargado_el": "2025-12-10 09:00:00+00:00",
+            "vigente": true
+        }
+    ],
+    "turno": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "nombre": "Administrativo",
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "dias_semana": [
+                {
+                    "num": 1,
+                    "nombre": "lunes"
+                },
+                {
+                    "num": 2,
+                    "nombre": "martes"
+                },
+                {
+                    "num": 3,
+                    "nombre": "miércoles"
+                },
+                {
+                    "num": 4,
+                    "nombre": "jueves"
+                },
+                {
+                    "num": 5,
+                    "nombre": "viernes"
+                }
+            ],
+            "tolerancia_minutos": 10,
+            "requiere_gps": false,
+            "requiere_foto": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 2,
+            "nombre": "Administrativo",
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "dias_semana": [
+                {
+                    "num": 1,
+                    "nombre": "lunes"
+                },
+                {
+                    "num": 2,
+                    "nombre": "martes"
+                },
+                {
+                    "num": 3,
+                    "nombre": "miércoles"
+                },
+                {
+                    "num": 4,
+                    "nombre": "jueves"
+                },
+                {
+                    "num": 5,
+                    "nombre": "viernes"
+                }
+            ],
+            "tolerancia_minutos": 10,
+            "requiere_gps": false,
+            "requiere_foto": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 3,
+            "nombre": "Administrativo",
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "dias_semana": [
+                {
+                    "num": 1,
+                    "nombre": "lunes"
+                },
+                {
+                    "num": 2,
+                    "nombre": "martes"
+                },
+                {
+                    "num": 3,
+                    "nombre": "miércoles"
+                },
+                {
+                    "num": 4,
+                    "nombre": "jueves"
+                },
+                {
+                    "num": 5,
+                    "nombre": "viernes"
+                }
+            ],
+            "tolerancia_minutos": 10,
+            "requiere_gps": false,
+            "requiere_foto": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 4,
+            "nombre": "Administrativo",
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "dias_semana": [
+                {
+                    "num": 1,
+                    "nombre": "lunes"
+                },
+                {
+                    "num": 2,
+                    "nombre": "martes"
+                },
+                {
+                    "num": 3,
+                    "nombre": "miércoles"
+                },
+                {
+                    "num": 4,
+                    "nombre": "jueves"
+                },
+                {
+                    "num": 5,
+                    "nombre": "viernes"
+                }
+            ],
+            "tolerancia_minutos": 10,
+            "requiere_gps": false,
+            "requiere_foto": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 5,
+            "nombre": "Administrativo",
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "dias_semana": [
+                {
+                    "num": 1,
+                    "nombre": "lunes"
+                },
+                {
+                    "num": 2,
+                    "nombre": "martes"
+                },
+                {
+                    "num": 3,
+                    "nombre": "miércoles"
+                },
+                {
+                    "num": 4,
+                    "nombre": "jueves"
+                },
+                {
+                    "num": 5,
+                    "nombre": "viernes"
+                }
+            ],
+            "tolerancia_minutos": 10,
+            "requiere_gps": false,
+            "requiere_foto": false
+        }
+    ],
+    "asignacion_turno": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "empleado_id": 1,
+            "turno_id": 1,
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "es_rotativo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 1,
+            "empleado_id": 2,
+            "turno_id": 1,
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "es_rotativo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 1,
+            "empleado_id": 3,
+            "turno_id": 1,
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "es_rotativo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 2,
+            "empleado_id": 21,
+            "turno_id": 2,
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "es_rotativo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 2,
+            "empleado_id": 22,
+            "turno_id": 2,
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "es_rotativo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 6,
+            "empresa_id": 3,
+            "empleado_id": 26,
+            "turno_id": 3,
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "es_rotativo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 7,
+            "empresa_id": 3,
+            "empleado_id": 27,
+            "turno_id": 3,
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "es_rotativo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 8,
+            "empresa_id": 4,
+            "empleado_id": 31,
+            "turno_id": 4,
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "es_rotativo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 9,
+            "empresa_id": 4,
+            "empleado_id": 32,
+            "turno_id": 4,
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "es_rotativo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 10,
+            "empresa_id": 5,
+            "empleado_id": 36,
+            "turno_id": 5,
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "es_rotativo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 11,
+            "empresa_id": 5,
+            "empleado_id": 37,
+            "turno_id": 5,
+            "hora_inicio": "08:00:00",
+            "hora_fin": "17:00:00",
+            "es_rotativo": false
+        }
+    ],
+    "regla_asistencia": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "geocerca_id": null,
+            "considera_tardanza_desde_min": 5,
+            "calculo_horas_extra": 1,
+            "ip_permitidas": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 2,
+            "geocerca_id": null,
+            "considera_tardanza_desde_min": 5,
+            "calculo_horas_extra": 1,
+            "ip_permitidas": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 3,
+            "geocerca_id": null,
+            "considera_tardanza_desde_min": 5,
+            "calculo_horas_extra": 1,
+            "ip_permitidas": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 4,
+            "geocerca_id": null,
+            "considera_tardanza_desde_min": 5,
+            "calculo_horas_extra": 1,
+            "ip_permitidas": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 5,
+            "geocerca_id": null,
+            "considera_tardanza_desde_min": 5,
+            "calculo_horas_extra": 1,
+            "ip_permitidas": null
+        }
+    ],
+    "geocerca": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "nombre": "Oficina Principal",
+            "tipo": 1,
+            "coordenadas": null,
+            "activo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 2,
+            "nombre": "Oficina Principal",
+            "tipo": 1,
+            "coordenadas": null,
+            "activo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 3,
+            "nombre": "Oficina Principal",
+            "tipo": 1,
+            "coordenadas": null,
+            "activo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 4,
+            "nombre": "Oficina Principal",
+            "tipo": 1,
+            "coordenadas": null,
+            "activo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 5,
+            "nombre": "Oficina Principal",
+            "tipo": 1,
+            "coordenadas": null,
+            "activo": false
+        }
+    ],
+    "dispositivo_empleado": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "empleado_id": 1,
+            "tipo": 2,
+            "device_uid": "WEB-1-1",
+            "ultimo_uso_el": "2025-12-19 10:00:00+00:00",
+            "activo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 2,
+            "empleado_id": 21,
+            "tipo": 2,
+            "device_uid": "WEB-2-21",
+            "ultimo_uso_el": "2025-12-19 10:00:00+00:00",
+            "activo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 3,
+            "empleado_id": 26,
+            "tipo": 2,
+            "device_uid": "WEB-3-26",
+            "ultimo_uso_el": "2025-12-19 10:00:00+00:00",
+            "activo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 4,
+            "empleado_id": 31,
+            "tipo": 2,
+            "device_uid": "WEB-4-31",
+            "ultimo_uso_el": "2025-12-19 10:00:00+00:00",
+            "activo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 5,
+            "empleado_id": 36,
+            "tipo": 2,
+            "device_uid": "WEB-5-36",
+            "ultimo_uso_el": "2025-12-19 10:00:00+00:00",
+            "activo": false
+        }
+    ],
+    "evento_asistencia": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "empleado_id": 1,
+            "tipo": 1,
+            "registrado_el": "2025-12-18 08:03:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 1,
+            "empleado_id": 1,
+            "tipo": 2,
+            "registrado_el": "2025-12-18 17:05:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 1,
+            "empleado_id": 2,
+            "tipo": 1,
+            "registrado_el": "2025-12-18 08:12:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 1,
+            "empleado_id": 2,
+            "tipo": 2,
+            "registrado_el": "2025-12-18 17:10:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 1,
+            "empleado_id": 3,
+            "tipo": 1,
+            "registrado_el": "2025-12-18 08:12:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 6,
+            "empresa_id": 1,
+            "empleado_id": 3,
+            "tipo": 2,
+            "registrado_el": "2025-12-18 17:10:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 7,
+            "empresa_id": 2,
+            "empleado_id": 21,
+            "tipo": 1,
+            "registrado_el": "2025-12-18 08:07:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 8,
+            "empresa_id": 2,
+            "empleado_id": 21,
+            "tipo": 2,
+            "registrado_el": "2025-12-18 17:05:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 9,
+            "empresa_id": 2,
+            "empleado_id": 22,
+            "tipo": 1,
+            "registrado_el": "2025-12-18 08:12:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 10,
+            "empresa_id": 2,
+            "empleado_id": 22,
+            "tipo": 2,
+            "registrado_el": "2025-12-18 17:00:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 11,
+            "empresa_id": 3,
+            "empleado_id": 26,
+            "tipo": 1,
+            "registrado_el": "2025-12-18 08:03:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 12,
+            "empresa_id": 3,
+            "empleado_id": 26,
+            "tipo": 2,
+            "registrado_el": "2025-12-18 17:10:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 13,
+            "empresa_id": 3,
+            "empleado_id": 27,
+            "tipo": 1,
+            "registrado_el": "2025-12-18 08:03:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 14,
+            "empresa_id": 3,
+            "empleado_id": 27,
+            "tipo": 2,
+            "registrado_el": "2025-12-18 17:10:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 15,
+            "empresa_id": 4,
+            "empleado_id": 31,
+            "tipo": 1,
+            "registrado_el": "2025-12-18 08:12:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 16,
+            "empresa_id": 4,
+            "empleado_id": 31,
+            "tipo": 2,
+            "registrado_el": "2025-12-18 17:10:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 17,
+            "empresa_id": 4,
+            "empleado_id": 32,
+            "tipo": 1,
+            "registrado_el": "2025-12-18 08:03:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 18,
+            "empresa_id": 4,
+            "empleado_id": 32,
+            "tipo": 2,
+            "registrado_el": "2025-12-18 17:10:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 19,
+            "empresa_id": 5,
+            "empleado_id": 36,
+            "tipo": 1,
+            "registrado_el": "2025-12-18 08:12:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 20,
+            "empresa_id": 5,
+            "empleado_id": 36,
+            "tipo": 2,
+            "registrado_el": "2025-12-18 17:10:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 21,
+            "empresa_id": 5,
+            "empleado_id": 37,
+            "tipo": 1,
+            "registrado_el": "2025-12-18 08:00:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 22,
+            "empresa_id": 5,
+            "empleado_id": 37,
+            "tipo": 2,
+            "registrado_el": "2025-12-18 17:05:00+00:00",
+            "fuente": 2,
+            "gps_lat": null,
+            "gps_lng": null,
+            "dentro_geocerca": false,
+            "foto_url": null,
+            "ip": null,
+            "observaciones": null
+        }
+    ],
+    "jornada_calculada": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "empleado_id": 1,
+            "fecha": "2025-12-18",
+            "hora_primera_entrada": "2025-12-18 08:03:00+00:00",
+            "hora_ultimo_salida": "2025-12-18 17:05:00+00:00",
+            "minutos_trabajados": 542,
+            "minutos_tardanza": 0,
+            "minutos_extra": 62,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 1,
+            "empleado_id": 2,
+            "fecha": "2025-12-18",
+            "hora_primera_entrada": "2025-12-18 08:12:00+00:00",
+            "hora_ultimo_salida": "2025-12-18 17:10:00+00:00",
+            "minutos_trabajados": 538,
+            "minutos_tardanza": 7,
+            "minutos_extra": 58,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 1,
+            "empleado_id": 3,
+            "fecha": "2025-12-18",
+            "hora_primera_entrada": "2025-12-18 08:12:00+00:00",
+            "hora_ultimo_salida": "2025-12-18 17:10:00+00:00",
+            "minutos_trabajados": 538,
+            "minutos_tardanza": 7,
+            "minutos_extra": 58,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 2,
+            "empleado_id": 21,
+            "fecha": "2025-12-18",
+            "hora_primera_entrada": "2025-12-18 08:07:00+00:00",
+            "hora_ultimo_salida": "2025-12-18 17:05:00+00:00",
+            "minutos_trabajados": 538,
+            "minutos_tardanza": 2,
+            "minutos_extra": 58,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 2,
+            "empleado_id": 22,
+            "fecha": "2025-12-18",
+            "hora_primera_entrada": "2025-12-18 08:12:00+00:00",
+            "hora_ultimo_salida": "2025-12-18 17:00:00+00:00",
+            "minutos_trabajados": 528,
+            "minutos_tardanza": 7,
+            "minutos_extra": 48,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 6,
+            "empresa_id": 3,
+            "empleado_id": 26,
+            "fecha": "2025-12-18",
+            "hora_primera_entrada": "2025-12-18 08:03:00+00:00",
+            "hora_ultimo_salida": "2025-12-18 17:10:00+00:00",
+            "minutos_trabajados": 547,
+            "minutos_tardanza": 0,
+            "minutos_extra": 67,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 7,
+            "empresa_id": 3,
+            "empleado_id": 27,
+            "fecha": "2025-12-18",
+            "hora_primera_entrada": "2025-12-18 08:03:00+00:00",
+            "hora_ultimo_salida": "2025-12-18 17:10:00+00:00",
+            "minutos_trabajados": 547,
+            "minutos_tardanza": 0,
+            "minutos_extra": 67,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 8,
+            "empresa_id": 4,
+            "empleado_id": 31,
+            "fecha": "2025-12-18",
+            "hora_primera_entrada": "2025-12-18 08:12:00+00:00",
+            "hora_ultimo_salida": "2025-12-18 17:10:00+00:00",
+            "minutos_trabajados": 538,
+            "minutos_tardanza": 7,
+            "minutos_extra": 58,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 9,
+            "empresa_id": 4,
+            "empleado_id": 32,
+            "fecha": "2025-12-18",
+            "hora_primera_entrada": "2025-12-18 08:03:00+00:00",
+            "hora_ultimo_salida": "2025-12-18 17:10:00+00:00",
+            "minutos_trabajados": 547,
+            "minutos_tardanza": 0,
+            "minutos_extra": 67,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 10,
+            "empresa_id": 5,
+            "empleado_id": 36,
+            "fecha": "2025-12-18",
+            "hora_primera_entrada": "2025-12-18 08:12:00+00:00",
+            "hora_ultimo_salida": "2025-12-18 17:10:00+00:00",
+            "minutos_trabajados": 538,
+            "minutos_tardanza": 7,
+            "minutos_extra": 58,
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 11,
+            "empresa_id": 5,
+            "empleado_id": 37,
+            "fecha": "2025-12-18",
+            "hora_primera_entrada": "2025-12-18 08:00:00+00:00",
+            "hora_ultimo_salida": "2025-12-18 17:05:00+00:00",
+            "minutos_trabajados": 545,
+            "minutos_tardanza": 0,
+            "minutos_extra": 65,
+            "estado": 1
+        }
+    ],
+    "tipo_ausencia": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "nombre": "Vacaciones",
+            "afecta_sueldo": false,
+            "requiere_soporte": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 1,
+            "nombre": "Permiso médico",
+            "afecta_sueldo": false,
+            "requiere_soporte": true
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 2,
+            "nombre": "Vacaciones",
+            "afecta_sueldo": false,
+            "requiere_soporte": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 2,
+            "nombre": "Permiso médico",
+            "afecta_sueldo": false,
+            "requiere_soporte": true
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 3,
+            "nombre": "Vacaciones",
+            "afecta_sueldo": false,
+            "requiere_soporte": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 6,
+            "empresa_id": 3,
+            "nombre": "Permiso médico",
+            "afecta_sueldo": false,
+            "requiere_soporte": true
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 7,
+            "empresa_id": 4,
+            "nombre": "Vacaciones",
+            "afecta_sueldo": false,
+            "requiere_soporte": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 8,
+            "empresa_id": 4,
+            "nombre": "Permiso médico",
+            "afecta_sueldo": false,
+            "requiere_soporte": true
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 9,
+            "empresa_id": 5,
+            "nombre": "Vacaciones",
+            "afecta_sueldo": false,
+            "requiere_soporte": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 10,
+            "empresa_id": 5,
+            "nombre": "Permiso médico",
+            "afecta_sueldo": false,
+            "requiere_soporte": true
+        }
+    ],
+    "solicitud_ausencia": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "empleado_id": 4,
+            "tipo_ausencia_id": 1,
+            "fecha_inicio": "2025-12-22",
+            "fecha_fin": "2025-12-23",
+            "dias_habiles": 2,
+            "motivo": "Viaje familiar",
+            "estado": 2,
+            "flujo_actual": 2,
+            "adjunto_url": null,
+            "creada_el": "2025-12-15 11:30:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 2,
+            "empleado_id": 24,
+            "tipo_ausencia_id": 3,
+            "fecha_inicio": "2025-12-22",
+            "fecha_fin": "2025-12-23",
+            "dias_habiles": 2,
+            "motivo": "Viaje familiar",
+            "estado": 2,
+            "flujo_actual": 2,
+            "adjunto_url": null,
+            "creada_el": "2025-12-15 11:30:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 3,
+            "empleado_id": 29,
+            "tipo_ausencia_id": 5,
+            "fecha_inicio": "2025-12-22",
+            "fecha_fin": "2025-12-23",
+            "dias_habiles": 2,
+            "motivo": "Viaje familiar",
+            "estado": 2,
+            "flujo_actual": 2,
+            "adjunto_url": null,
+            "creada_el": "2025-12-15 11:30:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 4,
+            "empleado_id": 34,
+            "tipo_ausencia_id": 7,
+            "fecha_inicio": "2025-12-22",
+            "fecha_fin": "2025-12-23",
+            "dias_habiles": 2,
+            "motivo": "Viaje familiar",
+            "estado": 2,
+            "flujo_actual": 2,
+            "adjunto_url": null,
+            "creada_el": "2025-12-15 11:30:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 5,
+            "empleado_id": 39,
+            "tipo_ausencia_id": 9,
+            "fecha_inicio": "2025-12-22",
+            "fecha_fin": "2025-12-23",
+            "dias_habiles": 2,
+            "motivo": "Viaje familiar",
+            "estado": 2,
+            "flujo_actual": 2,
+            "adjunto_url": null,
+            "creada_el": "2025-12-15 11:30:00+00:00"
+        }
+    ],
     "aprobacion_ausencia": [],
-    "saldo_vacaciones": [],
-    "kpi": [],
-    "plantilla_kpi": [],
-    "asignacion_kpi": [],
-    "resultado_kpi": [],
-    "evaluacion_desempeno": [],
+    "saldo_vacaciones": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "empleado_id": 1,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "5.00",
+            "dias_disponibles": "10.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 1,
+            "empleado_id": 2,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 1,
+            "empleado_id": 3,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 1,
+            "empleado_id": 4,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "5.00",
+            "dias_disponibles": "10.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 1,
+            "empleado_id": 5,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 6,
+            "empresa_id": 2,
+            "empleado_id": 21,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 7,
+            "empresa_id": 2,
+            "empleado_id": 22,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 8,
+            "empresa_id": 2,
+            "empleado_id": 23,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "1.00",
+            "dias_disponibles": "14.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 9,
+            "empresa_id": 2,
+            "empleado_id": 24,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "1.00",
+            "dias_disponibles": "14.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 10,
+            "empresa_id": 2,
+            "empleado_id": 25,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "3.00",
+            "dias_disponibles": "12.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 11,
+            "empresa_id": 3,
+            "empleado_id": 26,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "3.00",
+            "dias_disponibles": "12.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 12,
+            "empresa_id": 3,
+            "empleado_id": 27,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "1.00",
+            "dias_disponibles": "14.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 13,
+            "empresa_id": 3,
+            "empleado_id": 28,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 14,
+            "empresa_id": 3,
+            "empleado_id": 29,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 15,
+            "empresa_id": 3,
+            "empleado_id": 30,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "3.00",
+            "dias_disponibles": "12.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 16,
+            "empresa_id": 4,
+            "empleado_id": 31,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 17,
+            "empresa_id": 4,
+            "empleado_id": 32,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 18,
+            "empresa_id": 4,
+            "empleado_id": 33,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 19,
+            "empresa_id": 4,
+            "empleado_id": 34,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 20,
+            "empresa_id": 4,
+            "empleado_id": 35,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "3.00",
+            "dias_disponibles": "12.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 21,
+            "empresa_id": 5,
+            "empleado_id": 36,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 22,
+            "empresa_id": 5,
+            "empleado_id": 37,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "3.00",
+            "dias_disponibles": "12.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 23,
+            "empresa_id": 5,
+            "empleado_id": 38,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 24,
+            "empresa_id": 5,
+            "empleado_id": 39,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "1.00",
+            "dias_disponibles": "14.00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 25,
+            "empresa_id": 5,
+            "empleado_id": 40,
+            "periodo": "2025",
+            "dias_asignados": "15.00",
+            "dias_tomados": "0.00",
+            "dias_disponibles": "15.00"
+        }
+    ],
+    "kpi": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "codigo": "KPI-ATT",
+            "nombre": "Puntualidad",
+            "descripcion": "Porcentaje de ingresos a tiempo",
+            "unidad": 1,
+            "origen_datos": 1,
+            "formula": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 1,
+            "codigo": "KPI-PERF",
+            "nombre": "Rendimiento",
+            "descripcion": "Puntaje promedio de desempeño",
+            "unidad": 2,
+            "origen_datos": 2,
+            "formula": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 2,
+            "codigo": "KPI-ATT",
+            "nombre": "Puntualidad",
+            "descripcion": "Porcentaje de ingresos a tiempo",
+            "unidad": 1,
+            "origen_datos": 1,
+            "formula": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 2,
+            "codigo": "KPI-PERF",
+            "nombre": "Rendimiento",
+            "descripcion": "Puntaje promedio de desempeño",
+            "unidad": 2,
+            "origen_datos": 2,
+            "formula": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 3,
+            "codigo": "KPI-ATT",
+            "nombre": "Puntualidad",
+            "descripcion": "Porcentaje de ingresos a tiempo",
+            "unidad": 1,
+            "origen_datos": 1,
+            "formula": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 6,
+            "empresa_id": 3,
+            "codigo": "KPI-PERF",
+            "nombre": "Rendimiento",
+            "descripcion": "Puntaje promedio de desempeño",
+            "unidad": 2,
+            "origen_datos": 2,
+            "formula": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 7,
+            "empresa_id": 4,
+            "codigo": "KPI-ATT",
+            "nombre": "Puntualidad",
+            "descripcion": "Porcentaje de ingresos a tiempo",
+            "unidad": 1,
+            "origen_datos": 1,
+            "formula": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 8,
+            "empresa_id": 4,
+            "codigo": "KPI-PERF",
+            "nombre": "Rendimiento",
+            "descripcion": "Puntaje promedio de desempeño",
+            "unidad": 2,
+            "origen_datos": 2,
+            "formula": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 9,
+            "empresa_id": 5,
+            "codigo": "KPI-ATT",
+            "nombre": "Puntualidad",
+            "descripcion": "Porcentaje de ingresos a tiempo",
+            "unidad": 1,
+            "origen_datos": 1,
+            "formula": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 10,
+            "empresa_id": 5,
+            "codigo": "KPI-PERF",
+            "nombre": "Rendimiento",
+            "descripcion": "Puntaje promedio de desempeño",
+            "unidad": 2,
+            "origen_datos": 2,
+            "formula": null
+        }
+    ],
+    "plantilla_kpi": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "nombre": "Plantilla general",
+            "aplica_a": 3,
+            "objetivos": [
+                {
+                    "kpi_id": 1,
+                    "meta": 90,
+                    "umbral_rojo": 70,
+                    "umbral_amarillo": 85
+                },
+                {
+                    "kpi_id": 2,
+                    "meta": 90,
+                    "umbral_rojo": 70,
+                    "umbral_amarillo": 85
+                }
+            ]
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 2,
+            "nombre": "Plantilla general",
+            "aplica_a": 3,
+            "objetivos": [
+                {
+                    "kpi_id": 3,
+                    "meta": 90,
+                    "umbral_rojo": 70,
+                    "umbral_amarillo": 85
+                },
+                {
+                    "kpi_id": 4,
+                    "meta": 90,
+                    "umbral_rojo": 70,
+                    "umbral_amarillo": 85
+                }
+            ]
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 3,
+            "nombre": "Plantilla general",
+            "aplica_a": 3,
+            "objetivos": [
+                {
+                    "kpi_id": 5,
+                    "meta": 90,
+                    "umbral_rojo": 70,
+                    "umbral_amarillo": 85
+                },
+                {
+                    "kpi_id": 6,
+                    "meta": 90,
+                    "umbral_rojo": 70,
+                    "umbral_amarillo": 85
+                }
+            ]
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 4,
+            "nombre": "Plantilla general",
+            "aplica_a": 3,
+            "objetivos": [
+                {
+                    "kpi_id": 7,
+                    "meta": 90,
+                    "umbral_rojo": 70,
+                    "umbral_amarillo": 85
+                },
+                {
+                    "kpi_id": 8,
+                    "meta": 90,
+                    "umbral_rojo": 70,
+                    "umbral_amarillo": 85
+                }
+            ]
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 5,
+            "nombre": "Plantilla general",
+            "aplica_a": 3,
+            "objetivos": [
+                {
+                    "kpi_id": 9,
+                    "meta": 90,
+                    "umbral_rojo": 70,
+                    "umbral_amarillo": 85
+                },
+                {
+                    "kpi_id": 10,
+                    "meta": 90,
+                    "umbral_rojo": 70,
+                    "umbral_amarillo": 85
+                }
+            ]
+        }
+    ],
+    "asignacion_kpi": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "empleado_id": 4,
+            "plantilla_id": 1,
+            "desde": "2025-10-01",
+            "hasta": null,
+            "ajustes_personalizados": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 2,
+            "empleado_id": 24,
+            "plantilla_id": 2,
+            "desde": "2025-10-01",
+            "hasta": null,
+            "ajustes_personalizados": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 3,
+            "empleado_id": 29,
+            "plantilla_id": 3,
+            "desde": "2025-10-01",
+            "hasta": null,
+            "ajustes_personalizados": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 4,
+            "empleado_id": 34,
+            "plantilla_id": 4,
+            "desde": "2025-10-01",
+            "hasta": null,
+            "ajustes_personalizados": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 5,
+            "empleado_id": 39,
+            "plantilla_id": 5,
+            "desde": "2025-10-01",
+            "hasta": null,
+            "ajustes_personalizados": null
+        }
+    ],
+    "resultado_kpi": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "empleado_id": 4,
+            "kpi_id": 1,
+            "periodo": "2025-12",
+            "valor": "80.28",
+            "cumplimiento_pct": "80.28",
+            "clasificacion": 2,
+            "calculado_el": "2025-12-19 18:00:00+00:00",
+            "fuente": "sistema"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 1,
+            "empleado_id": 4,
+            "kpi_id": 2,
+            "periodo": "2025-12",
+            "valor": "87.69",
+            "cumplimiento_pct": "87.69",
+            "clasificacion": 1,
+            "calculado_el": "2025-12-19 18:00:00+00:00",
+            "fuente": "sistema"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 2,
+            "empleado_id": 24,
+            "kpi_id": 3,
+            "periodo": "2025-12",
+            "valor": "80.25",
+            "cumplimiento_pct": "80.25",
+            "clasificacion": 2,
+            "calculado_el": "2025-12-19 18:00:00+00:00",
+            "fuente": "sistema"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 2,
+            "empleado_id": 24,
+            "kpi_id": 4,
+            "periodo": "2025-12",
+            "valor": "97.63",
+            "cumplimiento_pct": "97.63",
+            "clasificacion": 1,
+            "calculado_el": "2025-12-19 18:00:00+00:00",
+            "fuente": "sistema"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 3,
+            "empleado_id": 29,
+            "kpi_id": 5,
+            "periodo": "2025-12",
+            "valor": "89.26",
+            "cumplimiento_pct": "89.26",
+            "clasificacion": 1,
+            "calculado_el": "2025-12-19 18:00:00+00:00",
+            "fuente": "sistema"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 6,
+            "empresa_id": 3,
+            "empleado_id": 29,
+            "kpi_id": 6,
+            "periodo": "2025-12",
+            "valor": "94.52",
+            "cumplimiento_pct": "94.52",
+            "clasificacion": 1,
+            "calculado_el": "2025-12-19 18:00:00+00:00",
+            "fuente": "sistema"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 7,
+            "empresa_id": 4,
+            "empleado_id": 34,
+            "kpi_id": 7,
+            "periodo": "2025-12",
+            "valor": "83.77",
+            "cumplimiento_pct": "83.77",
+            "clasificacion": 2,
+            "calculado_el": "2025-12-19 18:00:00+00:00",
+            "fuente": "sistema"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 8,
+            "empresa_id": 4,
+            "empleado_id": 34,
+            "kpi_id": 8,
+            "periodo": "2025-12",
+            "valor": "84.35",
+            "cumplimiento_pct": "84.35",
+            "clasificacion": 2,
+            "calculado_el": "2025-12-19 18:00:00+00:00",
+            "fuente": "sistema"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 9,
+            "empresa_id": 5,
+            "empleado_id": 39,
+            "kpi_id": 9,
+            "periodo": "2025-12",
+            "valor": "78.74",
+            "cumplimiento_pct": "78.74",
+            "clasificacion": 2,
+            "calculado_el": "2025-12-19 18:00:00+00:00",
+            "fuente": "sistema"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 10,
+            "empresa_id": 5,
+            "empleado_id": 39,
+            "kpi_id": 10,
+            "periodo": "2025-12",
+            "valor": "86.33",
+            "cumplimiento_pct": "86.33",
+            "clasificacion": 1,
+            "calculado_el": "2025-12-19 18:00:00+00:00",
+            "fuente": "sistema"
+        }
+    ],
+    "evaluacion_desempeno": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "empleado_id": 4,
+            "evaluador_id": 1,
+            "periodo": "2025-Q4",
+            "tipo": 2,
+            "instrumento": [
+                {
+                    "competencia": "Trabajo en equipo",
+                    "peso": 0.3
+                },
+                {
+                    "competencia": "Calidad",
+                    "peso": 0.7
+                }
+            ],
+            "puntaje_total": "88.50",
+            "comentarios": "Buen desempeño general.",
+            "fecha": "2025-12-18 16:30:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 2,
+            "empleado_id": 24,
+            "evaluador_id": 21,
+            "periodo": "2025-Q4",
+            "tipo": 2,
+            "instrumento": [
+                {
+                    "competencia": "Trabajo en equipo",
+                    "peso": 0.3
+                },
+                {
+                    "competencia": "Calidad",
+                    "peso": 0.7
+                }
+            ],
+            "puntaje_total": "88.50",
+            "comentarios": "Buen desempeño general.",
+            "fecha": "2025-12-18 16:30:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 3,
+            "empleado_id": 29,
+            "evaluador_id": 26,
+            "periodo": "2025-Q4",
+            "tipo": 2,
+            "instrumento": [
+                {
+                    "competencia": "Trabajo en equipo",
+                    "peso": 0.3
+                },
+                {
+                    "competencia": "Calidad",
+                    "peso": 0.7
+                }
+            ],
+            "puntaje_total": "88.50",
+            "comentarios": "Buen desempeño general.",
+            "fecha": "2025-12-18 16:30:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 4,
+            "empleado_id": 34,
+            "evaluador_id": 31,
+            "periodo": "2025-Q4",
+            "tipo": 2,
+            "instrumento": [
+                {
+                    "competencia": "Trabajo en equipo",
+                    "peso": 0.3
+                },
+                {
+                    "competencia": "Calidad",
+                    "peso": 0.7
+                }
+            ],
+            "puntaje_total": "88.50",
+            "comentarios": "Buen desempeño general.",
+            "fecha": "2025-12-18 16:30:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 5,
+            "empleado_id": 39,
+            "evaluador_id": 36,
+            "periodo": "2025-Q4",
+            "tipo": 2,
+            "instrumento": [
+                {
+                    "competencia": "Trabajo en equipo",
+                    "peso": 0.3
+                },
+                {
+                    "competencia": "Calidad",
+                    "peso": 0.7
+                }
+            ],
+            "puntaje_total": "88.50",
+            "comentarios": "Buen desempeño general.",
+            "fecha": "2025-12-18 16:30:00+00:00"
+        }
+    ],
     "usuario": [
         {
             "_state": "<django.db.models.base.ModelState object at 0x000002BAC3322CC0>",
@@ -835,6 +3524,246 @@
             "mfa_habilitado": false,
             "estado": 1,
             "ultimo_acceso": "2025-12-20 07:14:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 21,
+            "empresa_id": 2,
+            "empleado_id": 21,
+            "email": "ana.gomez@innovatech.com",
+            "phone": "0980294262",
+            "hash_password": "pbkdf2_sha256$1200000$demo1455$hash899354",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 08:29:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 22,
+            "empresa_id": 2,
+            "empleado_id": 22,
+            "email": "juan.perez@innovatech.com",
+            "phone": "0995165252",
+            "hash_password": "pbkdf2_sha256$1200000$demo6090$hash171662",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 18:39:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 23,
+            "empresa_id": 2,
+            "empleado_id": 23,
+            "email": "maria.quispe@innovatech.com",
+            "phone": "0941355180",
+            "hash_password": "pbkdf2_sha256$1200000$demo6150$hash562489",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 21:42:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 24,
+            "empresa_id": 2,
+            "empleado_id": 24,
+            "email": "carlos.rojas@innovatech.com",
+            "phone": "0981675253",
+            "hash_password": "pbkdf2_sha256$1200000$demo5318$hash511922",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 17:14:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 25,
+            "empresa_id": 2,
+            "empleado_id": 25,
+            "email": "sofia.lagos@innovatech.com",
+            "phone": "0956820307",
+            "hash_password": "pbkdf2_sha256$1200000$demo4900$hash638679",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 13:17:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 26,
+            "empresa_id": 3,
+            "empleado_id": 26,
+            "email": "diego.soto@solucioneschile.com",
+            "phone": "0916321514",
+            "hash_password": "pbkdf2_sha256$1200000$demo5178$hash479175",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 12:01:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 27,
+            "empresa_id": 3,
+            "empleado_id": 27,
+            "email": "valentina.arce@solucioneschile.com",
+            "phone": "0986541873",
+            "hash_password": "pbkdf2_sha256$1200000$demo4791$hash849579",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 19:38:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 28,
+            "empresa_id": 3,
+            "empleado_id": 28,
+            "email": "mateo.vargas@solucioneschile.com",
+            "phone": "0945854982",
+            "hash_password": "pbkdf2_sha256$1200000$demo7232$hash551932",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 02:04:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 29,
+            "empresa_id": 3,
+            "empleado_id": 29,
+            "email": "camila.molina@solucioneschile.com",
+            "phone": "0911123236",
+            "hash_password": "pbkdf2_sha256$1200000$demo6078$hash152433",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 08:55:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 30,
+            "empresa_id": 3,
+            "empleado_id": 30,
+            "email": "andres.salas@solucioneschile.com",
+            "phone": "0924050291",
+            "hash_password": "pbkdf2_sha256$1200000$demo1387$hash604249",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 18:03:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 31,
+            "empresa_id": 4,
+            "empleado_id": 31,
+            "email": "lucia.reyes@consultoracol.com",
+            "phone": "0948931524",
+            "hash_password": "pbkdf2_sha256$1200000$demo6605$hash980596",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 06:31:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 32,
+            "empresa_id": 4,
+            "empleado_id": 32,
+            "email": "pedro.fernandez@consultoracol.com",
+            "phone": "0979083037",
+            "hash_password": "pbkdf2_sha256$1200000$demo5368$hash192512",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 16:11:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 33,
+            "empresa_id": 4,
+            "empleado_id": 33,
+            "email": "paula.castillo@consultoracol.com",
+            "phone": "0964963162",
+            "hash_password": "pbkdf2_sha256$1200000$demo2325$hash828510",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 18:01:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 34,
+            "empresa_id": 4,
+            "empleado_id": 34,
+            "email": "jorge.moreno@consultoracol.com",
+            "phone": "0965877648",
+            "hash_password": "pbkdf2_sha256$1200000$demo1030$hash287200",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 08:02:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 35,
+            "empresa_id": 4,
+            "empleado_id": 35,
+            "email": "laura.silva@consultoracol.com",
+            "phone": "0910931435",
+            "hash_password": "pbkdf2_sha256$1200000$demo1105$hash729967",
+            "mfa_habilitado": false,
+            "estado": 2,
+            "ultimo_acceso": "2025-12-20 20:45:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 36,
+            "empresa_id": 5,
+            "empleado_id": 36,
+            "email": "ana.gomez@desarrollodigital.com",
+            "phone": "0974168347",
+            "hash_password": "pbkdf2_sha256$1200000$demo8249$hash612295",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 14:39:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 37,
+            "empresa_id": 5,
+            "empleado_id": 37,
+            "email": "juan.perez@desarrollodigital.com",
+            "phone": "0923877850",
+            "hash_password": "pbkdf2_sha256$1200000$demo7004$hash454222",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 02:14:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 38,
+            "empresa_id": 5,
+            "empleado_id": 38,
+            "email": "maria.quispe@desarrollodigital.com",
+            "phone": "0972918846",
+            "hash_password": "pbkdf2_sha256$1200000$demo6251$hash302352",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 14:07:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 39,
+            "empresa_id": 5,
+            "empleado_id": 39,
+            "email": "carlos.rojas@desarrollodigital.com",
+            "phone": "0971820707",
+            "hash_password": "pbkdf2_sha256$1200000$demo5715$hash115572",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 16:37:00+00:00"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 40,
+            "empresa_id": 5,
+            "empleado_id": 40,
+            "email": "sofia.lagos@desarrollodigital.com",
+            "phone": "0961498174",
+            "hash_password": "pbkdf2_sha256$1200000$demo9671$hash667068",
+            "mfa_habilitado": false,
+            "estado": 1,
+            "ultimo_acceso": "2025-12-20 08:01:00+00:00"
         }
     ],
     "rol": [
@@ -870,6 +3799,118 @@
             "_state": "<django.db.models.base.ModelState object at 0x000002BAC3323C50>",
             "id": 5,
             "empresa_id": 1,
+            "nombre": "empleado",
+            "descripcion": "Empleado"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 6,
+            "empresa_id": 2,
+            "nombre": "manager",
+            "descripcion": "Manager"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 7,
+            "empresa_id": 2,
+            "nombre": "rrhh",
+            "descripcion": "Admin RRHH"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 8,
+            "empresa_id": 2,
+            "nombre": "auditor",
+            "descripcion": "Auditor"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 9,
+            "empresa_id": 2,
+            "nombre": "empleado",
+            "descripcion": "Empleado"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 10,
+            "empresa_id": 3,
+            "nombre": "manager",
+            "descripcion": "Manager"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 11,
+            "empresa_id": 3,
+            "nombre": "rrhh",
+            "descripcion": "Admin RRHH"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 12,
+            "empresa_id": 3,
+            "nombre": "auditor",
+            "descripcion": "Auditor"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 13,
+            "empresa_id": 3,
+            "nombre": "empleado",
+            "descripcion": "Empleado"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 14,
+            "empresa_id": 4,
+            "nombre": "manager",
+            "descripcion": "Manager"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 15,
+            "empresa_id": 4,
+            "nombre": "rrhh",
+            "descripcion": "Admin RRHH"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 16,
+            "empresa_id": 4,
+            "nombre": "auditor",
+            "descripcion": "Auditor"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 17,
+            "empresa_id": 4,
+            "nombre": "empleado",
+            "descripcion": "Empleado"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 18,
+            "empresa_id": 5,
+            "nombre": "manager",
+            "descripcion": "Manager"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 19,
+            "empresa_id": 5,
+            "nombre": "rrhh",
+            "descripcion": "Admin RRHH"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 20,
+            "empresa_id": 5,
+            "nombre": "auditor",
+            "descripcion": "Auditor"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 21,
+            "empresa_id": 5,
             "nombre": "empleado",
             "descripcion": "Empleado"
         }
@@ -994,13 +4035,653 @@
             "id": 20,
             "usuario_id": 20,
             "rol_id": 5
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 21,
+            "usuario_id": 21,
+            "rol_id": 6
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 22,
+            "usuario_id": 22,
+            "rol_id": 7
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 23,
+            "usuario_id": 23,
+            "rol_id": 8
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 24,
+            "usuario_id": 24,
+            "rol_id": 9
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 25,
+            "usuario_id": 25,
+            "rol_id": 9
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 26,
+            "usuario_id": 26,
+            "rol_id": 10
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 27,
+            "usuario_id": 27,
+            "rol_id": 11
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 28,
+            "usuario_id": 28,
+            "rol_id": 12
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 29,
+            "usuario_id": 29,
+            "rol_id": 13
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 30,
+            "usuario_id": 30,
+            "rol_id": 13
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 31,
+            "usuario_id": 31,
+            "rol_id": 14
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 32,
+            "usuario_id": 32,
+            "rol_id": 15
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 33,
+            "usuario_id": 33,
+            "rol_id": 16
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 34,
+            "usuario_id": 34,
+            "rol_id": 17
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 35,
+            "usuario_id": 35,
+            "rol_id": 17
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 36,
+            "usuario_id": 36,
+            "rol_id": 18
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 37,
+            "usuario_id": 37,
+            "rol_id": 19
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 38,
+            "usuario_id": 38,
+            "rol_id": 20
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 39,
+            "usuario_id": 39,
+            "rol_id": 21
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 40,
+            "usuario_id": 40,
+            "rol_id": 21
         }
     ],
-    "permiso": [],
-    "reporte_programado": [],
+    "permiso": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "rol_id": 3,
+            "codigo": "empleados.view",
+            "descripcion": "Ver empleados"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "rol_id": 3,
+            "codigo": "ausencias.approve",
+            "descripcion": "Aprobar ausencias"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "rol_id": 3,
+            "codigo": "kpi.manage",
+            "descripcion": "Gestionar KPIs"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "rol_id": 2,
+            "codigo": "empleados.view",
+            "descripcion": "Ver empleados"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "rol_id": 2,
+            "codigo": "ausencias.approve",
+            "descripcion": "Aprobar ausencias"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 6,
+            "rol_id": 7,
+            "codigo": "empleados.view",
+            "descripcion": "Ver empleados"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 7,
+            "rol_id": 7,
+            "codigo": "ausencias.approve",
+            "descripcion": "Aprobar ausencias"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 8,
+            "rol_id": 7,
+            "codigo": "kpi.manage",
+            "descripcion": "Gestionar KPIs"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 9,
+            "rol_id": 6,
+            "codigo": "empleados.view",
+            "descripcion": "Ver empleados"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 10,
+            "rol_id": 6,
+            "codigo": "ausencias.approve",
+            "descripcion": "Aprobar ausencias"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 11,
+            "rol_id": 11,
+            "codigo": "empleados.view",
+            "descripcion": "Ver empleados"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 12,
+            "rol_id": 11,
+            "codigo": "ausencias.approve",
+            "descripcion": "Aprobar ausencias"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 13,
+            "rol_id": 11,
+            "codigo": "kpi.manage",
+            "descripcion": "Gestionar KPIs"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 14,
+            "rol_id": 10,
+            "codigo": "empleados.view",
+            "descripcion": "Ver empleados"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 15,
+            "rol_id": 10,
+            "codigo": "ausencias.approve",
+            "descripcion": "Aprobar ausencias"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 16,
+            "rol_id": 15,
+            "codigo": "empleados.view",
+            "descripcion": "Ver empleados"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 17,
+            "rol_id": 15,
+            "codigo": "ausencias.approve",
+            "descripcion": "Aprobar ausencias"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 18,
+            "rol_id": 15,
+            "codigo": "kpi.manage",
+            "descripcion": "Gestionar KPIs"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 19,
+            "rol_id": 14,
+            "codigo": "empleados.view",
+            "descripcion": "Ver empleados"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 20,
+            "rol_id": 14,
+            "codigo": "ausencias.approve",
+            "descripcion": "Aprobar ausencias"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 21,
+            "rol_id": 19,
+            "codigo": "empleados.view",
+            "descripcion": "Ver empleados"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 22,
+            "rol_id": 19,
+            "codigo": "ausencias.approve",
+            "descripcion": "Aprobar ausencias"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 23,
+            "rol_id": 19,
+            "codigo": "kpi.manage",
+            "descripcion": "Gestionar KPIs"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 24,
+            "rol_id": 18,
+            "codigo": "empleados.view",
+            "descripcion": "Ver empleados"
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 25,
+            "rol_id": 18,
+            "codigo": "ausencias.approve",
+            "descripcion": "Aprobar ausencias"
+        }
+    ],
+    "reporte_programado": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "nombre": "Reporte mensual de asistencia",
+            "tipo": 1,
+            "parametros": {
+                "periodo": "2025-12"
+            },
+            "frecuencia_cron": "0 8 1 * *",
+            "formato": 3,
+            "destinatarios": [
+                "rrhh@talenttrack.com"
+            ],
+            "activo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 2,
+            "nombre": "Reporte mensual de asistencia",
+            "tipo": 1,
+            "parametros": {
+                "periodo": "2025-12"
+            },
+            "frecuencia_cron": "0 8 1 * *",
+            "formato": 3,
+            "destinatarios": [
+                "rrhh@innovatech.com"
+            ],
+            "activo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 3,
+            "nombre": "Reporte mensual de asistencia",
+            "tipo": 1,
+            "parametros": {
+                "periodo": "2025-12"
+            },
+            "frecuencia_cron": "0 8 1 * *",
+            "formato": 3,
+            "destinatarios": [
+                "rrhh@solucioneschile.com"
+            ],
+            "activo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 4,
+            "nombre": "Reporte mensual de asistencia",
+            "tipo": 1,
+            "parametros": {
+                "periodo": "2025-12"
+            },
+            "frecuencia_cron": "0 8 1 * *",
+            "formato": 3,
+            "destinatarios": [
+                "rrhh@consultoracol.com"
+            ],
+            "activo": false
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 5,
+            "nombre": "Reporte mensual de asistencia",
+            "tipo": 1,
+            "parametros": {
+                "periodo": "2025-12"
+            },
+            "frecuencia_cron": "0 8 1 * *",
+            "formato": 3,
+            "destinatarios": [
+                "rrhh@desarrollodigital.com"
+            ],
+            "activo": false
+        }
+    ],
     "integracion_erp": [],
     "webhook": [],
-    "exportacion_nomina": [],
-    "notificacion": [],
-    "log_auditoria": []
+    "exportacion_nomina": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "periodo": "2025-12",
+            "total_horas": "160.00",
+            "total_extras": "5.00",
+            "observaciones": "Exportación de prueba",
+            "archivo_url": "/exportaciones/nomina_1_2025-12.csv",
+            "generado_el": "2025-12-20 07:00:00+00:00",
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 2,
+            "periodo": "2025-12",
+            "total_horas": "160.00",
+            "total_extras": "5.00",
+            "observaciones": "Exportación de prueba",
+            "archivo_url": "/exportaciones/nomina_2_2025-12.csv",
+            "generado_el": "2025-12-20 07:00:00+00:00",
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 3,
+            "periodo": "2025-12",
+            "total_horas": "160.00",
+            "total_extras": "5.00",
+            "observaciones": "Exportación de prueba",
+            "archivo_url": "/exportaciones/nomina_3_2025-12.csv",
+            "generado_el": "2025-12-20 07:00:00+00:00",
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 4,
+            "periodo": "2025-12",
+            "total_horas": "160.00",
+            "total_extras": "5.00",
+            "observaciones": "Exportación de prueba",
+            "archivo_url": "/exportaciones/nomina_4_2025-12.csv",
+            "generado_el": "2025-12-20 07:00:00+00:00",
+            "estado": 1
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 5,
+            "periodo": "2025-12",
+            "total_horas": "160.00",
+            "total_extras": "5.00",
+            "observaciones": "Exportación de prueba",
+            "archivo_url": "/exportaciones/nomina_5_2025-12.csv",
+            "generado_el": "2025-12-20 07:00:00+00:00",
+            "estado": 1
+        }
+    ],
+    "notificacion": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "empleado_id": 1,
+            "canal": 2,
+            "titulo": "Recordatorio",
+            "mensaje": "Recuerda registrar tu asistencia diariamente.",
+            "enviada_el": "2025-12-17 09:00:00+00:00",
+            "leida_el": null,
+            "accion_url": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 2,
+            "empleado_id": 21,
+            "canal": 2,
+            "titulo": "Recordatorio",
+            "mensaje": "Recuerda registrar tu asistencia diariamente.",
+            "enviada_el": "2025-12-17 09:00:00+00:00",
+            "leida_el": null,
+            "accion_url": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 3,
+            "empleado_id": 26,
+            "canal": 2,
+            "titulo": "Recordatorio",
+            "mensaje": "Recuerda registrar tu asistencia diariamente.",
+            "enviada_el": "2025-12-17 09:00:00+00:00",
+            "leida_el": null,
+            "accion_url": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 4,
+            "empleado_id": 31,
+            "canal": 2,
+            "titulo": "Recordatorio",
+            "mensaje": "Recuerda registrar tu asistencia diariamente.",
+            "enviada_el": "2025-12-17 09:00:00+00:00",
+            "leida_el": null,
+            "accion_url": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 5,
+            "empleado_id": 36,
+            "canal": 2,
+            "titulo": "Recordatorio",
+            "mensaje": "Recuerda registrar tu asistencia diariamente.",
+            "enviada_el": "2025-12-17 09:00:00+00:00",
+            "leida_el": null,
+            "accion_url": null
+        }
+    ],
+    "log_auditoria": [
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 1,
+            "empresa_id": 1,
+            "usuario_id": 3,
+            "accion": "CREATE",
+            "entidad": "empleado",
+            "entidad_id": 1,
+            "detalles": {
+                "nota": "registro de prueba"
+            },
+            "fecha": "2025-12-20 12:00:00+00:00",
+            "ip": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 2,
+            "empresa_id": 1,
+            "usuario_id": 3,
+            "accion": "UPDATE",
+            "entidad": "solicitudausencia",
+            "entidad_id": 1,
+            "detalles": {
+                "nota": "registro de prueba"
+            },
+            "fecha": "2025-12-20 12:00:00+00:00",
+            "ip": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 3,
+            "empresa_id": 2,
+            "usuario_id": 22,
+            "accion": "CREATE",
+            "entidad": "empleado",
+            "entidad_id": 21,
+            "detalles": {
+                "nota": "registro de prueba"
+            },
+            "fecha": "2025-12-20 12:00:00+00:00",
+            "ip": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 4,
+            "empresa_id": 2,
+            "usuario_id": 22,
+            "accion": "UPDATE",
+            "entidad": "solicitudausencia",
+            "entidad_id": 2,
+            "detalles": {
+                "nota": "registro de prueba"
+            },
+            "fecha": "2025-12-20 12:00:00+00:00",
+            "ip": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 5,
+            "empresa_id": 3,
+            "usuario_id": 27,
+            "accion": "CREATE",
+            "entidad": "empleado",
+            "entidad_id": 26,
+            "detalles": {
+                "nota": "registro de prueba"
+            },
+            "fecha": "2025-12-20 12:00:00+00:00",
+            "ip": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 6,
+            "empresa_id": 3,
+            "usuario_id": 27,
+            "accion": "UPDATE",
+            "entidad": "solicitudausencia",
+            "entidad_id": 3,
+            "detalles": {
+                "nota": "registro de prueba"
+            },
+            "fecha": "2025-12-20 12:00:00+00:00",
+            "ip": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 7,
+            "empresa_id": 4,
+            "usuario_id": 32,
+            "accion": "CREATE",
+            "entidad": "empleado",
+            "entidad_id": 31,
+            "detalles": {
+                "nota": "registro de prueba"
+            },
+            "fecha": "2025-12-20 12:00:00+00:00",
+            "ip": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 8,
+            "empresa_id": 4,
+            "usuario_id": 32,
+            "accion": "UPDATE",
+            "entidad": "solicitudausencia",
+            "entidad_id": 4,
+            "detalles": {
+                "nota": "registro de prueba"
+            },
+            "fecha": "2025-12-20 12:00:00+00:00",
+            "ip": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 9,
+            "empresa_id": 5,
+            "usuario_id": 37,
+            "accion": "CREATE",
+            "entidad": "empleado",
+            "entidad_id": 36,
+            "detalles": {
+                "nota": "registro de prueba"
+            },
+            "fecha": "2025-12-20 12:00:00+00:00",
+            "ip": null
+        },
+        {
+            "_state": "<django.db.models.base.ModelState object at 0x0000000000000000>",
+            "id": 10,
+            "empresa_id": 5,
+            "usuario_id": 37,
+            "accion": "UPDATE",
+            "entidad": "solicitudausencia",
+            "entidad_id": 5,
+            "detalles": {
+                "nota": "registro de prueba"
+            },
+            "fecha": "2025-12-20 12:00:00+00:00",
+            "ip": null
+        }
+    ]
 }

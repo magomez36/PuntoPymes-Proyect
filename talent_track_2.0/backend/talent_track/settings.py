@@ -92,7 +92,7 @@ DATABASES = {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.environ.get('POSTGRES_DB', 'talent_track'),
             'USER': os.environ.get('POSTGRES_USER', 'postgres'),
-            'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'Solcito19demarzodel2004'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'postgres12345'),
             'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
             'PORT': os.environ.get('POSTGRES_PORT', '5432'),
         }
@@ -139,3 +139,4 @@ STATIC_URL = 'static/'
 # CORS CONFIG (DESARROLLO)
 # ==========================
 CORS_ALLOW_ALL_ORIGINS = True
+

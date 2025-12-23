@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Empresa
 
+from django.utils import timezone
+
 PAISES = {
     1: "Argentina",
     2: "Bolivia",
@@ -80,3 +82,51 @@ class EmpresaSerializer(serializers.ModelSerializer):
 
     def get_estado_nombre(self, obj):
         return ESTADOS.get(obj.estado, "Desconocido")
+
+
+class EmpresaCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Empresa
+        fields = (
+            'razon_social',
+            'nombre_comercial',
+            'ruc_nit',
+            'pais',
+            'moneda',
+            'estado',
+            'creada_el',
+            'logo_url',
+        )
+        read_only_fields = (
+            'estado',
+            'creada_el',
+            'logo_url',
+        )
+        
+    def create(self, validated_data):
+        empresa = Empresa.objects.create(
+            razon_social=validated_data['razon_social'],
+            nombre_comercial=validated_data['nombre_comercial'],
+            ruc_nit=validated_data['ruc_nit'],
+            pais=validated_data['pais'],
+            moneda=validated_data['moneda'],
+            estado=1,            
+            creada_el=timezone.now(),
+            logo_url=None                
+        )
+        return empresa
+    
+class EmpresaUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Empresa
+        fields = (
+            'razon_social',
+            'nombre_comercial',
+            'ruc_nit',
+            'pais',
+            'moneda',
+            'estado',
+        )
+
+    
