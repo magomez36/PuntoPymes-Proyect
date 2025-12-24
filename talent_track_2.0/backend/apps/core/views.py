@@ -11,6 +11,7 @@ from apps.core.models import Empresa
 from apps.core.serializers import EmpresaUpdateSerializer
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from rest_framework.permissions import AllowAny
 
 
 # Vista para listar todas las empresas
@@ -93,6 +94,33 @@ class ToggleEstadoEmpresaAPIView(APIView):
             {
                 "id": empresa.id,
                 "estado": empresa.estado
+            },
+            status=status.HTTP_200_OK
+        )
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+from .models import Empresa
+from .serializers import EmpresaSerializer
+
+class EmpresaDetalleEliminarAPIView(APIView):
+
+    def get(self, request, pk):
+        empresa = get_object_or_404(Empresa, pk=pk)
+        serializer = EmpresaSerializer(empresa)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request, pk):
+        empresa = get_object_or_404(Empresa, pk=pk)
+        deleted_count, deleted_detail = empresa.delete()
+        return Response(
+            {
+                "message": "Empresa eliminada correctamente",
+                "empresa_id": pk,
+                "deleted_count": deleted_count,
+                "deleted_detail": deleted_detail,
             },
             status=status.HTTP_200_OK
         )

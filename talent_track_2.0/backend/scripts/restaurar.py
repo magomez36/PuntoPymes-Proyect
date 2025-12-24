@@ -115,3 +115,5 @@ for modelo, nombre_tabla in tablas:
     print(f"{insertados} registros insertados en {nombre_tabla}")
 
 print("Restauración completada correctamente.")
+
+# python scripts\restaurar.py

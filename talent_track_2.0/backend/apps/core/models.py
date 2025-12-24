@@ -1,6 +1,4 @@
-from django.db import models
-
-# Create your models here.
+# apps/core/models.py
 from django.db import models
 
 class Empresa(models.Model):
@@ -20,7 +18,7 @@ class Empresa(models.Model):
 
 class UnidadOrganizacional(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     unidad_padre = models.ForeignKey(
         'self',
         null=True,
@@ -39,8 +37,8 @@ class UnidadOrganizacional(models.Model):
 
 class Puesto(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
-    unidad = models.ForeignKey(UnidadOrganizacional, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    unidad = models.ForeignKey(UnidadOrganizacional, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=150)
     descripcion = models.TextField(null=True, blank=True)
     nivel = models.CharField(max_length=150)

@@ -1,14 +1,12 @@
-from django.db import models
-
-# Create your models here.
+# apps/notificaciones/models.py
 from django.db import models
 from apps.core.models import Empresa
 from apps.empleados.models import Empleado
 
 class Notificacion(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
-    empleado = models.ForeignKey(Empleado, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
     canal = models.SmallIntegerField()
     titulo = models.CharField(max_length=150)
     mensaje = models.TextField()

@@ -1,12 +1,10 @@
-from django.db import models
-
-# Create your models here.
+# apps/integraciones/models.py
 from django.db import models
 from apps.core.models import Empresa
 
 class ReporteProgramado(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=150)
     tipo = models.SmallIntegerField()
     parametros = models.JSONField(null=True, blank=True)
@@ -21,7 +19,7 @@ class ReporteProgramado(models.Model):
 
 class IntegracionERP(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     erp_nombre = models.CharField(max_length=150)
     tipo = models.SmallIntegerField()
     metodo = models.SmallIntegerField()
@@ -36,7 +34,7 @@ class IntegracionERP(models.Model):
 
 class Webhook(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     evento = models.SmallIntegerField()
     url = models.TextField()
     secreto = models.CharField(max_length=150)
@@ -50,7 +48,7 @@ class Webhook(models.Model):
 
 class ExportacionNomina(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     periodo = models.CharField(max_length=150)
     total_horas = models.DecimalField(max_digits=7, decimal_places=2)
     total_extras = models.DecimalField(max_digits=7, decimal_places=2)

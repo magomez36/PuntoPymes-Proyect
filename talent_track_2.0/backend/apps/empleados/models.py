@@ -1,14 +1,12 @@
-from django.db import models
-
-# Create your models here.
+# apps/empleados/models.py
 from django.db import models
 from apps.core.models import Empresa, UnidadOrganizacional, Puesto
 
 class Empleado(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
-    unidad = models.ForeignKey(UnidadOrganizacional, on_delete=models.PROTECT)
-    puesto = models.ForeignKey(Puesto, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    unidad = models.ForeignKey(UnidadOrganizacional, on_delete=models.CASCADE)
+    puesto = models.ForeignKey(Puesto, on_delete=models.CASCADE)
     manager = models.ForeignKey(
         'self',
         null=True,
@@ -32,13 +30,13 @@ class Empleado(models.Model):
 
 class Contrato(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
-    empleado = models.ForeignKey(Empleado, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
     turno_base = models.ForeignKey(
         'asistencia.Turno',
         null=True,
         blank=True,
-        on_delete=models.PROTECT
+        on_delete=models.SET_NULL  # excepción recomendada (dato maestro / referencia)
     )
     tipo = models.SmallIntegerField()
     fecha_inicio = models.DateField()
@@ -53,8 +51,8 @@ class Contrato(models.Model):
 
 class DocumentoEmpleado(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
-    empleado = models.ForeignKey(Empleado, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
     tipo = models.SmallIntegerField()
     archivo_url = models.TextField(null=True, blank=True)
     observaciones = models.TextField(null=True, blank=True)

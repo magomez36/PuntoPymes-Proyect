@@ -1,13 +1,11 @@
-from django.db import models
-
-# Create your models here.
+# apps/asistencia/models.py
 from django.db import models
 from apps.core.models import Empresa
 from apps.empleados.models import Empleado
 
 class Turno(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=150)
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
@@ -22,9 +20,9 @@ class Turno(models.Model):
 
 class AsignacionTurno(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
-    empleado = models.ForeignKey(Empleado, on_delete=models.PROTECT)
-    turno = models.ForeignKey(Turno, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
+    turno = models.ForeignKey(Turno, on_delete=models.CASCADE)
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
     es_rotativo = models.BooleanField(default=False)
@@ -35,7 +33,7 @@ class AsignacionTurno(models.Model):
 
 class GeoCerca(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=150)
     tipo = models.SmallIntegerField()
     coordenadas = models.JSONField(null=True, blank=True)
@@ -47,8 +45,8 @@ class GeoCerca(models.Model):
 
 class ReglaAsistencia(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
-    geocerca = models.ForeignKey(GeoCerca, null=True, blank=True, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    geocerca = models.ForeignKey(GeoCerca, null=True, blank=True, on_delete=models.SET_NULL)
     considera_tardanza_desde_min = models.IntegerField()
     calculo_horas_extra = models.SmallIntegerField(default=0)
     ip_permitidas = models.JSONField(null=True, blank=True)
@@ -59,8 +57,8 @@ class ReglaAsistencia(models.Model):
 
 class DispositivoEmpleado(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
-    empleado = models.ForeignKey(Empleado, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
     tipo = models.SmallIntegerField()
     device_uid = models.CharField(max_length=150, null=True, blank=True)
     ultimo_uso_el = models.DateTimeField(null=True, blank=True)
@@ -72,8 +70,8 @@ class DispositivoEmpleado(models.Model):
 
 class EventoAsistencia(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
-    empleado = models.ForeignKey(Empleado, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
     tipo = models.SmallIntegerField()
     registrado_el = models.DateTimeField()
     fuente = models.SmallIntegerField()
@@ -90,8 +88,8 @@ class EventoAsistencia(models.Model):
 
 class JornadaCalculada(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT)
-    empleado = models.ForeignKey(Empleado, on_delete=models.PROTECT)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
     fecha = models.DateField()
     hora_primera_entrada = models.DateTimeField()
     hora_ultimo_salida = models.DateTimeField()

@@ -52,7 +52,7 @@ const EditarEmpresaSuperAdmin = () => {
   useEffect(() => {
     const fetchEmpresa = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/listado-empresas/${id}/`);
+        const response = await fetch(`http://127.0.0.1:8000/api/empresas/${id}/`);
         
         if (!response.ok) throw new Error("Error cargando empresa");
         
