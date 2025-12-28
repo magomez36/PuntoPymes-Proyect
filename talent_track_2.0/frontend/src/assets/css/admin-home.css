@@ -1,0 +1,254 @@
+/* ============================================
+   ESTILOS DE INICIO SUPER ADMIN (admin-home.css)
+   ============================================ */
+
+/* 1. SECCIÓN DE BIENVENIDA Y BÚSQUEDA */
+.welcome-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+    background-color: #fff;
+    padding: 20px 30px;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.header {
+    background-color: #fff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e9ecef; /* Línea sutil abajo */
+    margin-bottom: 30px; /* Espacio antes de las tarjetas */
+}
+
+.header-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+/* Barra de búsqueda */
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    /* Forzamos a que el contenedor sea invisible */
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important; 
+}
+
+.search-box i {
+    position: absolute;
+    left: 12px;
+    font-size: 18px;
+    color: #9ca3af;
+    z-index: 10; /* Encima del input */
+    pointer-events: none; /* Para poder escribir aunque hagas clic en el icono */
+}
+
+.search-box input {
+    padding: 10px 15px 10px 40px; /* Espacio para el icono a la izquierda */
+    border: 2px solid #f1f3f5;
+    border-radius: 10px;
+    font-size: 14px;
+    width: 300px;
+    transition: all 0.3s ease;
+    background-color: #f8f9fa;
+    outline: none;
+}
+
+.search-box input:focus {
+    border-color: #d51e37;
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(213, 30, 55, 0.1);
+}
+
+/* Texto introductorio */
+.welcome-text {
+    font-size: 16px;
+    color: #6c757d;
+    margin-bottom: 30px;
+}
+
+/* 2. TARJETAS DE ESTADÍSTICAS (Stats Grid) */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 50px;
+}
+
+.stat-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e9ecef;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Línea de color superior al hacer hover */
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #d51e37;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover::before {
+    transform: scaleX(1);
+}
+
+/* Iconos de las estadísticas */
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+/* Colores específicos para cada icono (basado en el orden) */
+.stat-card:nth-child(1) .stat-icon { background: #fee2e2; color: #d51e37; } /* Rojo */
+.stat-card:nth-child(2) .stat-icon { background: #e0e7ff; color: #4f46e5; } /* Azul índigo */
+.stat-card:nth-child(3) .stat-icon { background: #d1fae5; color: #10b981; } /* Verde */
+
+.stat-info h3 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    margin: 0 0 5px 0;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: #111827;
+    margin: 0 0 5px 0;
+    line-height: 1;
+}
+
+.stat-change {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+}
+
+/* 3. SECCIÓN DE MÓDULOS */
+.modules-section h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.module-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none; /* Por si es un Link */
+    color: inherit;
+}
+
+.module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+    border-color: #d51e37;
+}
+
+.module-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    transition: transform 0.3s;
+}
+
+.module-card:hover .module-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Colores de iconos de módulos */
+.module-card:nth-child(1) .module-icon { background: #fef3c7; color: #d97706; } /* Amarillo */
+.module-card:nth-child(2) .module-icon { background: #e0e7ff; color: #4f46e5; } /* Azul */
+.module-card:nth-child(3) .module-icon { background: #fce7f3; color: #db2777; } /* Rosa */
+.module-card:nth-child(4) .module-icon { background: #dbeafe; color: #2563eb; } /* Azul claro */
+
+.module-card h4 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    color: #1f2937;
+}
+
+.module-card p {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.module-action {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #f3f4f6;
+    color: #d51e37;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.module-action i {
+    transition: transform 0.2s;
+}
+
+.module-card:hover .module-action i {
+    transform: translateX(5px);
+}

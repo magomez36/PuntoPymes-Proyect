@@ -1,7 +1,8 @@
 import React from 'react';
 import Sidebar from '../../components/Sidebar'; // Asegúrate que la ruta sea correcta
 import 'boxicons/css/boxicons.min.css';
-import '../../assets/css/styles.css'; // Importamos tus estilos globales
+import '../../assets/css/dashboard.css'
+import '../../assets/css/global.css';
 
 const DashboardSuperAdmin = () => {
   return (

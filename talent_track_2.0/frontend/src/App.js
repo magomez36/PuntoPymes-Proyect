@@ -2,7 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // imports de css y layouts...
-import './assets/css/styles.css';
+import './assets/css/global.css';       // 1. Base
+import './assets/css/header.css';       // 2. Header/Footer
+import './assets/css/sidebar.css';      // 3. Sidebar (ya lo tenías)
+import './assets/css/auth.css';         // 4. Login
+import './assets/css/home.css';       // 4. Páginas Públicas
+import './assets/css/dashboard.css';    // 5. Dashboard
+import './assets/css/admin-ui.css';     // 6. Tablas y Botones
 import 'boxicons/css/boxicons.min.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -22,11 +28,15 @@ import EditarEmpresaSuperAdmin from './pages/superAdmin/seccionEmpresas/EditarEm
 
 const PublicLayout = ({ children }) => {
   return (
-    // OJO: Cambié "public-layout" por "layout" porque en tu CSS original
-    // la clase que tiene los estilos se llama ".layout".
-    <div className="layout">
+    // CAMBIO IMPORTANTE:
+    // 1. Cambiamos className="layout" por "public-layout".
+    // 2. Quitamos el Header y Footer de aquí SI YA LOS TIENES DENTRO DE Home.jsx
+    //    (Si Home.jsx ya tiene Header y Footer, bórralos de aquí para no tener duplicados).
+    //    Si Home.jsx SOLO tiene el contenido central, déjalos aquí.
+    
+    <div className="public-layout">
       <Header />
-      <main className="main-content">
+      <main className="public-content">
         {children}
       </main>
       <Footer />

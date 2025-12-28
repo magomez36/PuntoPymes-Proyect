@@ -1,17 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
+import '../../assets/css/admin-home.css';
 
 const InicioSuperAdmin = () => {
   return (
     <div className="layout">
-      {/* 1. Sidebar Inteligente (Reemplaza al sidebar estático del HTML) */}
       <Sidebar />
 
-      {/* 2. Contenido Principal */}
       <main className="main-content">
         
-        {/* Header */}
+        {/* Header con Buscador */}
         <header className="header">
           <h2 className="header-title">Bienvenido, (Superadmin)</h2>
           <div className="header-actions">
@@ -22,14 +21,13 @@ const InicioSuperAdmin = () => {
           </div>
         </header>
 
-        {/* Área de Contenido */}
         <div className="content-area">
           <div className="welcome-section">
             <h3>Aquí tienes un resumen conciso del estado actual del sistema.</h3>
           </div>
 
-          {/* Tarjetas de Estadísticas (Stats Cards) */}
           <div className="stats-grid">
+            {/* ... Tus otras tarjetas ... */}
             <div className="stat-card">
               <div className="stat-icon">
                 <i className='bx bx-buildings'></i>
@@ -52,9 +50,11 @@ const InicioSuperAdmin = () => {
               </div>
             </div>
 
+            {/* CORRECCIÓN DE ICONO AQUÍ */}
             <div className="stat-card">
               <div className="stat-icon">
-                <i className='bx bx-cloud-check'></i>
+                {/* Cambiamos a 'bx-server' o 'bx-pulse' que siempre funcionan */}
+                <i className='bx bx-server'></i>
               </div>
               <div className="stat-info">
                 <h3>Estado del Sistema</h3>
@@ -64,12 +64,12 @@ const InicioSuperAdmin = () => {
             </div>
           </div>
 
-          {/* Sección de Módulos */}
+          {/* ... Resto de tu código de módulos ... */}
+           {/* Sección de Módulos */}
           <div className="modules-section">
             <h2>Resumen de Módulos</h2>
             <div className="modules-grid">
               
-              {/* Módulo 1: Configuración */}
               <div className="module-card">
                 <div>
                   <div className="module-icon">
@@ -78,14 +78,12 @@ const InicioSuperAdmin = () => {
                   <h4>Configuración Global</h4>
                   <p>Ajustes generales de la plataforma y parámetros del sistema.</p>
                 </div>
-                {/* Nota: Enlace temporal a Dashboard hasta que tengas la pág de config */}
                 <Link to="/admin/dashboard" className="module-action" style={{ textDecoration: 'none' }}>
                   <span>Gestionar</span>
                   <i className='bx bx-right-arrow-alt'></i>
                 </Link>
               </div>
 
-              {/* Módulo 2: Gestión Multiempresa (Conectado a tu ruta real) */}
               <div className="module-card">
                 <div>
                   <div className="module-icon">
@@ -100,7 +98,6 @@ const InicioSuperAdmin = () => {
                 </Link>
               </div>
 
-              {/* Módulo 3: Control de Acceso */}
               <div className="module-card">
                 <div>
                   <div className="module-icon">
@@ -109,14 +106,12 @@ const InicioSuperAdmin = () => {
                   <h4>Control de Acceso</h4>
                   <p>Define roles y permisos para los administradores del sistema.</p>
                 </div>
-                {/* Nota: Enlace temporal */}
                 <Link to="/admin/dashboard" className="module-action" style={{ textDecoration: 'none' }}>
                   <span>Configurar Roles</span>
                   <i className='bx bx-right-arrow-alt'></i>
                 </Link>
               </div>
 
-              {/* Módulo 4: Monitor */}
               <div className="module-card">
                 <div>
                   <div className="module-icon">
@@ -125,7 +120,6 @@ const InicioSuperAdmin = () => {
                   <h4>Monitor de Sistema</h4>
                   <p>Visualiza el rendimiento, logs y estado de los servicios.</p>
                 </div>
-                {/* Nota: Enlace temporal */}
                 <Link to="/admin/dashboard" className="module-action" style={{ textDecoration: 'none' }}>
                   <span>Ver Estado</span>
                   <i className='bx bx-right-arrow-alt'></i>

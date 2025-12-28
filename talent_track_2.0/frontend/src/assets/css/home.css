@@ -1,0 +1,361 @@
+/* =======================================================
+   ESTILOS LANDING PAGE (home.css) - VERSIÓN FINAL
+   ======================================================= */
+
+/* 1. LAYOUT PRINCIPAL */
+.public-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    background-color: #f8f9fa; /* Fondo gris claro general */
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.public-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =======================================================
+   2. HEADER (Ajustado a tu JSX exacto)
+   ======================================================= */
+header {
+    background-color: #ffffff;
+    padding: 15px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+}
+
+/* El contenedor externo que limita el ancho */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+}
+
+/* El flexbox que alinea logo vs menú */
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* LOGO */
+.logo-section img.logo-main {
+    height: 45px; /* Tamaño controlado */
+    width: auto;
+    display: block;
+}
+
+/* MENÚ DE NAVEGACIÓN */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #4b5563;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: #d51e37; /* Tu rojo corporativo */
+}
+
+/* Botón de Iniciar Sesión en el Header */
+.btn-login {
+    background-color: #d51e37;
+    color: white !important; /* Forzamos color blanco */
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #b91c32;
+    transform: translateY(-1px);
+}
+
+.menu-toggle {
+    display: none; /* Oculto en PC */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* =======================================================
+   3. HERO SECTION (La parte central)
+   ======================================================= */
+.hero-section {
+    background-color: #f8f9fa; /* Fondo gris para resaltar la tarjeta blanca */
+    padding: 60px 20px;
+    flex: 1; /* Ocupa el espacio restante */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* La tarjeta blanca contenedora */
+.hero-content {
+    background-color: #ffffff;
+    max-width: 1200px;
+    width: 100%;
+    border-radius: 24px;
+    padding: 60px;
+    
+    /* Grid para dividir Texto vs Imagen */
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 60px;
+    align-items: center;
+
+    /* Sombra suave */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eef0f2;
+}
+
+/* Columna Izquierda: Textos */
+.hero-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea todo a la izquierda */
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: #111827;
+    line-height: 1.1;
+    margin-bottom: 24px;
+}
+
+.hero-text {
+    font-size: 1.15rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+/* ESTILO DEL BOTÓN PRINCIPAL (El que salía pequeño) */
+.btn-primary {
+    background: linear-gradient(135deg, #d51e37 0%, #a81729 100%);
+    color: white;
+    padding: 16px 36px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 10px 20px rgba(213, 30, 55, 0.2);
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(213, 30, 55, 0.3);
+    color: white;
+}
+
+/* Columna Derecha: Imagen */
+.hero-image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-img {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+/* =======================================================
+   4. RESPONSIVE (Móviles y Tablets)
+   ======================================================= */
+@media (max-width: 968px) {
+    /* 1. Botón Hamburguesa: Se hace visible */
+    .menu-toggle {
+        display: block;
+        color: #1f2937;
+    }
+
+    /* 2. Menú de Navegación: Por defecto OCULTO */
+    .nav-menu {
+        display: none;
+        width: 100%;
+        position: absolute;
+        top: 100%; /* Justo debajo del header */
+        left: 0;
+        background-color: #ffffff;
+        flex-direction: column; /* Lista vertical */
+        padding: 20px;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1); /* Sombra para que flote */
+        border-top: 1px solid #f3f4f6;
+    }
+
+    /* 3. ESTADO ACTIVO: ¡Aquí ocurre la magia! */
+    .nav-menu.active {
+        display: flex; /* Se muestra cuando tiene la clase 'active' */
+        animation: slideDown 0.3s ease forwards;
+    }
+
+    /* Ajustes visuales de los enlaces en móvil */
+    .nav-links {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .nav-links a {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        border-bottom: 1px solid #f9fafb;
+        text-align: center;
+    }
+
+    /* Botón Login ancho completo */
+    .btn-login {
+        display: block;
+        text-align: center;
+        width: 100%;
+    }
+
+    /* Ajustes del Hero para móvil (para que no se rompa) */
+    .hero-content {
+        grid-template-columns: 1fr;
+        padding: 40px 24px;
+        text-align: center;
+        /* Ponemos la imagen primero y el texto abajo */
+        display: flex; 
+        flex-direction: column-reverse;
+        gap: 30px;
+    }
+
+    .hero-text-wrapper {
+        align-items: center;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+}
+
+/* Animación suave al abrir */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =======================================================
+   5. FOOTER MODERNIZADO
+   ======================================================= */
+
+footer {
+    background-color: #1f2937; /* Gris oscuro profesional (Slate 800) */
+    color: #f3f4f6;
+    padding: 60px 0 30px;
+    margin-top: auto; /* Empuja el footer al fondo si hay poco contenido */
+    width: 100%;
+}
+
+/* Reutilizamos .container para centrar, pero añadimos grid para columnas */
+footer .footer-content {
+    display: grid;
+    /* Esto crea columnas automáticas de mínimo 250px */
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Estilo de cada columna */
+.footer-col h3, 
+.footer-col h4 {
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+/* Pequeña línea roja debajo del título de la columna */
+.footer-col h3::after, 
+.footer-col h4::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 3px;
+    background-color: #d51e37; /* Tu rojo corporativo */
+    margin-top: 8px;
+    border-radius: 2px;
+}
+
+.footer-col p {
+    color: #9ca3af; /* Gris suave */
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+
+/* Enlaces del footer */
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: #d1d5db;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.footer-links a:hover {
+    color: #ffffff;
+    padding-left: 5px; /* Pequeño movimiento al pasar el mouse */
+    color: #d51e37; /* Rojo al hover */
+}
+
+/* Copyright (Barra inferior) */
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 50px;
+    padding-top: 25px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6b7280;
+}

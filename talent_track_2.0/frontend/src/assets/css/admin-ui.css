@@ -1,0 +1,142 @@
+/* src/assets/css/admin-ui.css */
+
+/* --- TABLAS --- */
+.table-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+    overflow: hidden;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th {
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    color: #495057;
+    background-color: #f8f9fa;
+    text-transform: uppercase;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.data-table td {
+    padding: 18px 20px;
+    font-size: 15px;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+/* --- FORMULARIOS --- */
+.form-card {
+    background: white;
+    border-radius: 16px;
+    padding: 48px 56px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border: 1px solid #f1f3f5;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.form-input-field, .form-select-field {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: all 0.3s;
+    background-color: #fff;
+}
+
+.form-input-field:focus, .form-select-field:focus {
+    outline: none;
+    border-color: var(--color-red);
+}
+
+/* --- BADGES (Etiquetas de estado) --- */
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+}
+.status-active { background-color: #d1f4e0; color: #0f5132; }
+.status-inactive { background-color: #f8d7da; color: #842029; }
+
+/* --- BOTONES DE ACCIÓN (ACTUALIZADO) --- */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.btn-action {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    /* Estilos de contorno solicitados */
+    border: 1px solid #d1d5db;
+    text-decoration: none !important;
+    background-color: white;
+    color: #6b7280;
+}
+
+.btn-action:hover {
+    border-color: #9ca3af;
+    background-color: #f3f4f6;
+    color: #111827;
+    transform: translateY(-2px);
+}
+
+.btn-action.btn-danger {
+    color: #dc2626;
+    border-color: #fecaca;
+    background-color: #fef2f2;
+}
+
+.btn-action.btn-danger:hover {
+    background-color: #dc2626;
+    color: white;
+    border-color: #dc2626;
+}
+
+/* Botón Crear y Guardar */
+.btn-create-company, .btn-save {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--color-red) 0%, var(--color-dark-red) 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+.btn-create-company:hover, .btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(213, 30, 55, 0.3);
+}
+
+.btn-cancel {
+    padding: 12px 24px;
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    color: #495057;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-cancel:hover { background: #f8f9fa; }

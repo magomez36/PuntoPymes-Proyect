@@ -1,0 +1,352 @@
+/* ============================================
+   ESTILOS DE AUTENTICACIÓN (auth.css)
+   ============================================ */
+
+/* Definimos variables aquí por si acaso no cargan las globales */
+:root {
+    --color-white: #ffffff;
+    --color-gray: #868988;
+    --color-red: #d51e37;
+    --color-light-gray: #e1e1e1;
+    --color-light-pink: #f2bec5;
+    --color-dark-red: #a81729;
+    --color-darker-red: #8b1322;
+}
+
+/* 1. CONTENEDOR PRINCIPAL (Fondo degradado) */
+.login-page {
+    background: linear-gradient(135deg, var(--color-light-gray) 0%, var(--color-light-pink) 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* 2. TARJETA BLANCA CENTRAL */
+.login-container {
+    background: var(--color-white);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 450px;
+    padding: 50px 40px;
+    text-align: center;
+    animation: fadeInUp 0.6s ease;
+}
+
+/* Animación de entrada suave */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 3. ENCABEZADO (Logo y Título) */
+.login-header {
+    margin-bottom: 30px;
+}
+
+.login-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.login-subtitle {
+    font-size: 15px;
+    color: var(--color-gray);
+}
+
+/* 4. FORMULARIO E INPUTS (Aquí arreglamos los iconos flotantes) */
+.form-group {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* El envoltorio relativo permite que el icono absoluto se posicione dentro */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* El icono posicionado DENTRO del input */
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: var(--color-gray); /* Color gris por defecto */
+    pointer-events: none; /* Para que el clic pase al input */
+    z-index: 10;
+}
+
+.form-input {
+    width: 100%;
+    padding: 15px 15px 15px 50px; /* Padding izquierdo extra para dejar espacio al icono */
+    border: 2px solid var(--color-light-gray);
+    border-radius: 12px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background-color: var(--color-white);
+    color: #333;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-red);
+    background-color: var(--color-white);
+    box-shadow: 0 0 0 4px rgba(213, 30, 55, 0.1);
+}
+
+.form-input::placeholder {
+    color: var(--color-gray);
+}
+
+/* Icono de Ojo para ver contraseña */
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 24px;
+    color: var(--color-gray);
+    transition: color 0.3s ease;
+    z-index: 10;
+}
+
+.password-toggle:hover {
+    color: var(--color-red);
+}
+
+/* 5. OPCIONES (Recordar / Olvidaste contraseña) */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-red);
+    cursor: pointer;
+}
+
+.checkbox-label {
+    color: var(--color-gray);
+    user-select: none;
+}
+
+.forgot-password {
+    color: var(--color-red);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.forgot-password:hover {
+    color: var(--color-dark-red);
+    text-decoration: underline;
+}
+
+/* 6. BOTÓN DE LOGIN */
+.login-button {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--color-red) 0%, var(--color-dark-red) 100%);
+    color: var(--color-white);
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(213, 30, 55, 0.3);
+}
+
+.login-button:hover {
+    background: linear-gradient(135deg, var(--color-dark-red) 0%, var(--color-darker-red) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(213, 30, 55, 0.4);
+}
+
+.login-button:active {
+    transform: translateY(0);
+}
+
+/* Enlace inferior de Volver */
+.back-home-link {
+    display: inline-block;
+    color: var(--color-red);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.back-home-link:hover {
+    text-decoration: underline;
+}
+
+/* Footer de copyright */
+.login-footer-text {
+    margin-top: 30px;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+/* ============================================
+   ESTILOS RESTABLECER CONTRASEÑA
+   (Añadir al final de auth.css)
+   ============================================ */
+
+.reset-container {
+    background: var(--color-white);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 480px; /* Un poco más ancho que el login */
+    padding: 50px 40px;
+    text-align: center;
+    animation: fadeInUp 0.6s ease;
+}
+
+/* Reducimos el margen inferior del campo de correo solo en esta página */
+.reset-container .form-group {
+    margin-bottom: 8px; /* Antes tenía 25px, esto lo subirá bastante */
+}
+
+/* Opcional: Si quieres subirlo aún más, quita el margen del botón */
+.reset-container .reset-button {
+    margin-top: 5px; /* Ajuste fino */
+}
+
+/* Icono animado superior */
+.reset-icon-wrapper {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.reset-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: var(--color-red);
+    position: relative;
+    box-shadow: 0 10px 25px rgba(213, 30, 55, 0.2);
+}
+
+/* Animación de ondas (Pulse) */
+.reset-icon::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--color-red);
+    opacity: 0;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+.reset-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 15px;
+}
+
+.reset-subtitle {
+    font-size: 15px;
+    color: var(--color-gray);
+    line-height: 1.6;
+    margin-bottom: 35px;
+}
+
+.reset-button {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--color-red) 0%, var(--color-dark-red) 100%);
+    color: var(--color-white);
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(213, 30, 55, 0.3);
+    margin-top: 10px;
+}
+
+.reset-button:hover {
+    background: linear-gradient(135deg, var(--color-dark-red) 0%, var(--color-darker-red) 100%);
+    transform: translateY(-2px);
+}
+
+.back-to-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 25px;
+    color: #4b5563;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: color 0.3s;
+}
+
+.back-to-login:hover {
+    color: var(--color-red);
+}
+
+/* ============================================
+   RESPONSIVE (Móviles)
+   ============================================ */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 40px 25px;
+    }
+
+    .form-options {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .forgot-password {
+        align-self: flex-end; /* Lo pone a la derecha en móviles */
+    }
+}

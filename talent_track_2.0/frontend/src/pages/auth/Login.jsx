@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 // Asegúrate de tener el logo en la ruta correcta, por ejemplo: src/assets/images/
 import logo from '../../assets/img/talenTrackLogo_SVG.svg'; 
-import App from '../../App';
 import 'boxicons/css/boxicons.min.css';
 
 const Login = () => {
@@ -93,18 +92,19 @@ const Login = () => {
               />
               <label className="checkbox-label" htmlFor="remember">Recordar Contraseña</label>
             </div>
-            {/* Usamos Link en lugar de a href */}
-            <Link to="/reset-password" class="forgot-password">¿Olvidaste tu contraseña?</Link>
+            {/* CORREGIDO: class -> className */}
+            <Link to="/reset-password" className="forgot-password">¿Olvidaste tu contraseña?</Link>
           </div>
 
           <button type="submit" className="login-button">Iniciar Sesión</button>
         </form>
 
-        <Link to="/" className="back-link" style={{ display: 'block', marginTop: '0px', color: '#1506e4ff', textDecoration: 'none' }}>
+        {/* CORREGIDO: Quitamos el style inline azul y usamos la clase correcta */}
+        <Link to="/" className="back-home-link">
           ← Volver al inicio
         </Link>
 
-        <p className="footer-text" style={{ marginTop: '10px' }}>© 2025 UTPL. Todos los derechos reservados.</p>
+        <p className="footer-text" style={{ marginTop: '30px' }}>© 2025 UTPL. Todos los derechos reservados.</p>
       </div>
     </div>
   );

@@ -1,40 +1,29 @@
 import React from 'react';
-import '../../assets/css/styles.css'; // Asegúrate de importar tus estilos si no están globales
+import { Link } from 'react-router-dom';
+import '../../assets/css/home.css';
 
 const Home = () => {
   return (
-    <div className="layout">
-      <main className="main-content">
-        <section className="hero-section">
-          <div className="container">
-            <div className="hero-content">
-              
-              {/* Texto del Hero */}
-              <div className="hero-text">
-                <h1 className="hero-title">Simplifica la gestión de tu equipo</h1>
-                <p className="hero-subtitle">
-                  Nuestra plataforma integral de recursos humanos te ayuda a gestionar todo,
-                  desde la contratación hasta la nómina, de manera eficiente y centralizada.
-                </p>
-                <div className="hero-buttons">
-                  {/* Aquí irían tus botones de acción si decides agregarlos */}
-                </div>
-              </div>
+    <main className="hero-section">
+      <div className="hero-content">
+        <div className="hero-text-wrapper">
+          <h1 className="hero-title">Simplifica la gestión de tu equipo</h1>
+          <p className="hero-text">
+            Nuestra plataforma integral de recursos humanos te ayuda a gestionar todo, 
+            desde la contratación hasta la nómina, de manera eficiente y centralizada.
+          </p>
+          <Link to="/login" className="btn-primary">Empezar Ahora</Link>
+        </div>
 
-              {/* Imagen del Hero */}
-              <div className="hero-image">
-                {/* NOTA: En React las etiquetas img siempre deben cerrarse con "/>" */}
-                <img 
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbVr2fFC0zxt6Ptr9J7eo2YKk-vZJzBPYSADyzX5vL83-7z4Z3dHcv9DGg-vuOV4oiDiRcbVrct022zhtsaG3iovFrZ4w0C61JMOP1QEwxc1C399OYN4jHHbJjpY5ViIsdMTmxr9UCiJQi9qrJJ5iAUPGCcJcaQaaJBmHvsMxhV-fuukQrOsM9jm9yEvRZ-fl-kPmLnmOqjyleEoLEFxQHkdk8bt_03Kz0YAv6g1RnbTjonPnOYhPg3N_FhPZn9GCps8eHBoebLn8" 
-                  alt="Equipo colaborando en oficina moderna" 
-                />
-              </div>
-
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
+      <div className="hero-image-container">
+        <img 
+          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+          alt="Equipo trabajando" 
+          className="hero-img"
+        />
+      </div>
+      </div>
+    </main>
   );
 };
 
