@@ -1,0 +1,8 @@
+# Entornos virtuales de Python
+backend/venv/
+venv/
+.venv/
+*/venv/
+*/.venv/
+**/venv/
+**/.venv/
