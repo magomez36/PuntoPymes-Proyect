@@ -1,108 +1,154 @@
 /* ============================================
-   ESTILOS DEL MODAL (Ventana Emergente)
-   src/assets/css/modal.css
+   ESTILOS DE MODALES PREMIUM (modal.css)
    ============================================ */
 
+/* 1. Fondo oscuro (Overlay) */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
-    backdrop-filter: blur(2px); /* Efecto borroso elegante en el fondo */
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Oscuro y elegante */
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     z-index: 2000;
-    animation: fadeIn 0.2s ease-out;
+    backdrop-filter: blur(4px); /* Efecto borroso */
+    animation: fadeIn 0.3s ease;
 }
 
+/* 2. Contenedor del Modal */
 .modal-content {
-    background: white;
-    padding: 30px;
+    background: #ffffff;
+    padding: 40px 50px;
     border-radius: 16px;
     width: 90%;
-    max-width: 400px;
+    max-width: 550px; /* Ancho ideal según diseño */
     text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-    border: 1px solid rgba(0,0,0,0.05);
-    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); /* Animación suave tipo Apple */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transform: scale(0.95);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    position: relative;
 }
 
+/* 3. Icono Superior (Rojo con fondo rosa) */
 .modal-icon {
-    font-size: 52px;
-    color: #f59e0b; /* Amarillo advertencia */
-    margin-bottom: 15px;
-    display: inline-block;
+    width: 70px;
+    height: 70px;
+    background-color: #fee2e2; /* Rosa claro */
+    color: #dc2626; /* Rojo intenso */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 25px auto;
+    /* Sombra suave roja para dar profundidad */
+    box-shadow: 0 4px 10px rgba(220, 38, 38, 0.15);
 }
 
+/* 4. Título y Texto */
 .modal-title {
     font-size: 22px;
-    font-weight: 700;
-    color: #111827;
-    margin: 0 0 10px 0;
+    font-weight: 800;
+    color: #111827; /* Negro casi puro */
+    margin-bottom: 15px;
 }
 
 .modal-text {
     font-size: 15px;
-    color: #6b7280;
-    margin: 0 0 25px 0;
-    line-height: 1.5;
+    color: #6b7280; /* Gris medio */
+    margin-bottom: 35px;
+    line-height: 1.6;
 }
 
-.modal-text strong {
-    color: #111;
+/* Nombre de la empresa en negrita */
+.company-name-highlight {
+    color: #111827;
+    font-weight: 700;
 }
 
+/* 5. Lista de Advertencias (Para el Modal de Eliminar Paso 2) */
+.warning-list {
+    text-align: left;
+    background-color: #fef2f2; /* Fondo rosa muy claro */
+    border: 1px solid #fee2e2;
+    padding: 20px 25px;
+    border-radius: 12px;
+    margin-bottom: 35px;
+}
+
+.warning-list ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.warning-list li {
+    font-size: 14px;
+    color: #7f1d1d; /* Rojo oscuro para el texto */
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+/* Icono de "menos" (-) rojo antes de cada item */
+.warning-list li::before {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 2px;
+    background-color: #dc2626;
+    margin-right: 10px;
+    border-radius: 2px;
+}
+
+.warning-list li:last-child {
+    margin-bottom: 0;
+}
+
+/* 6. Botones */
 .modal-actions {
     display: flex;
-    justify-content: center;
-    gap: 12px;
+    justify-content: center; /* Centrados */
+    gap: 15px;
 }
 
-.btn-modal-cancel {
-    padding: 10px 20px;
-    border: 1px solid #e5e7eb;
-    background: white;
+.btn-modal {
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 130px; /* Ancho mínimo para que se vean iguales */
+}
+
+/* Botón Cancelar (Blanco con borde rojo/gris) */
+.btn-cancel {
+    background-color: #ffffff;
+    border: 2px solid #e5e7eb;
     color: #374151;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
 }
 
-.btn-modal-cancel:hover {
-    background: #f9fafb;
-    border-color: #d1d5db;
+.btn-cancel:hover {
+    border-color: #dc2626; /* Se pone rojo al pasar el mouse */
+    color: #dc2626;
+    background-color: #fef2f2;
 }
 
-.btn-modal-confirm {
-    padding: 10px 20px;
-    border: none;
-    background: linear-gradient(135deg, #d51e37 0%, #b91c32 100%);
+/* Botón Confirmar/Eliminar/Continuar (Rojo sólido) */
+.btn-confirm-danger {
+    background: #dc2626;
+    border: 2px solid #dc2626;
     color: white;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 4px 6px -1px rgba(213, 30, 55, 0.2);
+    box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
 }
 
-.btn-modal-confirm:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 10px -1px rgba(213, 30, 55, 0.3);
+.btn-confirm-danger:hover {
+    background: #b91c1c;
+    border-color: #b91c1c;
+    box-shadow: 0 6px 15px rgba(220, 38, 38, 0.3);
 }
 
 /* Animaciones */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideUp {
-    from { transform: translateY(20px) scale(0.95); opacity: 0; }
-    to { transform: translateY(0) scale(1); opacity: 1; }
-}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes popIn { from { transform: scale(0.95); } to { transform: scale(1); } }
