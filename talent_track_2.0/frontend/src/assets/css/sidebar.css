@@ -55,10 +55,11 @@
     white-space: nowrap;
 }
 
+/* CORRECCIÓN: Centrar logo al expandir */
 @media (min-width: 769px) {
     .sidebar:hover .sidebar-logo {
-        justify-content: flex-start;
-        padding-left: 24px;
+        justify-content: center; /* <--- AHORA LO CENTRA */
+        padding-left: 0;         /* Quitamos el relleno izquierdo para que sea un centro real */
     }
 }
 
@@ -213,6 +214,21 @@
     gap: 4px;
     background: #f9fafb;
     margin-top: auto;
+}
+
+/* Centrar logo cuando el sidebar está desplegado */
+.sidebar.open .logo-details {
+    justify-content: center; /* Centra los elementos horizontalmente */
+    text-align: center;
+    padding-left: 0; /* Quitamos padding si tenía */
+}
+
+/* Si el botón de menú (hamburguesa) se mueve y no quieres que se centre: */
+.sidebar.open .logo-details #btn {
+    position: absolute; /* Lo fijamos a la derecha */
+    right: 10px;        /* Ajusta esta distancia según necesites */
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 /* Logout */
