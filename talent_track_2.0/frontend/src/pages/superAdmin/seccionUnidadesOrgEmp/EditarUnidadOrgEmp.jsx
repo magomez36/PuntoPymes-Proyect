@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -28,7 +29,7 @@ export default function EditarUnidadOrgEmp() {
   });
 
   const fetchDetail = async () => {
-    const res = await fetch(`${API_BASE}/api/unidades-organizacionales/${id}/`, {
+    const res = await apiFetch(`${API_BASE}/api/unidades-organizacionales/${id}/`, {
       headers: authHeaders,
     });
     if (!res.ok) throw new Error("No se pudo cargar la unidad");
@@ -36,7 +37,7 @@ export default function EditarUnidadOrgEmp() {
   };
 
   const fetchUnidadesEmpresa = async (empresaId) => {
-    const res = await fetch(`${API_BASE}/api/unidades-organizacionales/?empresa_id=${empresaId}`, {
+    const res = await apiFetch(`${API_BASE}/api/unidades-organizacionales/?empresa_id=${empresaId}`, {
       headers: authHeaders,
     });
     if (!res.ok) throw new Error("No se pudieron cargar unidades de la empresa");
@@ -90,7 +91,7 @@ export default function EditarUnidadOrgEmp() {
       estado: parseInt(form.estado, 10),
     };
 
-    const res = await fetch(`${API_BASE}/api/unidades-organizacionales/${id}/`, {
+    const res = await apiFetch(`${API_BASE}/api/unidades-organizacionales/${id}/`, {
       method: "PUT",
       headers: authHeaders,
       body: JSON.stringify(payload),

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API = "http://127.0.0.1:8000/api";
 
@@ -17,7 +18,7 @@ export default function KPIsEmp() {
     setLoading(true);
     setErrorMsg("");
     try {
-      const res = await fetch(`${API}/kpis/`, {
+      const res = await apiFetch(`${API}/kpis/`, {
         headers: { Authorization: `Bearer ${getAccessToken()}` },
       });
       if (!res.ok) throw new Error("No se pudo cargar KPIs");
@@ -33,7 +34,7 @@ export default function KPIsEmp() {
   const handleDelete = async (id) => {
     if (!window.confirm("¿Eliminar este KPI?")) return;
     try {
-      const res = await fetch(`${API}/kpis/${id}/`, {
+      const res = await apiFetch(`${API}/kpis/${id}/`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${getAccessToken()}` },
       });

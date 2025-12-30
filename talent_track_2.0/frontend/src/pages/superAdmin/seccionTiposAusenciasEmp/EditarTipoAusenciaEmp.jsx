@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API = "http://127.0.0.1:8000/api";
 
@@ -25,7 +26,7 @@ export default function EditarTipoAusenciaEmp() {
       setLoading(true);
       setErrorMsg("");
       try {
-        const res = await fetch(`${API}/tipos-ausencias/${id}/`, {
+        const res = await apiFetch(`${API}/tipos-ausencias/${id}/`, {
           headers: { Authorization: `Bearer ${getAccessToken()}` },
         });
         if (!res.ok) throw new Error("No se pudo cargar el registro");
@@ -56,7 +57,7 @@ export default function EditarTipoAusenciaEmp() {
         requiere_soporte: Boolean(requiereSoporte),
       };
 
-      const res = await fetch(`${API}/tipos-ausencias/${id}/`, {
+      const res = await apiFetch(`${API}/tipos-ausencias/${id}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

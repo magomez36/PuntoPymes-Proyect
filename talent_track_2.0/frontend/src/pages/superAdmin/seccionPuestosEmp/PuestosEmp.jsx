@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -16,7 +17,7 @@ export default function PuestosEmp() {
     setLoading(true);
     setErrorMsg("");
     try {
-      const res = await fetch(`${API_BASE}/api/listado-puestos/`, {
+      const res = await apiFetch(`${API_BASE}/api/listado-puestos/`, {
         headers: { Authorization: `Bearer ${access}` },
       });
       if (!res.ok) throw new Error("No se pudo cargar puestos.");
@@ -38,7 +39,7 @@ export default function PuestosEmp() {
     if (!window.confirm("¿Eliminar este puesto?")) return;
 
     try {
-      const res = await fetch(`${API_BASE}/api/puestos/${id}/`, {
+      const res = await apiFetch(`${API_BASE}/api/puestos/${id}/`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${access}` },
       });

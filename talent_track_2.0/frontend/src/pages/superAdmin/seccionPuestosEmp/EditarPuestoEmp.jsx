@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -29,7 +30,7 @@ export default function EditarPuestoEmp() {
 
   const loadUnidades = async (empresaId) => {
     if (!empresaId) return;
-    const res = await fetch(UNIDADES_URL(empresaId), {
+    const res = await apiFetch(UNIDADES_URL(empresaId), {
       headers: { Authorization: `Bearer ${access}` },
     });
     const data = await res.json();
@@ -47,7 +48,7 @@ export default function EditarPuestoEmp() {
         setEmpresas(Array.isArray(eData) ? eData : []);
 
         // puesto detalle
-        const res = await fetch(`${API_BASE}/api/puestos/${id}/`, {
+        const res = await apiFetch(`${API_BASE}/api/puestos/${id}/`, {
           headers: { Authorization: `Bearer ${access}` },
         });
         if (!res.ok) throw new Error("No se pudo cargar el puesto.");
@@ -99,7 +100,7 @@ export default function EditarPuestoEmp() {
           : parseFloat(form.salario_referencial),
     };
 
-    const res = await fetch(`${API_BASE}/api/actualizar-puesto/${id}/`, {
+    const res = await apiFetch(`${API_BASE}/api/actualizar-puesto/${id}/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
+
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -23,7 +25,7 @@ export default function UnidadesOrgEmp() {
     : { "Content-Type": "application/json" };
 
   const fetchEmpresas = async () => {
-    const res = await fetch(`${API_BASE}/api/listado-empresas/`, { headers: authHeaders });
+    const res = await apiFetch(`${API_BASE}/api/listado-empresas/`, { headers: authHeaders });
     if (!res.ok) throw new Error("No se pudieron cargar empresas");
     return res.json();
   };
@@ -33,7 +35,7 @@ export default function UnidadesOrgEmp() {
       ? `${API_BASE}/api/unidades-organizacionales/?empresa_id=${empresaIdParam}`
       : `${API_BASE}/api/unidades-organizacionales/`;
 
-    const res = await fetch(url, { headers: authHeaders });
+    const res = await apiFetch(url, { headers: authHeaders });
     if (!res.ok) throw new Error("No se pudieron cargar unidades");
     return res.json();
   };
@@ -77,7 +79,7 @@ export default function UnidadesOrgEmp() {
   const onDelete = async (id) => {
     if (!window.confirm("¿Eliminar esta unidad organizacional?")) return;
 
-    const res = await fetch(`${API_BASE}/api/unidades-organizacionales/${id}/`, {
+    const res = await apiFetch(`${API_BASE}/api/unidades-organizacionales/${id}/`, {
       method: "DELETE",
       headers: authHeaders,
     });
@@ -94,7 +96,7 @@ export default function UnidadesOrgEmp() {
   };
 
   const onToggleEstado = async (id) => {
-    const res = await fetch(`${API_BASE}/api/unidades-organizacionales/${id}/toggle-estado/`, {
+    const res = await apiFetch(`${API_BASE}/api/unidades-organizacionales/${id}/toggle-estado/`, {
       method: "PATCH",
       headers: authHeaders,
     });

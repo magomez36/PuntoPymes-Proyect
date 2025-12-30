@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -26,13 +27,13 @@ export default function CrearUnidadOrgEmp() {
   });
 
   const fetchEmpresas = async () => {
-    const res = await fetch(`${API_BASE}/api/listado-empresas/`, { headers: authHeaders });
+    const res = await apiFetch(`${API_BASE}/api/listado-empresas/`, { headers: authHeaders });
     if (!res.ok) throw new Error("No se pudieron cargar empresas");
     return res.json();
   };
 
   const fetchUnidadesEmpresa = async (empresaId) => {
-    const res = await fetch(`${API_BASE}/api/unidades-organizacionales/?empresa_id=${empresaId}`, {
+    const res = await apiFetch(`${API_BASE}/api/unidades-organizacionales/?empresa_id=${empresaId}`, {
       headers: authHeaders,
     });
     if (!res.ok) throw new Error("No se pudieron cargar unidades de la empresa");
@@ -88,7 +89,7 @@ export default function CrearUnidadOrgEmp() {
       ubicacion: form.ubicacion,
     };
 
-    const res = await fetch(`${API_BASE}/api/unidades-organizacionales/`, {
+    const res = await apiFetch(`${API_BASE}/api/unidades-organizacionales/`, {
       method: "POST",
       headers: authHeaders,
       body: JSON.stringify(payload),

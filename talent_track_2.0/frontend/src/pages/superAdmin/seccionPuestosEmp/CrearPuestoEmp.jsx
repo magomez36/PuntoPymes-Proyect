@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -27,7 +28,7 @@ export default function CrearPuestoEmp() {
 
   useEffect(() => {
     const loadEmpresas = async () => {
-      const res = await fetch(`${API_BASE}/api/listado-empresas/`, {
+      const res = await apiFetch(`${API_BASE}/api/listado-empresas/`, {
         headers: { Authorization: `Bearer ${access}` },
       });
       const data = await res.json();
@@ -42,7 +43,7 @@ export default function CrearPuestoEmp() {
     setForm((p) => ({ ...p, unidad: "" }));
     if (!empresaId) return;
 
-    const res = await fetch(UNIDADES_URL(empresaId), {
+    const res = await apiFetch(UNIDADES_URL(empresaId), {
       headers: { Authorization: `Bearer ${access}` },
     });
     const data = await res.json();
@@ -73,7 +74,7 @@ export default function CrearPuestoEmp() {
           : parseFloat(form.salario_referencial),
     };
 
-    const res = await fetch(`${API_BASE}/api/crear-puesto/`, {
+    const res = await apiFetch(`${API_BASE}/api/crear-puesto/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
