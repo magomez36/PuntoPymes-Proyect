@@ -3290,7 +3290,7 @@
             "id": 1,
             "empresa_id": null,
             "empleado_id": null,
-            "email": "superAdmin@talent_track.com",
+            "email": "superadmin@talentrack.com",
             "phone": "0978765520",
             "hash_password": "pbkdf2_sha256$1200000$VtwXx6KYfStnSWF1ozCX41$g9/imbCBNRx7bJbVFi/L8lHXWHSOHsQolAg5Xo503Hc=",
             "mfa_habilitado": false,

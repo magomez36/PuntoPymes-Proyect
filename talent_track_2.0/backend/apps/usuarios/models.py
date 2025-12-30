@@ -1,31 +1,65 @@
-# apps/usuarios/models.py
+# backend/apps/usuarios/models.py
 from django.db import models
-from apps.core.models import Empresa
-from apps.empleados.models import Empleado
+
 
 class Usuario(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, null=True, blank=True, on_delete=models.CASCADE)
-    empleado = models.ForeignKey(Empleado, null=True, blank=True, on_delete=models.SET_NULL)
+
+    # Usar string refs para evitar import circular
+    empresa = models.ForeignKey(
+        "core.Empresa",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
+    )
+    empleado = models.ForeignKey(
+        "empleados.Empleado",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
+
     email = models.CharField(max_length=150)
     phone = models.CharField(max_length=150, null=True, blank=True)
+
+    # Hash tipo Django: pbkdf2_sha256$...
     hash_password = models.CharField(max_length=150)
+
     mfa_habilitado = models.BooleanField(default=False)
+
+    # 1 activo, 2 bloqueado
     estado = models.SmallIntegerField()
+
     ultimo_acceso = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        db_table = 'usuario'
+        db_table = "usuario"
+
+    def __str__(self):
+        return self.email
 
 
 class Rol(models.Model):
     id = models.BigAutoField(primary_key=True)
-    empresa = models.ForeignKey(Empresa, null=True, blank=True, on_delete=models.CASCADE)
+
+    # superadmin: empresa = NULL (rol global)
+    empresa = models.ForeignKey(
+        "core.Empresa",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
+    )
+
+    # superadmin/rrhh/manager/empleado/auditor
     nombre = models.CharField(max_length=150)
+
     descripcion = models.TextField(null=True, blank=True)
 
     class Meta:
-        db_table = 'rol'
+        db_table = "rol"
+
+    def __str__(self):
+        return self.nombre
 
 
 class UsuarioRol(models.Model):
@@ -34,7 +68,11 @@ class UsuarioRol(models.Model):
     rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'usuariorol'
+        db_table = "usuariorol"
+        unique_together = ("usuario", "rol")  # evita duplicados
+
+    def __str__(self):
+        return f"UsuarioRol(usuario_id={self.usuario_id}, rol_id={self.rol_id})"
 
 
 class Permiso(models.Model):
@@ -44,4 +82,7 @@ class Permiso(models.Model):
     descripcion = models.TextField(null=True, blank=True)
 
     class Meta:
-        db_table = 'permiso'
+        db_table = "permiso"
+
+    def __str__(self):
+        return self.codigo
