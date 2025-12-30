@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -49,7 +50,7 @@ export default function CrearTurnoEmp() {
       setLoading(true);
       setErr("");
       try {
-        const res = await fetch(`${API_BASE}/api/listado-empresas/`, {
+        const res = await apiFetch(`${API_BASE}/api/listado-empresas/`, {
           headers: { "Content-Type": "application/json", ...authHeaders() },
         });
         if (!res.ok) throw new Error("No se pudo cargar empresas.");
@@ -112,7 +113,7 @@ export default function CrearTurnoEmp() {
     };
 
     try {
-      const res = await fetch(`${API_BASE}/api/turnos/crear/`, {
+      const res = await apiFetch(`${API_BASE}/api/turnos/crear/`, {
         method: "POST",
         headers: { "Content-Type": "application/json", ...authHeaders() },
         body: JSON.stringify(payload),

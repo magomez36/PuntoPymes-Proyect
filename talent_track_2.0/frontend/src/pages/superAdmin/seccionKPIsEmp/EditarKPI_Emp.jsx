@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API = "http://127.0.0.1:8000/api";
 
@@ -40,7 +41,7 @@ export default function EditarKPI_Emp() {
       setLoading(true);
       setErrorMsg("");
       try {
-        const res = await fetch(`${API}/kpis/${id}/`, {
+        const res = await apiFetch(`${API}/kpis/${id}/`, {
           headers: { Authorization: `Bearer ${getAccessToken()}` },
         });
         if (!res.ok) throw new Error("No se pudo cargar el KPI");
@@ -75,7 +76,7 @@ export default function EditarKPI_Emp() {
         origen_datos: Number(origenDatos),
       };
 
-      const res = await fetch(`${API}/kpis/${id}/`, {
+      const res = await apiFetch(`${API}/kpis/${id}/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

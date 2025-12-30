@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 import os
 
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "rest_framework_simplejwt.token_blacklist",
+
 
     # apps
     'apps.core',
@@ -158,3 +161,11 @@ REST_FRAMEWORK = {
     ),
 }
 
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=8),     # ej: 8 horas
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),     # ej: 7 días
+    "ROTATE_REFRESH_TOKENS": True,                   # recomendado
+    "BLACKLIST_AFTER_ROTATION": True,                # recomendado (requiere app blacklist)
+    "UPDATE_LAST_LOGIN": True,
+}

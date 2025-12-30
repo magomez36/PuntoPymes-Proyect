@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -51,7 +52,7 @@ export default function EditarTurnoEmp() {
       setLoading(true);
       setErr("");
       try {
-        const res = await fetch(`${API_BASE}/api/turnos/${id}/`, {
+        const res = await apiFetch(`${API_BASE}/api/turnos/${id}/`, {
           headers: { "Content-Type": "application/json", ...authHeaders() },
         });
         if (!res.ok) throw new Error("No se pudo cargar el turno.");
@@ -124,7 +125,7 @@ export default function EditarTurnoEmp() {
     };
 
     try {
-      const res = await fetch(`${API_BASE}/api/turnos/${id}/actualizar/`, {
+      const res = await apiFetch(`${API_BASE}/api/turnos/${id}/actualizar/`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", ...authHeaders() },
         body: JSON.stringify(payload),

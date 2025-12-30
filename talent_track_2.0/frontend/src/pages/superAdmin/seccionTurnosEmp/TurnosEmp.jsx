@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -33,7 +34,7 @@ export default function TurnosEmp() {
   const [err, setErr] = useState("");
 
   const fetchEmpresas = async () => {
-    const res = await fetch(`${API_BASE}/api/listado-empresas/`, {
+    const res = await apiFetch(`${API_BASE}/api/listado-empresas/`, {
       headers: { "Content-Type": "application/json", ...authHeaders() },
     });
     if (!res.ok) throw new Error("No se pudo cargar empresas.");
@@ -42,7 +43,7 @@ export default function TurnosEmp() {
 
   const fetchTurnos = async (empresaIdParam = "") => {
     const q = empresaIdParam ? `?empresa_id=${empresaIdParam}` : "";
-    const res = await fetch(`${API_BASE}/api/turnos/${q}`, {
+    const res = await apiFetch(`${API_BASE}/api/turnos/${q}`, {
       headers: { "Content-Type": "application/json", ...authHeaders() },
     });
     if (!res.ok) throw new Error("No se pudo cargar turnos.");
@@ -75,7 +76,7 @@ export default function TurnosEmp() {
     if (!window.confirm("¿Eliminar turno?")) return;
 
     try {
-      const res = await fetch(`${API_BASE}/api/turnos/${id}/`, {
+      const res = await apiFetch(`${API_BASE}/api/turnos/${id}/`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json", ...authHeaders() },
       });

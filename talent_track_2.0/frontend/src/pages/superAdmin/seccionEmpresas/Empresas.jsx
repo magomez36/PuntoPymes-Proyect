@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../../../services/authStorage";
+import { apiFetch } from "../../../services/api";
 
 const API_BASE = "http://127.0.0.1:8000/api";
 
@@ -31,7 +32,7 @@ export default function Empresas() {
 
     try {
       const token = getAccessToken();
-      const res = await fetch(`${API_BASE}/listado-empresas/`, {
+      const res = await apiFetch(`${API_BASE}/listado-empresas/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -58,7 +59,7 @@ export default function Empresas() {
 
     try {
       const token = getAccessToken();
-      const res = await fetch(`${API_BASE}/empresas/${id}/`, {
+      const res = await apiFetch(`${API_BASE}/empresas/${id}/`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -77,7 +78,7 @@ export default function Empresas() {
   const toggleEstado = async (id) => {
     try {
       const token = getAccessToken();
-      const res = await fetch(`${API_BASE}/empresas/${id}/toggle-estado/`, {
+      const res = await apiFetch(`${API_BASE}/empresas/${id}/toggle-estado/`, {
         method: "PATCH",
         headers: { Authorization: `Bearer ${token}` },
       });

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -23,7 +24,7 @@ export default function CrearReglaAsistenciaEmp() {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch(`${API_BASE}/api/listado-empresas/`, {
+      const res = await apiFetch(`${API_BASE}/api/listado-empresas/`, {
         headers: { Authorization: `Bearer ${getAccessToken()}` },
       });
       const data = await res.json();
@@ -57,7 +58,7 @@ export default function CrearReglaAsistenciaEmp() {
       // geocerca e ip_permitidas NO se envían (backend los pone NULL)
     };
 
-    const res = await fetch(`${API_BASE}/api/reglas-asistencia/crear/`, {
+    const res = await apiFetch(`${API_BASE}/api/reglas-asistencia/crear/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

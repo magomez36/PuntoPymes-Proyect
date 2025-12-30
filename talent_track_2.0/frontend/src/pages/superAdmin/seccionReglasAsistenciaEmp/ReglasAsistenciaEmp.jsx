@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -21,7 +22,7 @@ export default function ReglasAsistenciaEmp() {
     setErr("");
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/reglas-asistencia/`, {
+      const res = await apiFetch(`${API_BASE}/api/reglas-asistencia/`, {
         headers: { Authorization: `Bearer ${getAccessToken()}` },
       });
       if (!res.ok) throw new Error("No se pudo cargar reglas");
@@ -41,7 +42,7 @@ export default function ReglasAsistenciaEmp() {
   const onDelete = async (id) => {
     if (!window.confirm("¿Eliminar regla?")) return;
     try {
-      const res = await fetch(`${API_BASE}/api/reglas-asistencia/${id}/`, {
+      const res = await apiFetch(`${API_BASE}/api/reglas-asistencia/${id}/`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${getAccessToken()}` },
       });

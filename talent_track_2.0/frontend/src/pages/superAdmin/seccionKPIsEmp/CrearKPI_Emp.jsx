@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API = "http://127.0.0.1:8000/api";
 
@@ -38,7 +39,7 @@ export default function CrearKPI_Emp() {
   useEffect(() => {
     const loadEmpresas = async () => {
       try {
-        const res = await fetch(`${API}/listado-empresas/`, {
+        const res = await apiFetch(`${API}/listado-empresas/`, {
           headers: { Authorization: `Bearer ${getAccessToken()}` },
         });
         if (!res.ok) throw new Error("No se pudieron cargar empresas");
@@ -69,7 +70,7 @@ export default function CrearKPI_Emp() {
         // formula NO va, back lo deja NULL
       };
 
-      const res = await fetch(`${API}/kpis/`, {
+      const res = await apiFetch(`${API}/kpis/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

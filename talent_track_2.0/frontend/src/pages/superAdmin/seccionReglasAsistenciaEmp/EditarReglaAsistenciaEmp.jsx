@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { apiFetch } from "../../../services/api";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -25,7 +26,7 @@ export default function EditarReglaAsistenciaEmp() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/reglas-asistencia/${id}/`, {
+        const res = await apiFetch(`${API_BASE}/api/reglas-asistencia/${id}/`, {
           headers: { Authorization: `Bearer ${getAccessToken()}` },
         });
         if (!res.ok) throw new Error("No se pudo cargar");
@@ -64,7 +65,7 @@ export default function EditarReglaAsistenciaEmp() {
       calculo_horas_extra: parseInt(form.calculo_horas_extra, 10),
     };
 
-    const res = await fetch(`${API_BASE}/api/reglas-asistencia/${id}/actualizar/`, {
+    const res = await apiFetch(`${API_BASE}/api/reglas-asistencia/${id}/actualizar/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
