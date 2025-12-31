@@ -26,7 +26,7 @@ import InicioManager from "./pages/manager/InicioManager";
 import InicioEmpleado from "./pages/empleado/InicioEmpleado";
 import InicioAuditor from "./pages/auditor/InicioAuditor";
 
-// Superadmin - Empresas (tu estructura actual)
+// Superadmin - (Estructura actual)
 import Empresas from "./pages/superAdmin/seccionEmpresas/Empresas";
 import CrearEmpresa from "./pages/superAdmin/seccionEmpresas/CrearEmpresa";
 import EditarEmpresa from "./pages/superAdmin/seccionEmpresas/EditarEmpresa";
@@ -55,7 +55,29 @@ import KPIsEmp from "./pages/superAdmin/seccionKPIsEmp/KPIsEmp";
 import CrearKPI_Emp from "./pages/superAdmin/seccionKPIsEmp/CrearKPI_Emp";
 import EditarKPI_Emp from "./pages/superAdmin/seccionKPIsEmp/EditarKPI_Emp";
 
+import ReportesProgramados from "./pages/superAdmin/seccionReportesProgramados/ReportesProgramados";
+import CrearReporteProgramado from "./pages/superAdmin/seccionReportesProgramados/CrearReporteProgramado";
+import EditarReporteProgramado from "./pages/superAdmin/seccionReportesProgramados/EditarReporteProgramado";
 
+import RolesEmp from "./pages/superAdmin/seccionRolEmp/RolesEmp";
+import CrearRolEmp from "./pages/superAdmin/seccionRolEmp/CrearRolEmp";
+import EditarRolEmp from "./pages/superAdmin/seccionRolEmp/EditarRolEmp";
+
+import UsuariosEmp from "./pages/superAdmin/seccionUsuariosEmp/UsuariosEmp";
+import CrearUsuarioEmp from "./pages/superAdmin/seccionUsuariosEmp/CrearUsuarioEmp";
+import EditarUsuarioEmp from "./pages/superAdmin/seccionUsuariosEmp/EditarUsuarioEmp";
+
+import EmpleadosEmp from "./pages/superAdmin/seccionEmpleadosEmp/EmpleadosEmp";
+import CrearEmpleadoEmp from "./pages/superAdmin/seccionEmpleadosEmp/CrearEmpleadoEmp";
+import EditarEmpleadoEmp from "./pages/superAdmin/seccionEmpleadosEmp/EditarEmpleadoEmp";
+
+import PermisosRolEmp from "./pages/superAdmin/seccionPermisosRolEmp/PermisosRolEmp";
+import CrearPermisoRolEmp from "./pages/superAdmin/seccionPermisosRolEmp/CrearPermisoRolEmp";
+import EditarPermisoRolEmp from "./pages/superAdmin/seccionPermisosRolEmp/EditarPermisoRolEmp";
+
+import PlantillasKPIsEmp from "./pages/superAdmin/seccionPlantillasKPIsEmp/PlantillasKPIsEmp";
+import CrearPlantillaKPI_Emp from "./pages/superAdmin/seccionPlantillasKPIsEmp/CrearPlantillaKPI_Emp";
+import EditarPlantillaKPI_Emp from "./pages/superAdmin/seccionPlantillasKPIsEmp/EditarPlantillaKPI_Emp";
 
 // Guard
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -75,271 +97,106 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          {/* =========================
-              RUTAS PÚBLICAS
-          ========================== */}
-          <Route
-            path="/"
-            element={
-              <PublicLayout>
-                <Home />
-              </PublicLayout>
-            }
-          />
 
-          {/* Login y Reset sin layout */}
+          {/* ======== RUTAS PÚBLICAS ======== */}
+
+          <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
           <Route path="/login" element={<Login />} />
           <Route path="/reset-password" element={<ResetPassword />} />
 
-          {/* =========================
-              RUTAS PRIVADAS POR ROL
-          ========================== */}
-          <Route
-            path="/superadmin/inicio"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <InicioSuperAdmin />
-              </ProtectedRoute>
-            }
-          />
+          {/* ======== RUTAS PRIVADAS POR ROL ======== */}
 
-          <Route
-            path="/rrhh/inicio"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <InicioAdminRRHH />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 1 - Login Roles */}
 
-          <Route
-            path="/manager/inicio"
-            element={
-              <ProtectedRoute allowedRoles={["manager"]}>
-                <InicioManager />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/superadmin/inicio" element={<ProtectedRoute allowedRoles={["superadmin"]}><InicioSuperAdmin /></ProtectedRoute>} />
+          <Route path="/rrhh/inicio" element={<ProtectedRoute allowedRoles={["rrhh"]}><InicioAdminRRHH /></ProtectedRoute>} />
+          <Route path="/manager/inicio" element={<ProtectedRoute allowedRoles={["manager"]}><InicioManager /></ProtectedRoute>} />
+          <Route path="/empleado/inicio" element={<ProtectedRoute allowedRoles={["empleado"]}><InicioEmpleado /></ProtectedRoute>} />
+          <Route path="/auditor/inicio" element={<ProtectedRoute allowedRoles={["auditor"]}><InicioAuditor /></ProtectedRoute>} />
 
-          <Route
-            path="/empleado/inicio"
-            element={
-              <ProtectedRoute allowedRoles={["empleado"]}>
-                <InicioEmpleado />
-              </ProtectedRoute>
-            }
-          />
+          {/* ======== RUTAS SUPERADMIN ======== */}
 
-          <Route
-            path="/auditor/inicio"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <InicioAuditor />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 2 - Empresas */}
+          <Route path="/admin/empresas" element={<ProtectedRoute allowedRoles={["superadmin"]}><Empresas /></ProtectedRoute>} />
+          <Route path="/admin/empresas/crear" element={<ProtectedRoute allowedRoles={["superadmin"]}><CrearEmpresa /></ProtectedRoute>} />
+          <Route path="/admin/empresas/editar/:id" element={<ProtectedRoute allowedRoles={["superadmin"]}><EditarEmpresa /></ProtectedRoute>} />
 
-          {/* =========================
-              SUPERADMIN - EPICA 2: EMPRESAS
-          ========================== */}
-          <Route
-            path="/admin/empresas"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <Empresas />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 3 - Unidades Organizacionales Empresa */}
+          <Route path="/admin/unidades-organizacionales" element={<ProtectedRoute allowedRoles={["superadmin"]}><UnidadesOrgEmp /></ProtectedRoute>} />
+          <Route path="/admin/unidades-organizacionales/crear" element={<ProtectedRoute allowedRoles={["superadmin"]}><CrearUnidadOrgEmp /></ProtectedRoute>} />
+          <Route path="/admin/unidades-organizacionales/editar/:id" element={<ProtectedRoute allowedRoles={["superadmin"]}><EditarUnidadOrgEmp /></ProtectedRoute>} />
 
-          <Route
-            path="/admin/empresas/crear"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <CrearEmpresa />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 4 - Puestos Empresa */}
+          <Route path="/admin/puestos" element={<ProtectedRoute allowedRoles={["superadmin"]}><PuestosEmp /></ProtectedRoute>} />
+          <Route path="/admin/puestos/crear" element={<ProtectedRoute allowedRoles={["superadmin"]}><CrearPuestoEmp /></ProtectedRoute>} />
+          <Route path="/admin/puestos/editar/:id" element={<ProtectedRoute allowedRoles={["superadmin"]}><EditarPuestoEmp /></ProtectedRoute>} />
 
-          <Route
-            path="/admin/empresas/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <EditarEmpresa />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 5 - Turnos Empresa */}
+          <Route path="/admin/turnos" element={<ProtectedRoute allowedRoles={["superadmin"]}><TurnosEmp /></ProtectedRoute>} />
+          <Route path="/admin/turnos/crear" element={<ProtectedRoute allowedRoles={["superadmin"]}><CrearTurnoEmp /></ProtectedRoute>} />
+          <Route path="/admin/turnos/editar/:id" element={<ProtectedRoute allowedRoles={["superadmin"]}><EditarTurnoEmp /></ProtectedRoute>} />
 
-          {/* =========================
-              SUPERADMIN - EPICA 3: UNIDADES ORGANIZACIONALES
-          ========================== */}
-        
-          <Route
-            path="/admin/unidades-organizacionales"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <UnidadesOrgEmp />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 6 - Reglas de Asistencia */}
+          <Route path="/admin/reglas-asistencia" element={<ProtectedRoute allowedRoles={["superadmin"]}><ReglasAsistenciaEmp /></ProtectedRoute>} />
+          <Route path="/admin/reglas-asistencia/crear" element={<ProtectedRoute allowedRoles={["superadmin"]}><CrearReglaAsistenciaEmp /></ProtectedRoute>} />
+          <Route path="/admin/reglas-asistencia/editar/:id" element={<ProtectedRoute allowedRoles={["superadmin"]}><EditarReglaAsistenciaEmp /></ProtectedRoute>} />
 
-          <Route
-            path="/admin/unidades-organizacionales/crear"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <CrearUnidadOrgEmp />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 7 - Tipos de Ausencias */}
+          <Route path="/admin/tipos-ausencias" element={<ProtectedRoute allowedRoles={["superadmin"]}><TiposAusenciasEmp /></ProtectedRoute>} />
+          <Route path="/admin/tipos-ausencias/crear" element={<ProtectedRoute allowedRoles={["superadmin"]}><CrearTipoAusenciaEmp /></ProtectedRoute>} />
+          <Route path="/admin/tipos-ausencias/editar/:id" element={<ProtectedRoute allowedRoles={["superadmin"]}><EditarTipoAusenciaEmp /></ProtectedRoute>} />
 
-          <Route
-            path="/admin/unidades-organizacionales/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <EditarUnidadOrgEmp />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 8 - KPIs */}
+          <Route path="/admin/kpis" element={<ProtectedRoute allowedRoles={["superadmin"]}><KPIsEmp /></ProtectedRoute>} />
+          <Route path="/admin/kpis/crear" element={<ProtectedRoute allowedRoles={["superadmin"]}><CrearKPI_Emp /></ProtectedRoute>} />
+          <Route path="/admin/kpis/editar/:id" element={<ProtectedRoute allowedRoles={["superadmin"]}><EditarKPI_Emp /></ProtectedRoute>} />
 
-          {/* SUPERADMIN - Puestos (EPICA 4) */}
-          <Route
-            path="/admin/puestos"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <PuestosEmp />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/puestos/crear"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <CrearPuestoEmp />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/puestos/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <EditarPuestoEmp />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 9 - Reportes Programados */}
+          <Route path="/admin/reportes-programados" element={<ProtectedRoute allowedRoles={["superadmin"]}><ReportesProgramados /></ProtectedRoute>} />
+          <Route path="/admin/reportes-programados/crear" element={<ProtectedRoute allowedRoles={["superadmin"]}><CrearReporteProgramado /></ProtectedRoute>} />
+          <Route path="/admin/reportes-programados/editar/:id" element={<ProtectedRoute allowedRoles={["superadmin"]}><EditarReporteProgramado /></ProtectedRoute>} />
 
-            {/* SUPERADMIN - Turnos (EPICA 5) */}
+          {/* EPICA 10 - Roles Empresa */}
+          <Route path="/admin/roles" element={<ProtectedRoute allowedRoles={["superadmin"]}><RolesEmp /></ProtectedRoute>} />
+          <Route path="/admin/roles/crear" element={<ProtectedRoute allowedRoles={["superadmin"]}><CrearRolEmp /></ProtectedRoute>} />
+          <Route path="/admin/roles/editar/:id" element={<ProtectedRoute allowedRoles={["superadmin"]}><EditarRolEmp /></ProtectedRoute>} />
 
-          <Route
-            path="/admin/turnos"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <TurnosEmp />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 11 - Usuarios Empresa */}
+          <Route path="/admin/usuarios" element={<ProtectedRoute allowedRoles={["superadmin"]}><UsuariosEmp /></ProtectedRoute>} />
+          <Route path="/admin/usuarios/crear" element={<ProtectedRoute allowedRoles={["superadmin"]}><CrearUsuarioEmp /></ProtectedRoute>} />
+          <Route path="/admin/usuarios/editar/:id" element={<ProtectedRoute allowedRoles={["superadmin"]}><EditarUsuarioEmp /></ProtectedRoute>} />
 
-          <Route
-            path="/admin/turnos/crear"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <CrearTurnoEmp />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 12 - Empleados Empresa */}
+          <Route path="/admin/empleados" element={<ProtectedRoute allowedRoles={["superadmin"]}><EmpleadosEmp /></ProtectedRoute>} />
+          <Route path="/admin/empleados/crear" element={<ProtectedRoute allowedRoles={["superadmin"]}><CrearEmpleadoEmp /></ProtectedRoute>} />
+          <Route path="/admin/empleados/editar/:id" element={<ProtectedRoute allowedRoles={["superadmin"]}><EditarEmpleadoEmp /></ProtectedRoute>} />
 
-          <Route
-            path="/admin/turnos/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <EditarTurnoEmp />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 13 - Permisos por Rol */}
+          <Route path="/admin/permisos" element={<ProtectedRoute allowedRoles={["superadmin"]}><PermisosRolEmp /></ProtectedRoute>} />
+          <Route path="/admin/permisos/crear" element={<ProtectedRoute allowedRoles={["superadmin"]}><CrearPermisoRolEmp /></ProtectedRoute>} />
+          <Route path="/admin/permisos/editar/:id" element={<ProtectedRoute allowedRoles={["superadmin"]}><EditarPermisoRolEmp /></ProtectedRoute>} />
 
-          {/* SUPERADMIN - Reglas de Asistencia (EPICA 6) */}
+          {/* EPICA 14 - Plantillas KPI */}
+          <Route path="/admin/plantillas-kpi" element={<ProtectedRoute allowedRoles={["superadmin"]}><PlantillasKPIsEmp /></ProtectedRoute>} />
+          <Route path="/admin/plantillas-kpi/crear" element={<ProtectedRoute allowedRoles={["superadmin"]}><CrearPlantillaKPI_Emp /></ProtectedRoute>} />
+          <Route path="/admin/plantillas-kpi/editar/:id" element={<ProtectedRoute allowedRoles={["superadmin"]}><EditarPlantillaKPI_Emp /></ProtectedRoute>} />
 
-          <Route
-            path="/admin/reglas-asistencia"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <ReglasAsistenciaEmp />
-              </ProtectedRoute>
-            }
-          />
 
-          <Route
-            path="/admin/reglas-asistencia/crear"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <CrearReglaAsistenciaEmp />
-              </ProtectedRoute>
-            }
-          />
+          {/* ======== RUTAS EMPLEADO ======== */}
 
-          <Route
-            path="/admin/reglas-asistencia/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <EditarReglaAsistenciaEmp />
-              </ProtectedRoute>
-            }
-          />
 
-          {/* SUPERADMIN - Tipos de Ausencias (EPICA 7) */}
 
-          <Route
-            path="/admin/tipos-ausencias"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <TiposAusenciasEmp />
-              </ProtectedRoute>
-            }
-          />
+          {/* ======== RUTAS ADMIN RRHH ======== */}
 
-          <Route
-            path="/admin/tipos-ausencias/crear"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <CrearTipoAusenciaEmp />
-              </ProtectedRoute>
-            }
-          />
 
-          <Route
-            path="/admin/tipos-ausencias/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <EditarTipoAusenciaEmp />
-              </ProtectedRoute>
-            }
-          />
-          {/* SUPERADMIN - KPIs (EPICA 8) */}
-          
-          <Route
-            path="/admin/kpis"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <KPIsEmp />
-              </ProtectedRoute>
-            }
-          />
 
-          <Route
-            path="/admin/kpis/crear"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <CrearKPI_Emp />
-              </ProtectedRoute>
-            }
-          />
+          {/* ======== RUTAS MANAGER ======== */}
 
-          <Route
-            path="/admin/kpis/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["superadmin"]}>
-                <EditarKPI_Emp />
-              </ProtectedRoute>
-            }
-          />
+
+
+          {/* ======== RUTAS AUDITOR ======== */} 
+
+
 
 
           {/* =========================

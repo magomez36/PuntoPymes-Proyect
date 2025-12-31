@@ -1,0 +1,166 @@
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import Sidebar from "../../../components/Sidebar";
+import { apiFetch } from "../../../services/api";
+
+export default function EditarPermisoRolEmp() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const [empresas, setEmpresas] = useState([]);
+  const [roles, setRoles] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState("");
+
+  const [form, setForm] = useState({
+    empresa_id: "",
+    rol_id: "",
+    codigo: "",
+    descripcion: "",
+  });
+
+  const loadEmpresas = async () => {
+    const res = await apiFetch("/api/listado-empresas/");
+    const data = await res.json();
+    setEmpresas(Array.isArray(data) ? data : []);
+  };
+
+  const loadRoles = async (empresaId) => {
+    setRoles([]);
+    if (!empresaId) return;
+    const res = await apiFetch(`/api/helpers/roles-por-empresa/?empresa_id=${empresaId}`);
+    const data = await res.json();
+    setRoles(Array.isArray(data) ? data : []);
+  };
+
+  const load = async () => {
+    setErr("");
+    setLoading(true);
+    try {
+      await loadEmpresas();
+
+      const res = await apiFetch(`/api/permisos/${id}/`);
+      const data = await res.json();
+
+      // empresa por querystring si viene, sino del permiso
+      const eid = searchParams.get("empresa_id") || String(data.empresa_id || "");
+      await loadRoles(eid);
+
+      setForm({
+        empresa_id: eid,
+        rol_id: String(data.rol_id || ""),
+        codigo: data.codigo || "",
+        descripcion: data.descripcion || "",
+      });
+    } catch (e) {
+      setErr(e?.message || "Error cargando permiso.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    load();
+    // eslint-disable-next-line
+  }, [id]);
+
+  const onChange = async (e) => {
+    const { name, value } = e.target;
+    setForm((p) => ({ ...p, [name]: value }));
+
+    if (name === "empresa_id") {
+      setForm((p) => ({ ...p, rol_id: "" }));
+      await loadRoles(value);
+    }
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setErr("");
+
+    if (!form.empresa_id) return setErr("Selecciona empresa.");
+    if (!form.rol_id) return setErr("Selecciona rol.");
+    if (!form.codigo.trim()) return setErr("Código es obligatorio.");
+
+    const payload = {
+      empresa_id: Number(form.empresa_id),
+      rol_id: Number(form.rol_id),
+      codigo: form.codigo.trim(),
+      descripcion: form.descripcion.trim(),
+    };
+
+    try {
+      const res = await apiFetch(`/api/permisos/${id}/`, {
+        method: "PUT",
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(JSON.stringify(data));
+      }
+
+      alert("Permiso actualizado.");
+      navigate("/admin/permisos");
+    } catch (e2) {
+      setErr(e2?.message || "Error actualizando.");
+    }
+  };
+
+  return (
+    <div className="layout">
+      <Sidebar />
+      <main className="main-content">
+        <h2>Editar Permiso</h2>
+
+        {loading && <p>Cargando...</p>}
+        {err && <p style={{ color: "crimson" }}>{err}</p>}
+
+        {!loading && (
+          <form onSubmit={onSubmit}>
+            <div>
+              <label>Empresa *</label>
+              <select name="empresa_id" value={form.empresa_id} onChange={onChange}>
+                <option value="">-- Selecciona --</option>
+                {empresas.map((e) => (
+                  <option key={e.id} value={e.id}>
+                    {e.razon_social}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label>Rol *</label>
+              <select name="rol_id" value={form.rol_id} onChange={onChange} disabled={!form.empresa_id}>
+                <option value="">-- Selecciona --</option>
+                {roles.map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.nombre}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label>Código *</label>
+              <input name="codigo" value={form.codigo} onChange={onChange} />
+            </div>
+
+            <div>
+              <label>Descripción</label>
+              <textarea name="descripcion" value={form.descripcion} onChange={onChange} rows={3} />
+            </div>
+
+            <div style={{ marginTop: 12 }}>
+              <Link to="/admin/permisos">Cancelar</Link>{" "}
+              <button type="submit">Guardar</button>
+            </div>
+          </form>
+        )}
+      </main>
+    </div>
+  );
+}
