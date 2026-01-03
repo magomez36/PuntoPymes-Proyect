@@ -57,7 +57,7 @@ Además, el desarrollo del proyecto permitió aplicar conocimientos adquiridos d
 ---
 
 ## Autores
-- Manuel Gomez
+- Manuel Gómez
 - Juan Villamagua    
 - Víctor Mendoza  
 - David León  
