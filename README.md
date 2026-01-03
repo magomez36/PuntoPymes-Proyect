@@ -1,4 +1,4 @@
-# TalentTrack
+# Talent Track 2.0
 
 ## Estructuración del Proyecto
 
