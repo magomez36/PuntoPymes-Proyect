@@ -69,7 +69,3 @@ Universidad Técnica Particular de Loja (UTPL)
 Facultad de Ingeniería y Arquitectura  
 Carrera de Ciencias Computacionales  
 
----
-
-## 📄 Informe completo
-El informe académico detallado del proyecto se encuentra disponible en la carpeta **docs** del repositorio.
