@@ -1,71 +1,87 @@
-# Talent Track 2.0
+# TalentTrack
 
-## Estructuración del Proyecto
+TalentTrack es un sistema web orientado a la gestión del talento humano y a la administración de procesos internos dentro de una organización. El proyecto fue desarrollado como un trabajo académico de la carrera de Ciencias Computacionales de la Universidad Técnica Particular de Loja (UTPL).
 
-## Descripción del Proyecto
-TalentTrack es un sistema web orientado a la gestión interna de pequeñas y medianas empresas (PYMES). La plataforma permite centralizar información administrativa y de talento humano, facilitando el control de procesos internos, la organización de datos y la toma de decisiones.
+## Descripción General
 
-El proyecto fue desarrollado como un trabajo académico de la carrera de Ciencias Computacionales de la Universidad Técnica Particular de Loja (UTPL).
+La correcta gestión del talento humano es un aspecto clave para el funcionamiento eficiente de cualquier organización. Sin embargo, en muchos casos estos procesos se realizan de manera manual o mediante herramientas poco integradas, lo que genera desorden, errores y dificultades en el acceso a la información.
 
----
+TalentTrack surge como una solución web que permite centralizar la información del personal, gestionar usuarios, roles y permisos, y controlar el acceso a los datos de forma segura. El sistema está diseñado bajo una arquitectura moderna que separa claramente el frontend, el backend y la base de datos, facilitando su mantenimiento y futura escalabilidad.
 
-## Planteamiento del Problema
-Muchas PYMES gestionan sus procesos administrativos mediante métodos manuales o herramientas aisladas, como hojas de cálculo o documentos físicos. Esta situación genera desorganización, errores frecuentes, pérdida de información y dificultades para acceder a datos confiables de manera oportuna.
+## Objetivo del Proyecto
 
-La ausencia de un sistema centralizado afecta directamente la eficiencia operativa, limita el control del talento humano y dificulta la adaptación de las empresas a un entorno cada vez más digital y competitivo.
+Desarrollar un sistema web que permita gestionar de manera eficiente la información y los procesos relacionados con el talento humano, optimizando la administración del personal, el control de accesos y la seguridad de los datos dentro de una organización.
 
----
+## Alcance
 
-## Objetivo General
-Desarrollar una plataforma web que permita a las PYMES gestionar de manera eficiente la información y los procesos relacionados con el talento humano y la administración interna.
+- Plataforma web accesible desde navegadores.
+- Gestión de usuarios internos (administradores, responsables de área y empleados).
+- Asignación de roles y permisos.
+- Control de accesos y seguridad de la información.
+- Administración centralizada de datos del personal.
 
----
-
-## Objetivos Específicos
-- Centralizar la información del personal en un solo sistema.
-- Facilitar el control y seguimiento de procesos administrativos.
-- Proporcionar una interfaz web clara e intuitiva.
-- Garantizar la seguridad y confidencialidad de los datos.
-- Permitir la generación de reportes para apoyo en la toma de decisiones.
-
----
-
-## Alcance del Proyecto
-El proyecto contempla el desarrollo de una plataforma web con arquitectura frontend y backend, orientada a usuarios internos como administradores, responsables de área y empleados.
-
-En esta fase no se contempla el desarrollo de una aplicación móvil, limitándose el sistema a un entorno web accesible desde navegadores.
-
----
-
-## Desarrollo del Proyecto
-El desarrollo del sistema se llevó a cabo de manera progresiva, iniciando con el análisis de las necesidades reales de las PYMES y la definición de los requerimientos funcionales y no funcionales.
-
-Posteriormente, se diseñó la arquitectura del sistema, estableciendo una clara separación entre frontend, backend y base de datos. Durante la implementación se desarrollaron los módulos principales del sistema, aplicando buenas prácticas de programación y priorizando la usabilidad. Finalmente, se realizaron pruebas para verificar el correcto funcionamiento y el cumplimiento de los objetivos planteados.
-
----
+En esta fase del proyecto no se contempla el desarrollo de una aplicación móvil.
 
 ## Arquitectura del Sistema
-TalentTrack se basa en una arquitectura web que separa el frontend, el backend y la base de datos. Esta estructura permite un mejor mantenimiento del sistema, facilita la escalabilidad y asegura un control adecuado de accesos según el rol del usuario, garantizando la seguridad y organización de la información.
 
----
+TalentTrack utiliza una arquitectura web de tipo cliente–servidor, organizada en tres capas principales:
+
+### Frontend
+- Capa de presentación del sistema.
+- Interfaz web intuitiva para la interacción con los usuarios.
+- Envío de solicitudes al backend mediante HTTP.
+- No tiene acceso directo a la base de datos.
+
+### Backend
+- Desarrollado con Django y Django REST Framework.
+- Implementa la lógica de negocio del sistema.
+- Gestiona autenticación y autorización mediante JWT.
+- Controla roles, permisos y accesos.
+- Único componente con acceso a la base de datos.
+
+### Base de Datos
+- PostgreSQL.
+- Almacena usuarios, roles, permisos e información administrativa.
+- Gestionada mediante el ORM de Django para garantizar integridad y seguridad.
+
+## Tecnologías Utilizadas
+
+### Backend
+- Django
+- Django REST Framework
+- JWT (JSON Web Tokens)
+- PostgreSQL
+
+### Dependencias Principales
+- Django==6.0
+- djangorestframework==3.16.1
+- djangorestframework_simplejwt==5.5.1
+- django-cors-headers==4.9.0
+- psycopg2-binary==2.9.11
+
+## Funcionalidades Implementadas
+
+- Gestión de usuarios.
+- Asignación de roles y permisos.
+- Control de accesos al sistema.
+- Administración centralizada de información del talento humano.
+- Seguridad en el manejo de datos.
 
 ## Conclusiones
-El proyecto TalentTrack evidencia la importancia de incorporar soluciones tecnológicas en la gestión interna de las PYMES. La plataforma desarrollada contribuye a optimizar procesos administrativos, mejorar la organización de la información y aumentar la eficiencia operativa.
 
-Además, el desarrollo del proyecto permitió aplicar conocimientos adquiridos durante la formación académica, fortaleciendo habilidades técnicas y analíticas mediante la resolución de un problema real del entorno empresarial.
+TalentTrack demuestra la importancia de contar con sistemas centralizados y arquitecturas bien definidas para la gestión del talento humano. La solución desarrollada mejora la organización de los procesos internos, fortalece la seguridad de la información y permite una evolución futura del sistema.
 
----
+Desde el punto de vista académico, el proyecto permitió aplicar conocimientos de análisis, diseño y desarrollo de software, consolidando competencias técnicas y profesionales mediante una solución real y funcional.
 
 ## Autores
-- Manuel Gómez
-- Juan Villamagua    
+
+- Manuel Gómez  
+- Juan Villamagua  
 - Víctor Mendoza  
 - David León  
 
----
-
 ## Universidad
+
 Universidad Técnica Particular de Loja (UTPL)  
 Facultad de Ingeniería y Arquitectura  
-Carrera de Ciencias Computacionales  
-
+Carrera de Ciencias Computacionales
