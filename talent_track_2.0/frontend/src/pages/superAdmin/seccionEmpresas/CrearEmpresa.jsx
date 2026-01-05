@@ -2,17 +2,13 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "../../../components/Sidebar";
 import { getAccessToken } from "../../../services/authStorage";
+import "../../../assets/css/admin-empresas.css"; 
 
 const CrearEmpresa = () => {
   const navigate = useNavigate();
-
+  const [logoPreview, setLogoPreview] = useState(null);
   const [formData, setFormData] = useState({
-    razonSocial: "",
-    nombreEmpresa: "",
-    ruc: "",
-    paisId: "",
-    monedaId: "",
-    monedaNombre: "",
+    razonSocial: "", nombreEmpresa: "", ruc: "", paisId: "", monedaId: "", monedaNombre: "", logo: null
   });
 
   const configuracionPaises = {
@@ -37,236 +33,152 @@ const CrearEmpresa = () => {
     Venezuela: { paisId: 19, monedaId: 19, monedaNombre: "Bolívar venezolano (VES)" },
   };
 
-  const handleChange = (e) => {
-    setFormData((p) => ({
-      ...p,
-      [e.target.name]: e.target.value,
-    }));
+  const handleChange = (e) => setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
+  
+  const handlePaisChange = (e) => {
+    const config = configuracionPaises[e.target.value];
+    if (config) setFormData((p) => ({ ...p, paisId: config.paisId, monedaId: config.monedaId, monedaNombre: config.monedaNombre }));
   };
 
-  const handlePaisChange = (e) => {
-    const nombrePais = e.target.value;
-    const config = configuracionPaises[nombrePais];
-
-    if (config) {
-      setFormData((p) => ({
-        ...p,
-        paisId: config.paisId,
-        monedaId: config.monedaId,
-        monedaNombre: config.monedaNombre,
-      }));
+  const handleLogoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData(prev => ({ ...prev, logo: file }));
+      setLogoPreview(URL.createObjectURL(file)); 
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.paisId) return alert("Selecciona un país.");
 
-    if (!formData.paisId || !formData.monedaId) {
-      alert("Selecciona un país para asignar país y moneda.");
-      return;
-    }
-
-    const payload = {
-      razon_social: formData.razonSocial.trim(),
-      nombre_comercial: formData.nombreEmpresa.trim(),
-      ruc_nit: formData.ruc.trim(),
-      pais: Number(formData.paisId),
-      moneda: Number(formData.monedaId),
-      // NO mandamos estado, el backend lo fuerza a 1 (activo)
-    };
-
-    console.log("Payload crear empresa =>", payload);
+    const formDataToSend = new FormData();
+    formDataToSend.append('razon_social', formData.razonSocial.trim());
+    formDataToSend.append('nombre_comercial', formData.nombreEmpresa.trim());
+    formDataToSend.append('ruc_nit', formData.ruc.trim());
+    formDataToSend.append('pais', formData.paisId);
+    formDataToSend.append('moneda', formData.monedaId);
+    formDataToSend.append('estado', 1);
+    if (formData.logo) formDataToSend.append('logo', formData.logo);
 
     try {
       const token = getAccessToken();
-      if (!token) {
-        alert("No hay sesión activa. Inicia sesión.");
-        navigate("/login", { replace: true });
-        return;
-      }
-
       const response = await fetch("http://127.0.0.1:8000/api/crear-empresa/", {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        headers: { Authorization: `Bearer ${token}` },
+        body: formDataToSend,
       });
-
-      if (response.ok) {
-        alert("Empresa creada exitosamente");
-        navigate("/admin/empresas");
-        return;
-      }
-
-      // backend error
+      if (response.ok) { navigate("/admin/empresas"); return; }
       const errorData = await response.json().catch(() => ({}));
-      console.error("Error backend crear empresa:", errorData);
-
-      // si te vuelve a salir el id duplicado, este mensaje te lo deja claro
-      alert(
-        errorData?.detail ||
-          "Error al crear empresa (revisa consola y backend)."
-      );
-    } catch (error) {
-      console.error("Error de red:", error);
-      alert("Error de conexión con el servidor.");
-    }
+      alert(errorData?.detail || "Error al crear empresa.");
+    } catch (error) { alert("Error de conexión."); }
   };
 
+  // Estilos
+  const inputStyle = { width: '100%', padding: '10px 12px 10px 40px', borderRadius: '8px', border: '1px solid #d1d5db', outline: 'none', fontSize: '0.9rem', color: '#1f2937', transition: 'border-color 0.2s' };
+  const iconStyle = { position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af', fontSize: '1.25rem', pointerEvents: 'none' };
+
   return (
-    <div className="layout">
+    <div className="layout" style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
       <Sidebar />
-      <main className="main-content">
-        <header className="header">
-          <h2 className="header-title">Empresa</h2>
+      <main className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        
+        <header style={{ background: 'white', padding: '0 32px', borderBottom: '1px solid #e2e8f0', height: '64px', display: 'flex', alignItems: 'center' }}>
+            <nav style={{ fontSize: '0.9rem', color: '#64748b', display: 'flex', alignItems: 'center' }}>
+                <Link to="/admin/empresas" style={{ textDecoration: 'none', color: '#64748b', fontWeight: '500' }}>Empresas</Link>
+                <i className='bx bx-chevron-right' style={{ fontSize: '1.2rem', margin: '0 8px' }}></i>
+                <span style={{ color: '#0f172a', fontWeight: '600' }}>Crear Empresa</span>
+            </nav>
         </header>
 
-        <div className="content-area">
-          <nav className="breadcrumb">
-            <Link to="/admin/empresas" className="breadcrumb-item">
-              Gestión de Empresas
-            </Link>
-            <span className="breadcrumb-separator">/</span>
-            <span className="breadcrumb-item active">Crear Empresa</span>
-          </nav>
-
-          <div className="form-card">
-            <div className="form-header">
-              <h2 className="form-title">Nueva Empresa</h2>
-              <p className="form-description">
-                Complete los datos para registrar la empresa en el sistema.
-              </p>
+        <div className="content-area" style={{ padding: '32px', maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
+            
+            <div style={{ marginBottom: '24px' }}>
+                <h1 style={{ fontSize: '1.75rem', fontWeight: 'bold', color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>Nueva Empresa</h1>
+                <p style={{ color: '#64748b', marginTop: '6px', fontSize: '1rem' }}>Ingresa la información legal y comercial para registrar la organización.</p>
             </div>
 
-            <form className="company-form" onSubmit={handleSubmit}>
-              {/* LOGO (NO SE ENVÍA) */}
-              <div className="form-section">
-                <label className="form-label">Logo de la Empresa</label>
-                <div className="upload-area">
-                  <i className="bx bx-image-add upload-icon"></i>
-                  <div className="upload-text">
-                    <span className="upload-link">Subir imagen</span>
-                  </div>
-                  <input type="file" hidden />
-                </div>
-              </div>
+            <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                
+                {/* --- CARD FORMULARIO --- */}
+                <div style={{ flex: '2', minWidth: '600px', background: 'white', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03)', border: '1px solid #e2e8f0' }}>
+                    <form onSubmit={handleSubmit} style={{ padding: '32px' }}>
+                        <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94a3b8', fontWeight: '700', marginBottom: '20px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>Identidad Corporativa</h4>
 
-              <div className="form-row">
-                <div className="form-section">
-                  <label className="form-label">
-                    Razón Social <span className="required">*</span>
-                  </label>
-                  <div className="input-with-icon">
-                    <i className="bx bxs-business input-icon-left"></i>
-                    <input
-                      type="text"
-                      name="razonSocial"
-                      className="form-input-field"
-                      placeholder="Ej. Innovate Corp S.A."
-                      required
-                      value={formData.razonSocial}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
+                        <div style={{ display: 'flex', gap: '24px', marginBottom: '32px' }}>
+                             <div style={{ flexShrink: 0 }}>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: '600', color: '#334155', fontSize: '0.9rem' }}>Logo</label>
+                                <div style={{ width: '120px', height: '120px', borderRadius: '12px', border: '2px dashed #cbd5e1', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#f8fafc', cursor: 'pointer', overflow: 'hidden' }} onClick={() => document.getElementById('logo-upload').click()}>
+                                    {logoPreview ? <img src={logoPreview} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <><i className='bx bx-cloud-upload' style={{ fontSize: '32px', color: '#94a3b8' }}></i><span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: '500' }}>Subir</span></>}
+                                </div>
+                                <input type="file" id="logo-upload" accept="image/*" onChange={handleLogoChange} style={{ display: 'none' }} />
+                             </div>
 
-                <div className="form-section">
-                  <label className="form-label">
-                    Nombre Comercial <span className="required">*</span>
-                  </label>
-                  <div className="input-with-icon">
-                    <i className="bx bx-buildings input-icon-left"></i>
-                    <input
-                      type="text"
-                      name="nombreEmpresa"
-                      className="form-input-field"
-                      placeholder="Ej. Innovate Corp"
-                      required
-                      value={formData.nombreEmpresa}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-              </div>
+                             <div style={{ flex: 1, display: 'grid', gap: '20px' }}>
+                                <div>
+                                    <label style={{ display: 'block', marginBottom: '6px', fontWeight: '600', color: '#334155', fontSize: '0.9rem' }}>Nombre Comercial <span style={{color:'#ef4444'}}>*</span></label>
+                                    <div style={{ position: 'relative' }}><i className='bx bx-store' style={iconStyle}></i><input type="text" name="nombreEmpresa" required placeholder="Ej. Innovate Corp" value={formData.nombreEmpresa} onChange={handleChange} style={inputStyle} /></div>
+                                </div>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                                    <div>
+                                        <label style={{ display: 'block', marginBottom: '6px', fontWeight: '600', color: '#334155', fontSize: '0.9rem' }}>Razón Social <span style={{color:'#ef4444'}}>*</span></label>
+                                        <div style={{ position: 'relative' }}><i className='bx bxs-business' style={iconStyle}></i><input type="text" name="razonSocial" required placeholder="Ej. Innovate S.A." value={formData.razonSocial} onChange={handleChange} style={inputStyle} /></div>
+                                    </div>
+                                    <div>
+                                        <label style={{ display: 'block', marginBottom: '6px', fontWeight: '600', color: '#334155', fontSize: '0.9rem' }}>RUC / NIT <span style={{color:'#ef4444'}}>*</span></label>
+                                        <div style={{ position: 'relative' }}><i className='bx bx-id-card' style={iconStyle}></i><input type="text" name="ruc" required placeholder="Ej. 1790012345" value={formData.ruc} onChange={handleChange} style={inputStyle} /></div>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
 
-              <div className="form-row">
-                <div className="form-section">
-                  <label className="form-label">
-                    RUC / Identificación <span className="required">*</span>
-                  </label>
-                  <div className="input-with-icon">
-                    <i className="bx bx-id-card input-icon-left"></i>
-                    <input
-                      type="text"
-                      name="ruc"
-                      className="form-input-field"
-                      placeholder="Ej. 1234567890"
-                      required
-                      value={formData.ruc}
-                      onChange={handleChange}
-                    />
-                  </div>
+                        <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94a3b8', fontWeight: '700', marginBottom: '20px', marginTop: '10px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>Ubicación y Moneda</h4>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '6px', fontWeight: '600', color: '#334155', fontSize: '0.9rem' }}>País <span style={{color:'#ef4444'}}>*</span></label>
+                                <div style={{ position: 'relative' }}><i className='bx bx-world' style={iconStyle}></i><select required onChange={handlePaisChange} value={Object.keys(configuracionPaises).find((k) => configuracionPaises[k].paisId === Number(formData.paisId)) || ""} style={{ ...inputStyle, appearance: 'none', backgroundColor: 'white' }}><option value="" disabled>Seleccionar...</option>{Object.keys(configuracionPaises).map(p => <option key={p} value={p}>{p}</option>)}</select><i className='bx bx-chevron-down' style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', color: '#64748b', pointerEvents: 'none' }}></i></div>
+                            </div>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '6px', fontWeight: '600', color: '#334155', fontSize: '0.9rem' }}>Moneda Principal</label>
+                                <div style={{ position: 'relative' }}><i className='bx bx-money' style={iconStyle}></i><input type="text" readOnly value={formData.monedaNombre} placeholder="Automático" style={{ ...inputStyle, backgroundColor: '#f8fafc', color: '#64748b' }} /></div>
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', paddingTop: '24px', borderTop: '1px solid #f1f5f9' }}>
+                            <Link to="/admin/empresas" style={{ padding: '10px 24px', borderRadius: '8px', border: '1px solid #cbd5e1', color: '#334155', textDecoration: 'none', fontWeight: '600', fontSize: '0.9rem' }}>Cancelar</Link>
+                            <button type="submit" style={{ padding: '10px 24px', borderRadius: '8px', border: 'none', background: '#dc2626', color: 'white', fontWeight: '600', fontSize: '0.9rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}><i className='bx bx-check'></i> Guardar Empresa</button>
+                        </div>
+                    </form>
                 </div>
 
-                <div className="form-section">
-                  <label className="form-label">
-                    País <span className="required">*</span>
-                  </label>
-                  <select
-                    className="form-select-field"
-                    required
-                    onChange={handlePaisChange}
-                    value={
-                      Object.keys(configuracionPaises).find(
-                        (k) => configuracionPaises[k].paisId === Number(formData.paisId)
-                      ) || ""
-                    }
-                  >
-                    <option value="" disabled>
-                      Seleccionar País
-                    </option>
-                    {Object.keys(configuracionPaises).map((paisName) => (
-                      <option key={paisName} value={paisName}>
-                        {paisName}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+                {/* --- CARD INFO (ARREGLADO) --- */}
+                <div style={{ flex: '0 0 320px', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '24px', height: 'fit-content' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+                        <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: '#fee2e2', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#dc2626' }}><i className='bx bx-bulb' style={{ fontSize: '20px' }}></i></div>
+                        <h3 style={{ fontSize: '1rem', fontWeight: '700', margin: 0, color: '#0f172a' }}>Ayuda Rápida</h3>
+                    </div>
+                    
+                    <div style={{ marginBottom: '24px' }}>
+                        <h4 style={{ fontSize: '0.85rem', fontWeight: '700', color: '#334155', marginBottom: '8px' }}>Logo Corporativo</h4>
+                        <p style={{ fontSize: '0.85rem', color: '#64748b', lineHeight: '1.5', margin: 0 }}>Use un archivo <strong>PNG</strong> con fondo transparente. Máximo 2MB.</p>
+                    </div>
 
-              <div className="form-row">
-                <div className="form-section">
-                  <label className="form-label">Moneda Principal</label>
-                  <div className="input-with-icon">
-                    <i className="bx bx-money input-icon-left"></i>
-                    <input
-                      type="text"
-                      className="form-input-field"
-                      placeholder="Seleccione un país primero"
-                      value={formData.monedaNombre}
-                      readOnly
-                      style={{ backgroundColor: "#f9fafb", cursor: "not-allowed" }}
-                    />
-                  </div>
-                </div>
-              </div>
+                    <div style={{ marginBottom: '24px' }}>
+                        <h4 style={{ fontSize: '0.85rem', fontWeight: '700', color: '#334155', marginBottom: '8px' }}>Configuración Regional</h4>
+                        <p style={{ fontSize: '0.85rem', color: '#64748b', lineHeight: '1.5', margin: 0 }}>La moneda base se define automáticamente por el país.</p>
+                    </div>
 
-              <div className="form-actions">
-                <Link
-                  to="/admin/empresas"
-                  className="btn-cancel"
-                  style={{ textDecoration: "none", display: "flex", alignItems: "center" }}
-                >
-                  Cancelar
-                </Link>
-                <button type="submit" className="btn-save">
-                  <i className="bx bx-save"></i> Crear Empresa
-                </button>
-              </div>
-            </form>
-          </div>
+                    {/* --- AQUÍ EL CAMBIO: Limpiamos la caja gris --- */}
+                    <div style={{ paddingTop: '16px', borderTop: '1px solid #f1f5f9', marginTop: '16px' }}>
+                        <p style={{ fontSize: '0.85rem', color: '#64748b', margin: 0, display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                            <i className='bx bx-info-circle' style={{ color: '#dc2626', fontSize: '1.1rem', marginTop: '1px' }}></i>
+                            <span>Los campos con <span style={{color:'#dc2626', fontWeight: 'bold'}}>*</span> son obligatorios para facturación.</span>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
         </div>
       </main>
     </div>

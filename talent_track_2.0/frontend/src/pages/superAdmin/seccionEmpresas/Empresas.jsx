@@ -1,49 +1,52 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getAccessToken } from "../../../services/authStorage";
 import { apiFetch } from "../../../services/api";
 
-const API_BASE = "http://127.0.0.1:8000/api";
+// --- COMPONENTES Y ESTILOS ---
+import Sidebar from "../../../components/Sidebar"; 
+import '../../../assets/css/admin-empresas.css'; 
+import '../../../assets/css/modal.css';
 
-export default function Empresas() {
+const Empresas = () => {
   const navigate = useNavigate();
+  const API_BASE = "http://127.0.0.1:8000/api";
 
+  // --- ESTADOS ---
   const [empresas, setEmpresas] = useState([]);
+  const [filteredEmpresas, setFilteredEmpresas] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
+  
+  // Filtros
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('todos');
 
-  const [search, setSearch] = useState("");
+  // Modales
+  const [showModal, setShowModal] = useState(false);
+  const [empresaSeleccionada, setEmpresaSeleccionada] = useState(null);
+  const [modalAction, setModalAction] = useState(null); 
+  const [modalStep, setModalStep] = useState(1); 
 
-  const filtered = useMemo(() => {
-    const s = search.trim().toLowerCase();
-    if (!s) return empresas;
-
-    return empresas.filter((e) => {
-      const r = (e.razon_social || "").toLowerCase();
-      const n = (e.nombre_comercial || "").toLowerCase();
-      const ru = (e.ruc_nit || "").toLowerCase();
-      return r.includes(s) || n.includes(s) || ru.includes(s);
-    });
-  }, [empresas, search]);
-
+  // --- 1. CARGA DE DATOS ---
   const fetchEmpresas = async () => {
     setLoading(true);
     setErrorMsg("");
-
     try {
       const token = getAccessToken();
       const res = await apiFetch(`${API_BASE}/listado-empresas/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (!res.ok) {
-        throw new Error("No se pudieron cargar las empresas.");
-      }
-
+      if (!res.ok) throw new Error('Error al conectar con el servidor');
+      
       const data = await res.json();
-      setEmpresas(Array.isArray(data) ? data : []);
-    } catch (err) {
-      setErrorMsg(err?.message || "Error cargando empresas.");
+      const lista = Array.isArray(data) ? data : [];
+      setEmpresas(lista);
+      setFilteredEmpresas(lista); 
+    } catch (error) {
+      console.error("Error:", error);
+      setErrorMsg("No se pudieron cargar los datos.");
     } finally {
       setLoading(false);
     }
@@ -53,121 +56,319 @@ export default function Empresas() {
     fetchEmpresas();
   }, []);
 
-  const eliminarEmpresa = async (id) => {
-    const ok = window.confirm("¿Seguro que deseas eliminar esta empresa?");
-    if (!ok) return;
+  // --- 2. FILTRADO ---
+  const handleFilter = () => {
+    let resultado = empresas;
+
+    if (searchTerm.trim() !== '') {
+      const term = searchTerm.toLowerCase();
+      resultado = resultado.filter(emp => 
+        (emp.nombre_comercial || "").toLowerCase().includes(term) ||
+        (emp.razon_social || "").toLowerCase().includes(term) ||
+        (emp.ruc_nit || "").toLowerCase().includes(term)
+      );
+    }
+
+    if (statusFilter !== 'todos') {
+      resultado = resultado.filter(emp => 
+        (emp.estado_nombre || "").toLowerCase() === statusFilter.toLowerCase()
+      );
+    }
+    setFilteredEmpresas(resultado);
+  };
+
+  // --- 3. MODALES ---
+  const iniciarAccion = (empresa, accion) => {
+    setEmpresaSeleccionada(empresa);
+    setModalAction(accion);
+    setModalStep(1);
+    setShowModal(true);
+  };
+
+  const cerrarModal = () => {
+    setShowModal(false);
+    setEmpresaSeleccionada(null);
+    setModalStep(1);
+    setModalAction(null);
+  };
+
+  const confirmarAccion = async () => {
+    if (!empresaSeleccionada) return;
+
+    if (modalAction === 'delete' && modalStep === 1) {
+      setModalStep(2);
+      return;
+    }
+
+    const { id } = empresaSeleccionada;
+    const token = getAccessToken();
+    let url = modalAction === 'delete' ? `${API_BASE}/empresas/${id}/` : `${API_BASE}/empresas/${id}/toggle-estado/`;
+    let method = modalAction === 'delete' ? "DELETE" : "PATCH";
 
     try {
-      const token = getAccessToken();
-      const res = await apiFetch(`${API_BASE}/empresas/${id}/`, {
-        method: "DELETE",
+      const res = await apiFetch(url, {
+        method: method,
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (!res.ok) {
-        throw new Error("No se pudo eliminar la empresa.");
+      if (res.ok) {
+        await fetchEmpresas(); 
+        cerrarModal();
+      } else {
+        alert("No se pudo completar la acción.");
       }
-
-      // refrescar
-      await fetchEmpresas();
-    } catch (err) {
-      alert(err?.message || "Error eliminando empresa.");
+    } catch (error) {
+      alert("Error de conexión.");
     }
   };
 
-  const toggleEstado = async (id) => {
-    try {
-      const token = getAccessToken();
-      const res = await apiFetch(`${API_BASE}/empresas/${id}/toggle-estado/`, {
-        method: "PATCH",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+  // Helper para iniciales
+  const getInitials = (name) => {
+     if(!name) return "EM";
+     return name.substring(0, 2).toUpperCase();
+  };
 
-      if (!res.ok) throw new Error("No se pudo cambiar el estado.");
+  // --- RENDERIZADO DEL MODAL ---
+  const renderModalContent = () => {
+    if (!empresaSeleccionada) return null;
 
-      // refrescar
-      await fetchEmpresas();
-    } catch (err) {
-      alert(err?.message || "Error cambiando estado.");
+    // A) CAMBIO DE ESTADO
+    if (modalAction === 'toggle') {
+      const isActivating = empresaSeleccionada.estado_nombre !== 'activo';
+      return (
+        <>
+          <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: isActivating ? '#dcfce7' : '#fee2e2', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+            <i className={`bx ${isActivating ? 'bx-check-circle' : 'bx-power-off'}`} style={{ fontSize: '40px', color: isActivating ? '#16a34a' : '#dc2626' }}></i>
+          </div>
+          <h3 className="modal-title" style={{ fontSize: '1.5rem', fontWeight: '700', color: '#111827', marginBottom: '12px' }}>Confirmar cambio de estado</h3>
+          <p className="modal-text" style={{ fontSize: '1rem', color: '#6b7280', marginBottom: '24px', lineHeight: '1.5' }}>
+            ¿Deseas <strong>{isActivating ? 'ACTIVAR' : 'DESACTIVAR'}</strong> la empresa <span style={{ fontWeight: '600', color: '#111827' }}>"{empresaSeleccionada.nombre_comercial}"</span>?
+          </p>
+          <div className="modal-actions" style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="btn-modal" onClick={cerrarModal} style={{ padding: '10px 20px', backgroundColor: 'white', border: '1px solid #d1d5db', borderRadius: '8px', cursor: 'pointer' }}>Cancelar</button>
+            <button className="btn-modal" onClick={confirmarAccion} style={{ padding: '10px 20px', backgroundColor: isActivating ? '#16a34a' : '#dc2626', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Confirmar</button>
+          </div>
+        </>
+      );
+    }
+
+    // B) ELIMINAR (2 PASOS)
+    if (modalAction === 'delete') {
+       if (modalStep === 1) {
+            return (
+                <div style={{ padding: '10px 0' }}>
+                  <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: '#fee2e2', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+                    <i className='bx bxs-trash' style={{ fontSize: '40px', color: '#dc2626' }}></i>
+                  </div>
+                  <h3 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#111827', marginBottom: '12px' }}>Advertencia de Eliminación</h3>
+                  <p style={{ fontSize: '1rem', color: '#6b7280', marginBottom: '24px' }}>
+                      Vas a eliminar a <strong style={{ color: '#111827' }}>{empresaSeleccionada.nombre_comercial}</strong>.
+                  </p>
+                  
+                  {/* LISTA DE ADVERTENCIA */}
+                  <div style={{ backgroundColor: '#fff1f2', borderLeft: '4px solid #dc2626', padding: '15px', borderRadius: '6px', marginBottom: '24px', textAlign: 'left' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px', color: '#991b1b', fontWeight: '700', fontSize: '0.9rem' }}>
+                        <i className='bx bx-error-circle' style={{ marginRight: '8px', fontSize: '1.2rem' }}></i>
+                        <span>Se eliminará permanentemente:</span>
+                      </div>
+                      <ul style={{ margin: 0, paddingLeft: '20px', color: '#991b1b', fontSize: '0.85rem', lineHeight: '1.5' }}>
+                          <li>Cuentas de usuarios y administradores.</li>
+                          <li>Historiales de actividad y registros.</li>
+                          <li>Configuraciones y sucursales.</li>
+                      </ul>
+                  </div>
+                  
+                  <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                      <button onClick={cerrarModal} style={{ padding: '10px 20px', backgroundColor: 'white', border: '1px solid #d1d5db', borderRadius: '8px', cursor: 'pointer' }}>Cancelar</button>
+                      <button onClick={confirmarAccion} style={{ padding: '10px 20px', backgroundColor: '#dc2626', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Entendido, Continuar</button>
+                  </div>
+                </div>
+            );
+       }
+       if (modalStep === 2) {
+            return (
+                <div style={{ padding: '10px 0' }}>
+                  <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: '#fee2e2', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+                    <i className='bx bxs-error-alt' style={{ fontSize: '45px', color: '#dc2626' }}></i>
+                  </div>
+                  <h3 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#111827', marginBottom: '12px' }}>¿Estás absolutamente seguro?</h3>
+                  <p style={{ fontSize: '1rem', color: '#6b7280', marginBottom: '32px' }}>
+                      Esta acción es <strong>irreversible</strong>.
+                  </p>
+                  <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                      <button onClick={() => setModalStep(1)} style={{ padding: '10px 20px', backgroundColor: 'white', border: '1px solid #d1d5db', borderRadius: '8px', cursor: 'pointer' }}>Atrás</button>
+                      <button onClick={confirmarAccion} style={{ padding: '10px 20px', backgroundColor: '#dc2626', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' }}>Sí, Eliminar</button>
+                  </div>
+                </div>
+            );
+       };
     }
   };
 
-  if (loading) return <div style={{ padding: 20 }}>Cargando...</div>;
-
+  // --- RENDERIZADO PRINCIPAL (SIN HEADER BLANCO SUPERIOR) ---
   return (
-    <div style={{ padding: 20 }}>
-      <h2>Empresas</h2>
+    <div className="layout" style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f9fafb' }}>
+        
+        {/* SIDEBAR */}
+        <Sidebar />
 
-      {errorMsg && (
-        <div style={{ marginBottom: 12, padding: 10, border: "1px solid #ddd" }}>
-          {errorMsg}
-        </div>
-      )}
+        {/* CONTENIDO PRINCIPAL */}
+        <main className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            
+            {/* YA NO HAY HEADER AQUÍ - Diseño más limpio */}
+            
+            {/* ÁREA DE TRABAJO */}
+            <div className="content-area" style={{ padding: '40px' }}>
 
-      <div style={{ marginBottom: 12, display: "flex", gap: 10 }}>
-        <button onClick={() => navigate("/admin/empresas/crear")}>
-          Crear empresa
-        </button>
+                {/* Título y Botón Crear */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+                    <div>
+                        <h1 style={{ fontSize: '1.8rem', fontWeight: 'bold', color: '#111827', margin: 0 }}>Listado de Empresas</h1>
+                        <p style={{ color: '#6b7280', marginTop: '6px', fontSize: '1rem' }}>Administra y supervisa las empresas registradas en la plataforma.</p>
+                    </div>
+                    
+                    {/* BOTÓN CREAR CON ICONO AUMENTADO */}
+                    <button 
+                        onClick={() => navigate("/admin/empresas/crear")} 
+                        className="btn-create" 
+                        style={{ 
+                            backgroundColor: '#dc2626', 
+                            color: 'white', 
+                            padding: '12px 24px', 
+                            borderRadius: '10px', 
+                            border: 'none', 
+                            cursor: 'pointer', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: '10px', 
+                            fontWeight: '600',
+                            fontSize: '0.95rem',
+                            boxShadow: '0 4px 6px rgba(220, 38, 38, 0.2)'
+                        }}
+                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#b91c1c'}
+                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#dc2626'}
+                    >
+                        {/* Icono más grande y visible */}
+                        <i className='bx bx-plus-circle' style={{ fontSize: '1.3rem' }}></i> 
+                        Crear Empresa
+                    </button>
+                </div>
 
-        <button onClick={fetchEmpresas}>Refrescar</button>
+                {errorMsg && (
+                    <div style={{ marginBottom: 20, color: 'white', background: '#ef4444', padding: 15, borderRadius: 8 }}>{errorMsg}</div>
+                )}
 
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Buscar por razón social, nombre, RUC..."
-          style={{ flex: 1, padding: 8 }}
-        />
-      </div>
+                {/* Filtros */}
+                <div style={{ background: 'white', padding: '20px', borderRadius: '12px', display: 'flex', gap: '16px', marginBottom: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', border: '1px solid #e5e7eb', flexWrap: 'wrap' }}>
+                    <div style={{ flex: 1, position: 'relative', minWidth: '250px' }}>
+                        <i className='bx bx-search' style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af', fontSize: '1.2rem' }}></i>
+                        <input 
+                          type="text" 
+                          placeholder="Buscar por nombre, razón social o RUC..." 
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          onKeyDown={(e) => e.key === 'Enter' && handleFilter()} 
+                          style={{ width: '100%', padding: '12px 12px 12px 48px', borderRadius: '8px', border: '1px solid #e5e7eb', outline: 'none', fontSize: '0.95rem' }}
+                        />
+                    </div>
+                    <select 
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                        style={{ padding: '12px 20px', borderRadius: '8px', border: '1px solid #e5e7eb', color: '#374151', backgroundColor: 'white', cursor: 'pointer', minWidth: '150px' }}
+                    >
+                        <option value="todos">Todos los estados</option>
+                        <option value="activo">Activos</option>
+                        <option value="inactivo">Inactivos</option>
+                    </select>
+                    <button 
+                        onClick={handleFilter} 
+                        style={{ padding: '12px 24px', backgroundColor: '#1f2937', color: 'white', borderRadius: '8px', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '500' }}
+                    >
+                        <i className='bx bx-filter'></i> Filtrar
+                    </button>
+                </div>
 
-      <table border="1" cellPadding="8" cellSpacing="0" width="100%">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Razón social</th>
-            <th>Nombre comercial</th>
-            <th>RUC/NIT</th>
-            <th>País</th>
-            <th>Moneda</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
+                {/* Tabla */}
+                <div style={{ background: 'white', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', border: '1px solid #e5e7eb', overflow: 'hidden' }}>
+                    <div className="table-responsive">
+                        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead style={{ backgroundColor: '#f9fafb', borderBottom: '2px solid #e5e7eb' }}>
+                            <tr>
+                            <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.75rem', color: '#111827', fontWeight: '700', textTransform: 'uppercase' }}>Logo</th>
+                            <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.75rem', color: '#111827', fontWeight: '700', textTransform: 'uppercase' }}>Razón Social</th>
+                            <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.75rem', color: '#111827', fontWeight: '700', textTransform: 'uppercase' }}>Nombre Comercial</th>
+                            <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.75rem', color: '#111827', fontWeight: '700', textTransform: 'uppercase' }}>RUC</th>
+                            <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.75rem', color: '#111827', fontWeight: '700', textTransform: 'uppercase' }}>País</th>
+                            <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.75rem', color: '#111827', fontWeight: '700', textTransform: 'uppercase' }}>Estado</th>
+                            <th style={{ padding: '16px', textAlign: 'center', fontSize: '0.75rem', color: '#111827', fontWeight: '700', textTransform: 'uppercase' }}>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {loading && <tr><td colSpan="7" style={{textAlign:'center', padding:'40px', color: '#374151'}}>Cargando...</td></tr>}
+                            {!loading && filteredEmpresas.length === 0 && <tr><td colSpan="7" style={{textAlign:'center', padding:'40px', color: '#6b7280'}}>No se encontraron resultados.</td></tr>}
 
-        <tbody>
-          {filtered.length === 0 ? (
-            <tr>
-              <td colSpan="8" style={{ textAlign: "center" }}>
-                No hay empresas.
-              </td>
-            </tr>
-          ) : (
-            filtered.map((e) => (
-              <tr key={e.id}>
-                <td>{e.id}</td>
-                <td>{e.razon_social}</td>
-                <td>{e.nombre_comercial}</td>
-                <td>{e.ruc_nit}</td>
-                <td>{e.pais_nombre ?? e.pais}</td>
-                <td>{e.moneda_nombre ?? e.moneda}</td>
-                <td>{e.estado_nombre ?? e.estado}</td>
-                <td style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  <button onClick={() => navigate(`/admin/empresas/editar/${e.id}`)}>
-                    Editar
-                  </button>
+                            {!loading && filteredEmpresas.map((empresa) => (
+                            <tr key={empresa.id} style={{ borderBottom: '1px solid #e5e7eb' }}>
+                                {/* Logo Iniciales */}
+                                <td style={{ padding: '16px' }}>
+                                  <div style={{ width: '40px', height: '40px', backgroundColor: '#be185d', color: 'white', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                                      {getInitials(empresa.nombre_comercial)}
+                                  </div>
+                                </td>
+                                
+                                <td style={{ padding: '16px', fontSize: '0.9rem', color: '#1f2937', fontWeight: '500' }}>{empresa.razon_social}</td>
+                                <td style={{ padding: '16px', fontWeight: '600', color: '#111827' }}>{empresa.nombre_comercial}</td>
+                                <td style={{ padding: '16px', color: '#374151' }}>{empresa.ruc_nit}</td>
+                                <td style={{ padding: '16px', color: '#374151' }}>{empresa.pais_nombre ?? empresa.pais}</td>
+                                
+                                {/* Badge Estado */}
+                                <td style={{ padding: '16px' }}>
+                                  <span style={{ 
+                                      backgroundColor: (empresa.estado_nombre || '').toLowerCase() === 'activo' ? '#dcfce7' : '#fee2e2', 
+                                      color: (empresa.estado_nombre || '').toLowerCase() === 'activo' ? '#15803d' : '#b91c1c', 
+                                      padding: '4px 12px', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase'
+                                  }}>
+                                      {empresa.estado_nombre ?? empresa.estado}
+                                  </span>
+                                </td>
+                                
+                                {/* Acciones */}
+                                <td style={{ padding: '16px', textAlign: 'center' }}>
+                                  <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                                      <button onClick={() => navigate(`/admin/empresas/ver/${empresa.id}`)} style={{ background: '#e0f2fe', color: '#0284c7', border: 'none', borderRadius: '6px', padding: '6px', cursor: 'pointer' }} title="Ver">
+                                        <i className='bx bx-show' style={{ fontSize: '1.1rem' }}></i>
+                                      </button>
+                                      <button onClick={() => navigate(`/admin/empresas/editar/${empresa.id}`)} style={{ background: '#e0e7ff', color: '#4f46e5', border: 'none', borderRadius: '6px', padding: '6px', cursor: 'pointer' }} title="Editar">
+                                        <i className='bx bx-edit-alt' style={{ fontSize: '1.1rem' }}></i>
+                                      </button>
+                                      <button onClick={() => iniciarAccion(empresa, 'toggle')} style={{ background: '#f3f4f6', color: '#4b5563', border: 'none', borderRadius: '6px', padding: '6px', cursor: 'pointer' }} title="Estado">
+                                        <i className='bx bx-power-off' style={{ fontSize: '1.1rem' }}></i>
+                                      </button>
+                                      <button onClick={() => iniciarAccion(empresa, 'delete')} style={{ background: '#fee2e2', color: '#dc2626', border: 'none', borderRadius: '6px', padding: '6px', cursor: 'pointer' }} title="Eliminar">
+                                        <i className='bx bx-trash' style={{ fontSize: '1.1rem' }}></i>
+                                      </button>
+                                  </div>
+                                </td>
+                            </tr>
+                            ))}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                  <button onClick={() => eliminarEmpresa(e.id)}>
-                    Eliminar
-                  </button>
+            </div>
+        </main>
 
-                  <button onClick={() => toggleEstado(e.id)}>
-                    Cambiar estado
-                  </button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+        {/* MODAL OVERLAY */}
+        {showModal && empresaSeleccionada && (
+          <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(2px)' }}>
+            <div className="modal-content" style={{ backgroundColor: 'white', padding: '32px', borderRadius: '16px', width: '90%', maxWidth: '450px', textAlign: 'center', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)' }}>
+               {renderModalContent()}
+            </div>
+          </div>
+        )}
     </div>
   );
-}
+};
+
+export default Empresas;

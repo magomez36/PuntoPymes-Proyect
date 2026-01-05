@@ -1,105 +1,297 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../../../services/api";
+import Sidebar from "../../../components/Sidebar";
+import { getAccessToken } from "../../../services/authStorage";
 
-const API = "http://127.0.0.1:8000/api";
+// Estilos compartidos
+import "../../../assets/css/admin-empresas.css"; 
 
-function getAccessToken() {
-  return localStorage.getItem("tt_access") || sessionStorage.getItem("tt_access");
-}
+const API_BASE = "http://127.0.0.1:8000/api";
 
 export default function TiposAusenciasEmp() {
   const navigate = useNavigate();
+  const token = useMemo(() => getAccessToken(), []);
+
+  // Datos
+  const [empresas, setEmpresas] = useState([]);
+  const [empresaId, setEmpresaId] = useState(""); // Filtro
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState("");
 
-  const fetchData = async () => {
-    setLoading(true);
-    setErrorMsg("");
+  // Modales
+  const [showWarningModal, setShowWarningModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [successTitle, setSuccessTitle] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const authHeaders = useMemo(() => (token
+    ? { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }
+    : { "Content-Type": "application/json" }
+  ), [token]);
+
+  // --- 1. FETCH EMPRESAS (Para el filtro) ---
+  const fetchEmpresas = useCallback(async () => {
     try {
-      const res = await apiFetch(`${API}/tipos-ausencias/`, {
-        headers: { Authorization: `Bearer ${getAccessToken()}` },
-      });
-      if (!res.ok) throw new Error("No se pudo cargar Tipos de Ausencias");
-      const data = await res.json();
-      setRows(Array.isArray(data) ? data : []);
+        // Ajusta la URL si tu endpoint de listado de empresas es diferente (ej: /listado-empresas/)
+        const res = await apiFetch(`http://127.0.0.1:8000/api/listado-empresas/`, { headers: authHeaders });
+        if (!res.ok) throw new Error("Error cargando empresas");
+        return await res.json();
+    } catch (error) { 
+        console.error(error); 
+        return []; 
+    }
+  }, [authHeaders]);
+
+  // --- 2. FETCH TIPOS AUSENCIAS ---
+  const fetchData = useCallback(async (empresaIdParam = "") => {
+    try {
+        setLoading(true);
+        // Construir URL con filtro si existe
+        const url = empresaIdParam 
+            ? `${API_BASE}/tipos-ausencias/?empresa_id=${empresaIdParam}`
+            : `${API_BASE}/tipos-ausencias/`;
+
+        const res = await apiFetch(url, { headers: authHeaders });
+        
+        if (!res.ok) throw new Error("No se pudo cargar Tipos de Ausencias");
+        const data = await res.json();
+        setRows(Array.isArray(data) ? data : []);
     } catch (e) {
-      setErrorMsg(e.message || "Error");
+        console.error(e.message);
+        setRows([]);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+  }, [authHeaders]);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("¿Eliminar este tipo de ausencia?")) return;
-    try {
-      const res = await apiFetch(`${API}/tipos-ausencias/${id}/`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${getAccessToken()}` },
-      });
-      if (!res.ok) throw new Error("No se pudo eliminar");
-      await fetchData();
-    } catch (e) {
-      alert(e.message || "Error al eliminar");
-    }
-  };
-
+  // --- CARGA INICIAL ---
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (!token) { navigate("/login"); return; }
+
+    (async () => {
+        setLoading(true);
+        const emps = await fetchEmpresas();
+        setEmpresas(emps);
+        
+        setEmpresaId(""); 
+        await fetchData(""); 
+        setLoading(false);
+    })();
+  }, [token, navigate, fetchEmpresas, fetchData]);
+
+  // --- HANDLER FILTRO ---
+  const handleEmpresaChange = (e) => {
+      const id = e.target.value;
+      setEmpresaId(id);
+      fetchData(id);
+  };
+
+  // --- ELIMINACIÓN (Flujo de 3 Pasos) ---
+  const handleDeleteClick = (item) => {
+    setItemToDelete(item);
+    setShowWarningModal(true);
+  };
+
+  const proceedToConfirm = () => {
+    setShowWarningModal(false);
+    setShowConfirmModal(true);
+  };
+
+  const executeDelete = async () => {
+    if (!itemToDelete) return;
+
+    try {
+      const res = await apiFetch(`${API_BASE}/tipos-ausencias/${itemToDelete.id}/`, {
+        method: "DELETE",
+        headers: authHeaders,
+      });
+      
+      if (!res.ok) {
+          alert("No se pudo eliminar. Verifique si hay solicitudes asociadas.");
+          setShowConfirmModal(false);
+          return;
+      }
+
+      setShowConfirmModal(false);
+      setSuccessTitle("Tipo Eliminado");
+      setSuccessMessage(`El tipo de ausencia "${itemToDelete.nombre}" ha sido eliminado.`);
+      setShowSuccessModal(true);
+
+      fetchData(empresaId); // Recargar
+    } catch (e) {
+      alert("Error eliminando.");
+      setShowConfirmModal(false);
+    }
+  };
 
   return (
-    <div style={{ padding: 16 }}>
-      <h2>Tipos de Ausencias (SuperAdmin)</h2>
+    <div className="layout" style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+      <Sidebar />
+      <main className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        
+        <div className="content-area" style={{ padding: '32px' }}>
 
-      <button onClick={() => navigate("/admin/tipos-ausencias/crear")}>
-        + Crear Tipo de Ausencia
-      </button>
+            {/* HEADER */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                <div>
+                    <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1e293b', margin: 0 }}>Tipos de Ausencias</h1>
+                    <p style={{ color: '#64748b', marginTop: '4px' }}>Gestiona las categorías de permisos (Vacaciones, Enfermedad, etc.).</p>
+                </div>
+                <button 
+                    onClick={() => navigate("/admin/tipos-ausencias/crear")} 
+                    className="btn-create" 
+                    style={{ 
+                        backgroundColor: '#dc2626', color: 'white', padding: '10px 20px', 
+                        borderRadius: '8px', border: 'none', cursor: 'pointer', 
+                        display: 'flex', alignItems: 'center', gap: '8px', 
+                        fontWeight: 'bold',
+                        boxShadow: '0 4px 6px -1px rgba(220, 38, 38, 0.2)' 
+                    }}>
+                    <i className='bx bx-plus-circle' style={{fontSize: '1.2rem'}}></i> Nuevo Tipo
+                </button>
+            </div>
 
-      <div style={{ marginTop: 12 }}>
-        <button onClick={fetchData}>Recargar</button>
-      </div>
+            {/* FILTROS */}
+            <div style={{ background: 'white', padding: '16px', borderRadius: '12px', marginBottom: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ flex: 1 }}>
+                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: '#64748b', marginBottom: '6px' }}>Filtrar por Empresa:</label>
+                    <div style={{ position: 'relative' }}>
+                        <i className='bx bx-buildings' style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: '1.2rem' }}></i>
+                        <select 
+                            value={empresaId} 
+                            onChange={handleEmpresaChange} 
+                            style={{ width: '100%', padding: '10px 12px 10px 40px', borderRadius: '8px', border: '1px solid #cbd5e1', outline: 'none', color: '#1e293b', appearance: 'none', backgroundColor: 'white', fontSize: '0.95rem' }}
+                        >
+                            <option value="">Todas las empresas</option>
+                            {empresas.map((e) => (
+                                <option key={e.id} value={String(e.id)}>{e.razon_social}</option>
+                            ))}
+                        </select>
+                        <i className='bx bx-chevron-down' style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', color: '#64748b', pointerEvents: 'none' }}></i>
+                    </div>
+                </div>
+            </div>
 
-      {loading && <p>Cargando...</p>}
-      {errorMsg && <p style={{ color: "crimson" }}>{errorMsg}</p>}
+            {/* TABLA */}
+            <div style={{ background: 'white', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
+                <div className="table-responsive">
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                        <thead style={{ backgroundColor: '#f8fafc', borderBottom: '2px solid #e2e8f0' }}>
+                            <tr>
+                                <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.75rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase' }}>Nombre</th>
+                                <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.75rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase' }}>Empresa</th>
+                                <th style={{ padding: '16px', textAlign: 'center', fontSize: '0.75rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase' }}>Afecta Sueldo</th>
+                                <th style={{ padding: '16px', textAlign: 'center', fontSize: '0.75rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase' }}>Requiere Soporte</th>
+                                <th style={{ padding: '16px', textAlign: 'center', fontSize: '0.75rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase' }}>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {loading && <tr><td colSpan="5" style={{textAlign:'center', padding:'40px', color: '#64748b'}}>Cargando datos...</td></tr>}
+                            
+                            {!loading && rows.length === 0 && (
+                                <tr><td colSpan="5" style={{textAlign:'center', padding:'40px', color: '#64748b'}}>No hay tipos de ausencia registrados.</td></tr>
+                            )}
 
-      {!loading && !errorMsg && (
-        <table border="1" cellPadding="8" style={{ marginTop: 12, width: "100%", borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Empresa</th>
-              <th>Afecta sueldo</th>
-              <th>Requiere soporte</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => (
-              <tr key={r.id}>
-                <td>{r.nombre}</td>
-                <td>{r.empresa_nombre || "N/A"}</td>
-                <td>{r.afecta_sueldo_txt ?? (r.afecta_sueldo ? "Si" : "No")}</td>
-                <td>{r.requiere_soporte_txt ?? (r.requiere_soporte ? "Si" : "No")}</td>
-                <td>
-                  <button onClick={() => navigate(`/admin/tipos-ausencias/editar/${r.id}`)}>
-                    Editar
-                  </button>{" "}
-                  <button onClick={() => handleDelete(r.id)}>
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {rows.length === 0 && (
-              <tr>
-                <td colSpan="5">No hay registros.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      )}
+                            {!loading && rows.map((r) => {
+                                const afectaSueldo = r.afecta_sueldo === true || r.afecta_sueldo === 1 || r.afecta_sueldo === "true";
+                                const requiereSoporte = r.requiere_soporte === true || r.requiere_soporte === 1 || r.requiere_soporte === "true";
+
+                                return (
+                                <tr key={r.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
+                                    <td style={{ padding: '16px', fontWeight: '600', color: '#1e293b' }}>{r.nombre}</td>
+                                    <td style={{ padding: '16px', color: '#64748b', fontWeight: '500' }}>{r.empresa_nombre || "N/A"}</td>
+                                    
+                                    {/* AFECTA SUELDO */}
+                                    <td style={{ padding: '16px', textAlign: 'center' }}>
+                                        {afectaSueldo 
+                                            ? <span style={{ background: '#fee2e2', color: '#dc2626', padding: '4px 10px', borderRadius: '6px', fontWeight: 'bold', fontSize: '0.75rem' }}>SÍ</span>
+                                            : <span style={{ background: '#f1f5f9', color: '#64748b', padding: '4px 10px', borderRadius: '6px', fontWeight: 'bold', fontSize: '0.75rem' }}>NO</span>
+                                        }
+                                    </td>
+                                    
+                                    {/* REQUIERE SOPORTE */}
+                                    <td style={{ padding: '16px', textAlign: 'center' }}>
+                                        {requiereSoporte 
+                                            ? <span style={{ background: '#e0f2fe', color: '#0284c7', padding: '4px 10px', borderRadius: '6px', fontWeight: 'bold', fontSize: '0.75rem' }}>SÍ</span>
+                                            : <span style={{ background: '#f1f5f9', color: '#64748b', padding: '4px 10px', borderRadius: '6px', fontWeight: 'bold', fontSize: '0.75rem' }}>NO</span>
+                                        }
+                                    </td>
+
+                                    <td style={{ padding: '16px', textAlign: 'center' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                                            <button 
+                                                onClick={() => navigate(`/admin/tipos-ausencias/editar/${r.id}`)} 
+                                                title="Editar"
+                                                style={{ background: '#e0e7ff', color: '#4f46e5', border: 'none', borderRadius: '6px', padding: '8px', cursor: 'pointer', transition: 'all 0.2s' }}
+                                            >
+                                                <i className='bx bx-edit-alt' style={{ fontSize: '1.1rem' }}></i>
+                                            </button>
+
+                                            <button 
+                                                onClick={() => handleDeleteClick(r)} 
+                                                title="Eliminar"
+                                                style={{ background: '#fee2e2', color: '#dc2626', border: 'none', borderRadius: '6px', padding: '8px', cursor: 'pointer', transition: 'all 0.2s' }}
+                                            >
+                                                <i className='bx bx-trash' style={{ fontSize: '1.1rem' }}></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            )})}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+        {/* --- MODAL 1: ADVERTENCIA --- */}
+        {showWarningModal && (
+            <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(2px)' }}>
+                <div className="modal-content" style={{ backgroundColor: 'white', padding: '24px', borderRadius: '16px', width: '90%', maxWidth: '450px', textAlign: 'center' }}>
+                    <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#fef3c7', color: '#d97706', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}><i className='bx bx-error-alt' style={{ fontSize: '32px' }}></i></div>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#111827', marginBottom: '8px' }}>¡Advertencia!</h3>
+                    <p style={{ color: '#6b7280', marginBottom: '16px', fontSize: '0.95rem' }}>Esta acción es irreversible.</p>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                        <button onClick={() => setShowWarningModal(false)} style={{ flex: 1, padding: '10px', backgroundColor: 'white', color: '#374151', border: '1px solid #d1d5db', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>Cancelar</button>
+                        <button onClick={proceedToConfirm} style={{ flex: 1, padding: '10px', backgroundColor: '#d97706', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>Entendido, Continuar</button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {/* --- MODAL 2: CONFIRMACIÓN --- */}
+        {showConfirmModal && (
+            <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+                <div className="modal-content" style={{ backgroundColor: 'white', padding: '24px', borderRadius: '16px', width: '90%', maxWidth: '400px', textAlign: 'center' }}>
+                    <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#fee2e2', color: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}><i className='bx bx-trash' style={{ fontSize: '32px' }}></i></div>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#111827', marginBottom: '8px' }}>¿Confirmar Eliminación?</h3>
+                    <p style={{ color: '#6b7280', marginBottom: '24px', fontSize: '0.95rem' }}>¿Seguro que deseas eliminar el tipo <strong>"{itemToDelete?.nombre}"</strong>?</p>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                        <button onClick={() => setShowConfirmModal(false)} style={{ flex: 1, padding: '10px', backgroundColor: 'white', color: '#374151', border: '1px solid #d1d5db', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>No, Cancelar</button>
+                        <button onClick={executeDelete} style={{ flex: 1, padding: '10px', backgroundColor: '#dc2626', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer' }}>Sí, Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        )}
+
+        {/* --- MODAL 3: ÉXITO --- */}
+        {showSuccessModal && (
+            <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(2px)' }}>
+                <div className="modal-content" style={{ backgroundColor: 'white', padding: '32px', borderRadius: '16px', width: '90%', maxWidth: '400px', textAlign: 'center', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
+                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: '#dcfce7', color: '#16a34a', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}><i className='bx bx-check' style={{ fontSize: '48px' }}></i></div>
+                    <h3 style={{ fontSize: '1.5rem', fontWeight: '700', color: '#111827', marginBottom: '12px' }}>{successTitle}</h3>
+                    <p style={{ color: '#6b7280', marginBottom: '24px' }}>{successMessage}</p>
+                    <button onClick={() => setShowSuccessModal(false)} style={{ width: '100%', padding: '12px', backgroundColor: '#16a34a', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', fontSize: '1rem' }}>Aceptar</button>
+                </div>
+            </div>
+        )}
+
+      </main>
     </div>
   );
 }

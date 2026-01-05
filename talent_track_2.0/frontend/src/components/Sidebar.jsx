@@ -9,15 +9,11 @@ const Sidebar = () => {
   const location = useLocation();
   const currentPath = location.pathname;
 
+  // Función para detectar si el link está activo (incluyendo sub-rutas)
   const getActiveClass = (path) => {
-    // Lógica para EMPRESAS (se mantiene activo en crear/editar/ver)
-    if (path === '/admin/empresas') {
-      if (currentPath.includes('/admin/empresas')) {
-        return 'sidebar-item active';
-      }
-    }
-    // Lógica general
-    if (currentPath === path) {
+    // Si la ruta base coincide con el inicio de la ruta actual, se marca activo
+    // Ejemplo: path="/admin/puestos" coincidirá con "/admin/puestos/crear"
+    if (currentPath.startsWith(path)) {
       return 'sidebar-item active';
     }
     return 'sidebar-item';
@@ -36,12 +32,14 @@ const Sidebar = () => {
         {/* SECCIÓN RESUMEN */}
         <div className="sidebar-section-label">Resumen</div>
         
-        <Link to="/admin/inicio" className={getActiveClass('/admin/inicio')} data-tooltip="Inicio">
+        <Link to="/superadmin/inicio" className={getActiveClass('/superadmin/inicio')} data-tooltip="Inicio">
           <i className='bx bxs-home sidebar-icon-box'></i>
           <span>Inicio</span>
         </Link>
         
-        <Link to="/admin/dashboard" className={getActiveClass('/admin/dashboard')} data-tooltip="Dashboard">
+        {/* Nota: En tu App.js no vi una ruta explicita para /admin/dashboard, 
+            así que dejo esta apuntando a inicio o la que prefieras */}
+        <Link to="/superadmin/inicio" className={currentPath === '/admin/dashboard' ? 'sidebar-item active' : 'sidebar-item'} data-tooltip="Dashboard">
           <i className='bx bxs-dashboard sidebar-icon-box'></i>
           <span>Dashboard</span>
         </Link>
@@ -54,74 +52,80 @@ const Sidebar = () => {
           <span>Empresas</span>
         </Link>
 
-        {/* Items Placeholder */}
-        <div className="sidebar-item" data-tooltip="Unidades Org.">
+        <Link to="/admin/unidades-organizacionales" className={getActiveClass('/admin/unidades-organizacionales')} data-tooltip="Unidades Org.">
           <i className='bx bx-sitemap sidebar-icon-box'></i>
-          <span>Unidades Organizacionales</span>
-        </div>
-        <div className="sidebar-item" data-tooltip="Puestos">
+          <span>Unidades Org.</span>
+        </Link>
+
+        <Link to="/admin/puestos" className={getActiveClass('/admin/puestos')} data-tooltip="Puestos">
           <i className='bx bxs-briefcase sidebar-icon-box'></i>
           <span>Puestos</span>
-        </div>
+        </Link>
         
-        {/* --- CORRECCIÓN TURNOS: 'bxs-clock' no existe, usamos 'bxs-time' --- */}
-        <div className="sidebar-item" data-tooltip="Turnos">
+        <Link to="/admin/turnos" className={getActiveClass('/admin/turnos')} data-tooltip="Turnos">
           <i className='bx bxs-time sidebar-icon-box'></i>
           <span>Turnos</span>
-        </div>
+        </Link>
         
-        <div className="sidebar-item" data-tooltip="Reglas Asistencia">
+        <Link to="/admin/reglas-asistencia" className={getActiveClass('/admin/reglas-asistencia')} data-tooltip="Reglas Asistencia">
           <i className='bx bxs-check-square sidebar-icon-box'></i>
-          <span>Reglas de Asistencia</span>
-        </div>
-        <div className="sidebar-item" data-tooltip="Tipos Ausencias">
+          <span>Reglas Asistencia</span>
+        </Link>
+
+        <Link to="/admin/tipos-ausencias" className={getActiveClass('/admin/tipos-ausencias')} data-tooltip="Tipos Ausencias">
           <i className='bx bx-calendar-x sidebar-icon-box'></i>
-          <span>Tipos de Ausencias</span>
-        </div>
+          <span>Tipos Ausencias</span>
+        </Link>
+
+        <Link to="/admin/empleados" className={getActiveClass('/admin/empleados')} data-tooltip="Empleados">
+           <i className='bx bx-id-card sidebar-icon-box'></i>
+           <span>Empleados</span>
+        </Link>
 
         {/* SECCIÓN RENDIMIENTO */}
         <div className="sidebar-section-label">Rendimiento</div>
         
-        <div className="sidebar-item" data-tooltip="KPIs">
+        <Link to="/admin/kpis" className={getActiveClass('/admin/kpis')} data-tooltip="KPIs">
           <i className='bx bx-trending-up sidebar-icon-box'></i>
           <span>KPIs</span>
-        </div>
-        <div className="sidebar-item" data-tooltip="Plantillas KPIs">
+        </Link>
+
+        <Link to="/admin/plantillas-kpi" className={getActiveClass('/admin/plantillas-kpi')} data-tooltip="Plantillas KPIs">
           <i className='bx bx-layout sidebar-icon-box'></i>
           <span>Plantillas KPIs</span>
-        </div>
-        <div className="sidebar-item" data-tooltip="Integraciones ERP">
+        </Link>
+
+        {/* Placeholder: No vi ruta en App.js para Integraciones */}
+        <div className="sidebar-item" data-tooltip="Integraciones ERP (Próximamente)">
           <i className='bx bxs-plug sidebar-icon-box'></i>
           <span>Integraciones ERP</span>
         </div>
-        <div className="sidebar-item" data-tooltip="Reportes">
+
+        <Link to="/admin/reportes-programados" className={getActiveClass('/admin/reportes-programados')} data-tooltip="Reportes">
           <i className='bx bx-file sidebar-icon-box'></i>
-          <span>Reportes Programados</span>
-        </div>
+          <span>Reportes</span>
+        </Link>
 
         {/* SECCIÓN ADMINISTRACIÓN */}
-        <div className="sidebar-section-label">Administración</div>
+        <div className="sidebar-section-label">Seguridad</div>
         
-        <div className="sidebar-item" data-tooltip="Usuarios">
+        <Link to="/admin/usuarios" className={getActiveClass('/admin/usuarios')} data-tooltip="Usuarios">
           <i className='bx bx-group sidebar-icon-box'></i>
           <span>Usuarios</span>
-        </div>
+        </Link>
         
-        {/* --- CORRECCIÓN ROLES: Usamos 'bxs-user-badge' que es más seguro --- */}
-        <div className="sidebar-item" data-tooltip="Roles">
+        <Link to="/admin/roles" className={getActiveClass('/admin/roles')} data-tooltip="Roles">
           <i className='bx bxs-user-badge sidebar-icon-box'></i>
           <span>Roles</span>
-        </div>
+        </Link>
         
-        <div className="sidebar-item" data-tooltip="Permisos">
+        <Link to="/admin/permisos" className={getActiveClass('/admin/permisos')} data-tooltip="Permisos">
           <i className='bx bxs-calendar-check sidebar-icon-box'></i>
           <span>Permisos</span>
-        </div>
-        <div className="sidebar-item" data-tooltip="Usuarios con Roles">
-          <i className='bx bxs-user-detail sidebar-icon-box'></i>
-          <span>Usuarios con Roles</span>
-        </div>
-        <div className="sidebar-item" data-tooltip="Webhooks">
+        </Link>
+
+        {/* Placeholder: No vi ruta en App.js para Webhooks */}
+        <div className="sidebar-item" data-tooltip="Webhooks (Próximamente)">
           <i className='bx bx-code-alt sidebar-icon-box'></i>
           <span>Webhooks</span>
         </div>
