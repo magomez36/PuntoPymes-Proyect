@@ -16,6 +16,19 @@ export default function InicioAdminRRHH() {
       <h1>Bienvenido{fullName ? `, ${fullName}` : ""}</h1>
       <p>Panel de RRHH: gestión de empleados, KPI y aprobaciones.</p>
 
+      <button onClick={() => navigate("/rrhh/unidades-organizacionales")}>Unidades Organizacionales</button>
+      <button onClick={() => navigate("/rrhh/puestos")}>Puestos</button>
+      <button onClick={() => navigate("/rrhh/turnos")}>Turnos</button>
+      <button onClick={() => navigate("/rrhh/empleados")}>Empleados</button>
+      <button onClick={() => navigate("/rrhh/contratos")}>Contratos</button>
+      <button onClick={() => navigate("/rrhh/tipos-ausencias")}>Tipos de Ausencias</button>
+      <button onClick={() => navigate("/rrhh/kpis")}>KPIs</button>
+      <button onClick={() => navigate("/rrhh/ausencias/solicitudes")}>Solicitudes Ausencias</button>
+      <button onClick={() => navigate("/rrhh/jornadas-calculadas")}>Jornadas Calculadas</button>
+      <button onClick={() => navigate("/rrhh/kpi/asignaciones")}>Asignaciones KPIs</button>
+      <button onClick={() => navigate("/rrhh/vacaciones/saldos")}>Saldos Vacaciones</button>
+
+
       <button
         onClick={logout}
         style={{

@@ -16,6 +16,13 @@ export default function InicioAuditor() {
       <h1>Bienvenido{fullName ? `, ${fullName}` : ""}</h1>
       <p>Panel de Auditor: acceso de solo lectura para auditorías.</p>
 
+      <button onClick={() => navigate("/auditor/accesos/usuarios")}>Accesos (Usuarios / Roles / Permisos)</button>
+      <button onClick={() => navigate("/auditor/trazabilidad/logs")}>Trazabilidad (Logs de Auditoría)</button>
+      <button onClick={() => navigate("/auditor/expedientes/empleados")}>Expedientes de Empleados</button>
+      <button onClick={() => navigate("/auditor/ausencias/solicitudes")}>Ausencias y Vacaciones</button>
+      <button onClick={() => navigate("/auditor/desempeno/asignaciones-kpi")}>Desempeño y KPI </button>
+      <button onClick={() => navigate("/auditor/asistencia/eventos")}>Asistencia y cumplimiento</button>
+
       <button
         onClick={logout}
         style={{
