@@ -12,6 +12,37 @@ const API_BASE = "http://127.0.0.1:8000/api";
 const TIPOS = { 1: "Asistencia", 2: "KPI", 3: "Ausencias" };
 const FORMATOS = { 1: "CSV", 2: "XLS", 3: "PDF" };
 
+// --- HELPER: TRADUCTOR DE CRON A LENGUAJE HUMANO ---
+const interpretarCron = (cronExpression) => {
+    if (!cronExpression) return "No definido";
+    const parts = cronExpression.split(' ');
+    
+    // Validación simple
+    if (parts.length < 5) return cronExpression;
+
+    const [min, hour, dayOfMonth, month, dayOfWeek] = parts;
+
+    // Caso 1: Diario (ej: 0 8 * * *)
+    if (dayOfMonth === '*' && month === '*' && dayOfWeek === '*') {
+        return `Diario a las ${hour}:${min.toString().padStart(2, '0')}`;
+    }
+
+    // Caso 2: Semanal (ej: 0 9 * * 1) -> 1 suele ser Lunes
+    if (dayOfMonth === '*' && month === '*' && dayOfWeek !== '*') {
+        const dias = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+        const diaNombre = dias[parseInt(dayOfWeek)] || "Día " + dayOfWeek;
+        return `Cada ${diaNombre} a las ${hour}:${min.toString().padStart(2, '0')}`;
+    }
+
+    // Caso 3: Mensual (ej: 0 8 1 * *)
+    if (dayOfMonth !== '*' && month === '*' && dayOfWeek === '*') {
+        return `El día ${dayOfMonth} de cada mes, ${hour}:${min.toString().padStart(2, '0')}`;
+    }
+
+    // Caso por defecto
+    return "Personalizado";
+};
+
 export default function ReportesProgramados() {
   const navigate = useNavigate();
   const token = useMemo(() => getAccessToken(), []);
@@ -19,6 +50,9 @@ export default function ReportesProgramados() {
   // Estados
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // Estado para minimizar/maximizar los tips
+  const [showTips, setShowTips] = useState(true);
 
   // Modales
   const [showWarningModal, setShowWarningModal] = useState(false);
@@ -61,7 +95,6 @@ export default function ReportesProgramados() {
   const showJson = (obj) => {
     if (!obj) return <span style={{color:'#94a3b8', fontStyle:'italic'}}>Sin parámetros</span>;
     try {
-      // Intentar mostrar algo más limpio que JSON puro
       const str = JSON.stringify(obj).replace(/[{"}]/g, '').replace(/,/g, ', ');
       return <span style={{fontFamily:'monospace', fontSize:'0.8rem', color:'#475569'}}>{str.substring(0, 30)}{str.length > 30 ? '...' : ''}</span>;
     } catch { return "Error formato"; }
@@ -151,6 +184,77 @@ export default function ReportesProgramados() {
                 </Link>
             </div>
 
+            {/* --- SECCIÓN DE TIPS (COLLAPSIBLE) --- */}
+            <div style={{ 
+                backgroundColor: '#eff6ff', 
+                border: '1px solid #bfdbfe', 
+                padding: '16px 20px', 
+                borderRadius: '12px', 
+                marginBottom: '24px', 
+                boxShadow: '0 2px 4px rgba(59, 130, 246, 0.05)',
+                transition: 'all 0.3s ease'
+            }}>
+                {/* Cabecera del Tip (Siempre visible) */}
+                <div 
+                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+                    onClick={() => setShowTips(!showTips)}
+                >
+                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                        <div style={{
+                            backgroundColor: '#3b82f6', color: 'white', borderRadius: '50%', width: '32px', height: '32px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+                        }}>
+                            <i className='bx bx-bulb' style={{ fontSize: '1.2rem' }}></i>
+                        </div>
+                        <h4 style={{ margin: 0, fontSize: '1rem', color: '#1e3a8a', fontWeight: '700' }}>
+                            ¿Cómo interpretar la Frecuencia de Envío?
+                        </h4>
+                    </div>
+                    
+                    {/* Botón Toggle */}
+                    <button style={{
+                        background: 'transparent', border: 'none', color: '#3b82f6', cursor: 'pointer', 
+                        display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.85rem', fontWeight: '600'
+                    }}>
+                        {showTips ? 'Minimizar' : 'Ver guía'}
+                        <i className={`bx ${showTips ? 'bx-chevron-up' : 'bx-chevron-down'}`} style={{ fontSize: '1.2rem' }}></i>
+                    </button>
+                </div>
+
+                {/* Contenido (Condicional) */}
+                {showTips && (
+                    <div style={{ marginLeft: '48px', marginTop: '12px', animation: 'fadeIn 0.3s' }}>
+                        <p style={{ margin: '0 0 16px 0', fontSize: '0.9rem', color: '#334155', lineHeight: '1.5' }}>
+                            El sistema traduce automáticamente el código técnico (Cron) a un lenguaje humano en la tabla.
+                        </p>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
+                            {/* Ejemplo 1 */}
+                            <div style={{ background: 'white', padding: '12px', borderRadius: '8px', border: '1px solid #dbeafe' }}>
+                                <span style={{ fontSize: '0.75rem', color: '#64748b', textTransform:'uppercase', fontWeight:'bold', display:'block', marginBottom:'4px' }}>Ejemplo Semanal:</span>
+                                <div style={{ fontSize: '0.9rem', color: '#334155', fontWeight: '600' }}>Cada Lunes a las 08:00</div>
+                                <code style={{ fontSize: '0.75rem', color: '#94a3b8', background:'#f1f5f9', padding:'2px 6px', borderRadius:'4px', marginTop:'4px', display:'inline-block' }}>0 8 * * 1</code>
+                            </div>
+
+                            {/* Ejemplo 2 */}
+                            <div style={{ background: 'white', padding: '12px', borderRadius: '8px', border: '1px solid #dbeafe' }}>
+                                <span style={{ fontSize: '0.75rem', color: '#64748b', textTransform:'uppercase', fontWeight:'bold', display:'block', marginBottom:'4px' }}>Ejemplo Mensual:</span>
+                                <div style={{ fontSize: '0.9rem', color: '#334155', fontWeight: '600' }}>El día 1 de cada mes, 09:00</div>
+                                <code style={{ fontSize: '0.75rem', color: '#94a3b8', background:'#f1f5f9', padding:'2px 6px', borderRadius:'4px', marginTop:'4px', display:'inline-block' }}>0 9 1 * *</code>
+                            </div>
+
+                            {/* Nota */}
+                            <div style={{ background: '#fffbeb', padding: '12px', borderRadius: '8px', border: '1px solid #fcd34d', display:'flex', alignItems:'center', gap:'10px' }}>
+                                <i className='bx bx-error-circle' style={{color:'#d97706', fontSize:'1.5rem'}}></i>
+                                <p style={{ margin:0, fontSize: '0.8rem', color: '#92400e', lineHeight:'1.3' }}>
+                                    Si ves <strong>"Personalizado"</strong>, la configuración es compleja; guíate por el código.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
             {/* TABLA */}
             <div style={{ background: 'white', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
                 <div className="table-responsive">
@@ -159,7 +263,7 @@ export default function ReportesProgramados() {
                             <tr>
                                 <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.75rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase' }}>Nombre Tarea</th>
                                 <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.75rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase' }}>Empresa / Tipo</th>
-                                <th style={{ padding: '16px', textAlign: 'center', fontSize: '0.75rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase' }}>Frecuencia (Cron)</th>
+                                <th style={{ padding: '16px', textAlign: 'center', fontSize: '0.75rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase' }}>Frecuencia</th>
                                 <th style={{ padding: '16px', textAlign: 'center', fontSize: '0.75rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase' }}>Formato</th>
                                 <th style={{ padding: '16px', textAlign: 'left', fontSize: '0.75rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase' }}>Destinatarios</th>
                                 <th style={{ padding: '16px', textAlign: 'center', fontSize: '0.75rem', color: '#475569', fontWeight: '700', textTransform: 'uppercase' }}>Estado</th>
@@ -185,13 +289,29 @@ export default function ReportesProgramados() {
                                         <span style={{fontSize:'0.75rem', background:'#f1f5f9', padding:'2px 6px', borderRadius:'4px'}}>{r.tipo_nombre || TIPOS[r.tipo] || r.tipo}</span>
                                     </td>
                                     
-                                    <td style={{ padding: '16px', textAlign: 'center', fontFamily:'monospace', color:'#0891b2', fontWeight:'600' }}>
-                                        {r.frecuencia_cron}
+                                    {/* --- COLUMNA DE FRECUENCIA --- */}
+                                    <td style={{ padding: '16px', textAlign: 'center' }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                            <span style={{ fontSize: '0.85rem', color: '#334155', fontWeight: '600' }}>
+                                                {interpretarCron(r.frecuencia_cron)}
+                                            </span>
+                                            <span style={{ 
+                                                fontSize: '0.7rem', 
+                                                fontFamily: 'monospace', 
+                                                background: '#f1f5f9', 
+                                                color: '#94a3b8', 
+                                                padding: '2px 6px', 
+                                                borderRadius: '4px',
+                                                marginTop: '4px'
+                                            }}>
+                                                {r.frecuencia_cron}
+                                            </span>
+                                        </div>
                                     </td>
 
                                     <td style={{ padding: '16px', textAlign: 'center' }}>
                                         <span style={{ 
-                                            background: r.formato === 3 ? '#fee2e2' : '#dbeafe', // PDF rojo, otros azul
+                                            background: r.formato === 3 ? '#fee2e2' : '#dbeafe', 
                                             color: r.formato === 3 ? '#dc2626' : '#2563eb',
                                             padding:'4px 8px', borderRadius:'4px', fontSize:'0.75rem', fontWeight:'bold' 
                                         }}>
@@ -203,7 +323,6 @@ export default function ReportesProgramados() {
                                         {showDestinatarios(r.destinatarios)}
                                     </td>
 
-                                    {/* ESTADO */}
                                     <td style={{ padding: '16px', textAlign: 'center' }}>
                                         <span style={{ 
                                             backgroundColor: r.activo ? '#dcfce7' : '#f3f4f6', 

@@ -236,21 +236,49 @@ export default function EditarReporteProgramado() {
                     {/* ACTIVO */}
                     <div style={{ marginBottom: '20px' }}>
                         <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', fontSize: '0.95rem', color: '#334155', fontWeight: '600' }}>
-                            <input type="checkbox" name="activo" checked={form.activo} onChange={onChange} style={{ width: '18px', height: '18px', accentColor: '#2563eb' }} />
+                            <input type="checkbox" name="activo" checked={form.activo} onChange={onChange} style={{ width: '18px', height: '18px', accentColor: '#dc2626' }} />
                             Activar envío automático
                         </label>
                     </div>
 
+                    {/* BOTONES ACCIÓN (Identidad Corporativa) */}
                     <div style={{ display: 'flex', gap: '12px', marginTop: '32px' }}>
                         <Link 
                             to="/admin/reportes-programados"
-                            style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', color: '#334155', textDecoration: 'none', fontWeight: 'bold', fontSize: '1rem', textAlign: 'center' }}
+                            style={{ 
+                                flex: 1, 
+                                padding: '12px', 
+                                borderRadius: '8px', 
+                                border: '1px solid #dc2626', // Borde Rojo
+                                color: '#dc2626', // Texto Rojo
+                                background: 'white',
+                                textDecoration: 'none', 
+                                fontWeight: 'bold', 
+                                fontSize: '1rem', 
+                                textAlign: 'center',
+                                transition: '0.2s'
+                            }}
                         >
                             Cancelar
                         </Link>
                         <button 
                             onClick={submit} 
-                            style={{ flex: 2, padding: '12px', borderRadius: '8px', border: 'none', background: '#0f172a', color: 'white', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent:'center', gap: '8px', boxShadow: '0 4px 6px -1px rgba(15, 23, 42, 0.3)' }}
+                            style={{ 
+                                flex: 2, 
+                                padding: '12px', 
+                                borderRadius: '8px', 
+                                border: 'none', 
+                                background: '#dc2626', // Fondo Rojo
+                                color: 'white', 
+                                fontWeight: 'bold', 
+                                fontSize: '1rem', 
+                                cursor: 'pointer', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent:'center', 
+                                gap: '8px', 
+                                boxShadow: '0 4px 6px -1px rgba(220, 38, 38, 0.3)' 
+                            }}
                         >
                             <i className='bx bx-save'></i> Guardar Cambios
                         </button>
@@ -260,7 +288,7 @@ export default function EditarReporteProgramado() {
                 {/* --- DERECHA: ENTREGA Y FRECUENCIA --- */}
                 <div style={{ flex: '1', minWidth: '400px', background: 'white', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', border: '1px solid #e2e8f0', padding: '32px' }}>
                     <h4 style={{ fontSize: '0.95rem', color: '#1e293b', fontWeight: '700', marginBottom: '20px', display:'flex', alignItems:'center', gap:'8px' }}>
-                        <i className='bx bx-paper-plane' style={{fontSize:'1.2rem', color:'#2563eb'}}></i> Entrega y Frecuencia
+                        <i className='bx bx-paper-plane' style={{fontSize:'1.2rem', color:'#dc2626'}}></i> Entrega y Frecuencia
                     </h4>
 
                     {/* FRECUENCIA */}
@@ -297,7 +325,15 @@ export default function EditarReporteProgramado() {
                             <button 
                                 type="button" 
                                 onClick={addDestinatario}
-                                style={{ padding: '0 16px', borderRadius: '8px', border: 'none', background: '#3b82f6', color: 'white', fontWeight: 'bold', cursor: 'pointer' }}
+                                style={{ 
+                                    padding: '0 16px', 
+                                    borderRadius: '8px', 
+                                    border: 'none', 
+                                    background: '#dc2626', // Rojo
+                                    color: 'white', 
+                                    fontWeight: 'bold', 
+                                    cursor: 'pointer' 
+                                }}
                             >
                                 <i className='bx bx-plus'></i>
                             </button>

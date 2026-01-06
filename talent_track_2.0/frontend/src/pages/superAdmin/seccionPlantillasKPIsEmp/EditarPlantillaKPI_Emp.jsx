@@ -61,7 +61,7 @@ export default function EditarPlantillaKPI_Emp() {
         const data = await res.json();
 
         setEmpresaId(String(data.empresa_id || ""));
-        setEmpresaNombre(data.empresa_razon_social || "Empresa Desconocida"); // Asumiendo que el backend lo envía
+        setEmpresaNombre(data.empresa_razon_social || "Empresa Desconocida"); 
         
         setForm({
           nombre: data.nombre || "",
@@ -70,13 +70,12 @@ export default function EditarPlantillaKPI_Emp() {
 
         // 2. Mapear Objetivos existentes
         const rawObjs = Array.isArray(data.objetivos) ? data.objetivos : [];
-        // Necesitamos mapearlos inicialmente, pero luego enriqueceremos con los labels de KPIs
         const initialObjs = rawObjs.map(o => ({
             kpi_id: Number(o.kpi_id),
             meta: Number(o.meta),
             umbral_rojo: Number(o.umbral_rojo),
             umbral_amarillo: Number(o.umbral_amarillo),
-            kpi_label: o.kpi_nombre || o.kpi_label || `KPI #${o.kpi_id}` // Si el backend ya manda nombre, genial
+            kpi_label: o.kpi_nombre || o.kpi_label || `KPI #${o.kpi_id}`
         }));
         setObjetivos(initialObjs);
 
@@ -132,7 +131,6 @@ export default function EditarPlantillaKPI_Emp() {
 
     if (objetivos.some(o => o.kpi_id === kid)) return alert("Este KPI ya está agregado.");
 
-    // Buscar nombre del KPI para mostrar
     const kpiInfo = kpis.find(k => k.id === kid);
     
     const nuevo = {
@@ -263,19 +261,49 @@ export default function EditarPlantillaKPI_Emp() {
                         </div>
                     </div>
 
-                    {/* BOTONES */}
+                    {/* BOTONES ACCIÓN (Identidad Corporativa: Rojo/Blanco) */}
                     <div style={{ display: 'flex', gap: '12px' }}>
                         <Link 
                             to="/admin/plantillas-kpi"
-                            style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', color: '#334155', textDecoration: 'none', fontWeight: 'bold', fontSize: '1rem', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent:'center' }}
+                            style={{ 
+                                flex: 1, 
+                                padding: '12px', 
+                                borderRadius: '8px', 
+                                border: '1px solid #dc2626', // Borde Rojo
+                                color: '#dc2626', // Texto Rojo
+                                background: 'white',
+                                textDecoration: 'none', 
+                                fontWeight: 'bold', 
+                                fontSize: '1rem', 
+                                textAlign: 'center', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent:'center',
+                                transition: '0.2s'
+                            }}
                         >
                             Cancelar
                         </Link>
                         <button 
                             onClick={onSubmit} 
-                            style={{ flex: 2, padding: '12px', borderRadius: '8px', border: 'none', background: '#0f172a', color: 'white', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent:'center', gap: '8px', boxShadow: '0 4px 6px -1px rgba(15, 23, 42, 0.3)' }}
+                            style={{ 
+                                flex: 2, 
+                                padding: '12px', 
+                                borderRadius: '8px', 
+                                border: 'none', 
+                                background: '#dc2626', // Fondo Rojo
+                                color: 'white', 
+                                fontWeight: 'bold', 
+                                fontSize: '1rem', 
+                                cursor: 'pointer', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent:'center', 
+                                gap: '8px', 
+                                boxShadow: '0 4px 6px -1px rgba(220, 38, 38, 0.3)' 
+                            }}
                         >
-                            <i className='bx bx-save'></i> Guardar
+                            <i className='bx bx-save'></i> Guardar Cambios
                         </button>
                     </div>
                 </div>
@@ -316,7 +344,21 @@ export default function EditarPlantillaKPI_Emp() {
                             </div>
                         </div>
 
-                        <button onClick={agregarObjetivo} style={{ width:'100%', padding: '10px', borderRadius: '8px', border: 'none', background: '#3b82f6', color: 'white', fontWeight: 'bold', cursor: 'pointer', fontSize:'0.9rem' }}>
+                        <button 
+                            onClick={agregarObjetivo} 
+                            style={{ 
+                                width:'100%', 
+                                padding: '10px', 
+                                borderRadius: '8px', 
+                                border: '1px dashed #dc2626', // Estilo "Ghost" rojo
+                                background: 'white', 
+                                color: '#dc2626', 
+                                fontWeight: 'bold', 
+                                cursor: 'pointer', 
+                                fontSize:'0.9rem',
+                                transition: '0.2s' 
+                            }}
+                        >
                             + Agregar Objetivo
                         </button>
                     </div>
@@ -343,7 +385,6 @@ export default function EditarPlantillaKPI_Emp() {
                                     </thead>
                                     <tbody>
                                         {objetivos.map((o, idx) => {
-                                            // Resolver nombre del KPI dinámicamente si kpis ya cargó
                                             const label = o.kpi_label || kpis.find(k => k.id === o.kpi_id)?.nombre || `KPI #${o.kpi_id}`;
                                             return (
                                                 <tr key={idx} style={{ borderBottom: '1px solid #f1f5f9' }}>

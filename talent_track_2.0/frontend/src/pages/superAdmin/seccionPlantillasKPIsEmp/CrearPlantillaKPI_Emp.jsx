@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import Sidebar from "../../../components/Sidebar";
 import { apiFetch } from "../../../services/api";
@@ -52,11 +52,9 @@ export default function CrearPlantillaKPI_Emp() {
         const token = getAccessToken();
         if (!token) return navigate("/login");
 
-        // Cargar Empresas
         const resEmp = await apiFetch(`${API_BASE}/listado-empresas/`, { headers: { Authorization: `Bearer ${token}` } });
         if (resEmp.ok) setEmpresas(await resEmp.json());
 
-        // Si ya hay empresa preseleccionada, cargar sus KPIs
         if (form.empresa_id) {
             await loadKPIs(form.empresa_id);
         }
@@ -73,7 +71,6 @@ export default function CrearPlantillaKPI_Emp() {
   const loadKPIs = async (empresaId) => {
     setKpis([]); 
     if (!empresaId) return;
-    
     try {
         const token = getAccessToken();
         const res = await apiFetch(`${API_BASE}/helpers/kpis-por-empresa/?empresa_id=${empresaId}`, { 
@@ -208,7 +205,7 @@ export default function CrearPlantillaKPI_Emp() {
             <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                 
                 {/* --- IZQUIERDA: CONFIGURACIÓN PLANTILLA --- */}
-                <div style={{ flex: '1', minWidth: '400px', background: 'white', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03)', border: '1px solid #e2e8f0', padding: '32px', height: 'fit-content' }}>
+                <div style={{ flex: '1', minWidth: '400px', background: 'white', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', border: '1px solid #e2e8f0', padding: '32px', height: 'fit-content' }}>
                     <h4 style={{ fontSize: '0.95rem', color: '#1e293b', fontWeight: '700', marginBottom: '20px', display:'flex', alignItems:'center', gap:'8px' }}>
                         <i className='bx bx-cog' style={{fontSize:'1.2rem', color:'#64748b'}}></i> Configuración General
                     </h4>
@@ -247,7 +244,7 @@ export default function CrearPlantillaKPI_Emp() {
                         </div>
                     </div>
 
-                    {/* BOTONES ACCIÓN (Guardar / Cancelar) */}
+                    {/* BOTONES ACCIÓN (Identidad Corporativa: Rojo/Blanco) */}
                     <div style={{ display: 'flex', gap: '12px' }}>
                         <Link 
                             to="/admin/plantillas-kpi"
@@ -255,15 +252,17 @@ export default function CrearPlantillaKPI_Emp() {
                                 flex: 1,
                                 padding: '12px', 
                                 borderRadius: '8px', 
-                                border: '1px solid #cbd5e1', 
-                                color: '#334155', 
+                                border: '1px solid #dc2626', // Borde Rojo
+                                color: '#dc2626', // Texto Rojo
+                                background: 'white',
                                 textDecoration: 'none', 
                                 fontWeight: 'bold', 
                                 fontSize: '1rem',
                                 textAlign: 'center',
                                 display: 'flex', 
                                 alignItems: 'center', 
-                                justifyContent:'center'
+                                justifyContent:'center',
+                                transition: '0.2s'
                             }}
                         >
                             Cancelar
@@ -275,7 +274,7 @@ export default function CrearPlantillaKPI_Emp() {
                                 padding: '12px', 
                                 borderRadius: '8px', 
                                 border: 'none', 
-                                background: '#0f172a', 
+                                background: '#dc2626', // Fondo Rojo
                                 color: 'white', 
                                 fontWeight: 'bold', 
                                 fontSize: '1rem', 
@@ -284,7 +283,7 @@ export default function CrearPlantillaKPI_Emp() {
                                 alignItems: 'center', 
                                 justifyContent:'center', 
                                 gap: '8px', 
-                                boxShadow: '0 4px 6px -1px rgba(15, 23, 42, 0.3)' 
+                                boxShadow: '0 4px 6px -1px rgba(220, 38, 38, 0.3)' 
                             }}
                         >
                             <i className='bx bx-save'></i> Guardar
@@ -333,7 +332,18 @@ export default function CrearPlantillaKPI_Emp() {
                         <button 
                             onClick={agregarObjetivo} 
                             disabled={!form.empresa_id}
-                            style={{ width:'100%', padding: '10px', borderRadius: '8px', border: 'none', background: form.empresa_id ? '#3b82f6' : '#cbd5e1', color: 'white', fontWeight: 'bold', cursor: form.empresa_id ? 'pointer' : 'not-allowed', fontSize:'0.9rem' }}
+                            style={{ 
+                                width:'100%', 
+                                padding: '10px', 
+                                borderRadius: '8px', 
+                                border: '1px dashed #dc2626', // Estilo "Ghost" rojo para acción secundaria
+                                background: 'white', 
+                                color: '#dc2626', 
+                                fontWeight: 'bold', 
+                                cursor: form.empresa_id ? 'pointer' : 'not-allowed', 
+                                fontSize:'0.9rem',
+                                transition: '0.2s'
+                            }}
                         >
                             + Agregar Objetivo a la Lista
                         </button>

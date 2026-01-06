@@ -9,3 +9,14 @@ venv/
 # Python
 __pycache__/
 *.pyc
+talent_track_2.0/backend/apps/empleados/__pycache__/serializers.cpython-312.pyc
+talent_track_2.0/backend/apps/empleados/__pycache__/serializers.cpython-312.pyc
+/talent_track_2.0/backend/apps/empleados/__pycache__
+talent_track_2.0/backend/apps/empleados/__pycache__/serializers.cpython-312.pyc
+talent_track_2.0/backend/apps/usuarios/__pycache__/views.cpython-312.pyc
+talent_track_2.0/backend/apps/usuarios/__pycache__/serializers.cpython-312.pyc
+talent_track_2.0/backend/apps/integraciones/__pycache__/views.cpython-312.pyc
+talent_track_2.0/backend/apps/integraciones/__pycache__/urls.cpython-312.pyc
+talent_track_2.0/backend/apps/integraciones/__pycache__/serializers.cpython-312.pyc
+talent_track_2.0/backend/apps/empleados/__pycache__/views.cpython-312.pyc
+talent_track_2.0/backend/apps/empleados/__pycache__/urls.cpython-312.pyc
