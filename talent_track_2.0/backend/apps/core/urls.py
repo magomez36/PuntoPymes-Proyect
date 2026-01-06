@@ -21,6 +21,16 @@ from .views import (
     PuestoListAPIView, CrearPuestoAPIView, ActualizarPuestoAPIView, PuestoDetalleEliminarAPIView
 )
 
+from apps.core.views_rrhh_unidades_org import (
+    RRHHUnidadesOrgListCreateAPIView,
+    RRHHUnidadesOrgDetailAPIView,
+)
+
+from apps.core.views_rrhh_puestos import (
+    RRHHPuestosListCreateAPIView,
+    RRHHPuestosDetailAPIView,
+)
+
 urlpatterns = [
     # EMPRESAS
     path('listado-empresas/', EmpresaListAPIView.as_view(), name='listar_empresas'),
@@ -39,4 +49,10 @@ urlpatterns = [
     path('crear-puesto/', CrearPuestoAPIView.as_view(), name='crear_puesto'),
     path('actualizar-puesto/<int:pk>/', ActualizarPuestoAPIView.as_view(), name='actualizar_puesto'),
     path('puestos/<int:pk>/', PuestoDetalleEliminarAPIView.as_view(), name='puesto_detalle_eliminar'),
+
+    path("rrhh/unidades-organizacionales/", RRHHUnidadesOrgListCreateAPIView.as_view(), name="rrhh_uo_list_create"),
+    path("rrhh/unidades-organizacionales/<int:pk>/", RRHHUnidadesOrgDetailAPIView.as_view(), name="rrhh_uo_detail"),
+
+    path("rrhh/puestos/", RRHHPuestosListCreateAPIView.as_view(), name="rrhh_puestos_list_create"),
+    path("rrhh/puestos/<int:pk>/", RRHHPuestosDetailAPIView.as_view(), name="rrhh_puestos_detail"),
 ]

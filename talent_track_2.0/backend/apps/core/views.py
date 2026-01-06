@@ -263,3 +263,4 @@ class PuestoDetalleEliminarAPIView(APIView):
         puesto = get_object_or_404(Puesto, pk=pk)
         puesto.delete()
         return Response({"message": "Puesto eliminado correctamente", "puesto_id": pk}, status=status.HTTP_200_OK)
+

@@ -16,6 +16,13 @@ export default function InicioManager() {
       <h1>Bienvenido{fullName ? `, ${fullName}` : ""}</h1>
       <p>Panel de Manager: aprobación de permisos y reportes del equipo.</p>
 
+      <button onClick={() => navigate("/manager/mi-equipo/empleados")}>Mi Equipo</button>
+      <button onClick={() => navigate("/manager/evaluaciones")}>Evaluaciones de Desempeño</button>
+      <button onClick={() => navigate("/manager/supervision/asistencia")}>Supervisión de Asistencia (Eventos)</button>
+      <button onClick={() => navigate("/manager/supervision/jornadas")}>Jornadas Calculadas del Día</button>
+      <button onClick={() => navigate("/manager/ausencias/solicitudes")}>Aprobación de Solicitudes (Mi equipo)</button>
+
+
       <button
         onClick={logout}
         style={{
