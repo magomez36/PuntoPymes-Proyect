@@ -11,7 +11,7 @@ import "./assets/css/dashboard.css";
 import "./assets/css/admin-ui.css";
 import "boxicons/css/boxicons.min.css";
 
-import Header from "./components/Header";
+import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 // Páginas públicas
@@ -163,7 +163,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 const PublicLayout = ({ children }) => {
   return (
     <div className="public-layout">
-      <Header />
+      <Navbar />
       <main className="public-content">{children}</main>
       <Footer />
     </div>
