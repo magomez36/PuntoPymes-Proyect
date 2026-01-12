@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-7ny2tcif2#+&%i&$exm3o*)nwng0lsd1zi5jfh*t&dy+@*b&j)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -144,6 +144,26 @@ STATIC_URL = 'static/'
 # ==========================
 CORS_ALLOW_ALL_ORIGINS = True
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://172.17.162.75:3000",
+]
+
+CORS_ALLOW_HEADERS = [
+    "content-type",
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+    "x-active-role",
+]
+
+
 AUTH_USER_MODEL = "accounts.AuthUser"
 
 
@@ -169,3 +189,4 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,                # recomendado (requiere app blacklist)
     "UPDATE_LAST_LOGIN": True,
 }
+
