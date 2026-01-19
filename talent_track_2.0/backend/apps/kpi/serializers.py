@@ -220,3 +220,73 @@ class PlantillaKPIUpdateSerializer(serializers.Serializer):
 
         attrs["nombre"] = nombre
         return attrs
+
+
+# apps/kpi/serializers.py
+from rest_framework import serializers
+from .models import AsignacionKPI, ResultadoKPI, EvaluacionDesempeno, KPI
+
+class MiAsignacionKPISerializer(serializers.ModelSerializer):
+    plantilla_nombre = serializers.CharField(source="plantilla.nombre", read_only=True)
+    plantilla_objetivos = serializers.JSONField(source="plantilla.objetivos", read_only=True)
+
+    class Meta:
+        model = AsignacionKPI
+        fields = [
+            "id",
+            "plantilla_id",
+            "plantilla_nombre",
+            "plantilla_objetivos",
+            "desde",
+            "hasta",
+            "ajustes_personalizados",
+        ]
+
+
+class MiResultadoKPISerializer(serializers.ModelSerializer):
+    kpi_codigo = serializers.CharField(source="kpi.codigo", read_only=True)
+    kpi_nombre = serializers.CharField(source="kpi.nombre", read_only=True)
+    kpi_unidad = serializers.IntegerField(source="kpi.unidad", read_only=True)
+
+    class Meta:
+        model = ResultadoKPI
+        fields = [
+            "id",
+            "kpi_id",
+            "kpi_codigo",
+            "kpi_nombre",
+            "kpi_unidad",
+            "periodo",
+            "valor",
+            "cumplimiento_pct",
+            "clasificacion",
+            "calculado_el",
+            "fuente",
+        ]
+
+
+class MiEvaluacionDesempenoSerializer(serializers.ModelSerializer):
+    evaluador_id = serializers.IntegerField(source="evaluador.id", read_only=True)
+    evaluador_nombres = serializers.CharField(source="evaluador.nombres", read_only=True)
+    evaluador_apellidos = serializers.CharField(source="evaluador.apellidos", read_only=True)
+
+    class Meta:
+        model = EvaluacionDesempeno
+        fields = [
+            "id",
+            "periodo",
+            "tipo",
+            "puntaje_total",
+            "comentarios",
+            "fecha",
+            "instrumento",
+            "evaluador_id",
+            "evaluador_nombres",
+            "evaluador_apellidos",
+        ]
+
+
+class MiKpiMiniSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = KPI
+        fields = ["id", "codigo", "nombre", "unidad"]

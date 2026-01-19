@@ -1,0 +1,6 @@
+projectKey=talent-track
+serverUrl=http://localhost:9000
+serverVersion=25.12.0.117093
+dashboardUrl=http://localhost:9000/dashboard?id=talent-track
+ceTaskId=ff672b15-047e-4690-8af0-e5a964429c7e
+ceTaskUrl=http://localhost:9000/api/ce/task?id=ff672b15-047e-4690-8af0-e5a964429c7e

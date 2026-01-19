@@ -201,3 +201,82 @@ class EmpleadoUpdateSerializer(serializers.Serializer):
         # documento, foto_url, fecha_ingreso NO se tocan
         instance.save()
         return instance
+
+from rest_framework import serializers
+from apps.empleados.models import Empleado
+
+
+class MiEmpleadoSerializer(serializers.ModelSerializer):
+    # IDs directos (sin source redundante)
+    empresa_id = serializers.IntegerField(read_only=True)
+    unidad_id = serializers.IntegerField(read_only=True)
+    puesto_id = serializers.IntegerField(read_only=True)
+    manager_id = serializers.IntegerField(read_only=True)  # <- ESTE es el correcto
+
+    class Meta:
+        model = Empleado
+        fields = [
+            "id",
+            "empresa_id",
+            "unidad_id",
+            "puesto_id",
+            "manager_id",
+            "nombres",
+            "apellidos",
+            "documento",
+            "email",
+            "telefono",
+            "direccion",
+            "fecha_nacimiento",
+            "fecha_ingreso",
+            "foto_url",
+            "estado",
+        ]
+        read_only_fields = [
+            "id",
+            "empresa_id",
+            "unidad_id",
+            "puesto_id",
+            "manager_id",
+            "nombres",
+            "apellidos",
+            "documento",
+            "email",
+            "fecha_ingreso",
+            "foto_url",
+            "estado",
+        ]
+
+    def get_manager_id(self, obj):
+        """
+        Tu modelo puede llamarlo:
+        - id_empleado_manager
+        - empleado_manager
+        - manager
+        etc.
+        Aquí lo detectamos sin romper.
+        """
+        for attr in ["id_empleado_manager_id", "id_empleado_manager", "empleado_manager_id", "empleado_manager", "manager_id", "manager"]:
+            if hasattr(obj, attr):
+                val = getattr(obj, attr)
+                # si viene como objeto FK
+                if hasattr(val, "id"):
+                    return val.id
+                # si viene como int
+                if isinstance(val, int):
+                    return val
+        return None
+    
+
+class MiEmpleadoUpdateSerializer(serializers.Serializer):
+    telefono = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    direccion = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+    fecha_nacimiento = serializers.DateField(required=False, allow_null=True)
+
+    def validate(self, attrs):
+        # limpieza simple
+        if "telefono" in attrs and attrs["telefono"] is not None:
+            attrs["telefono"] = str(attrs["telefono"]).strip()
+        if "direccion" in attrs and attrs["direccion"] is not None:
+            attrs["direccion"] = str(attrs["direccion"]).strip()
+        return attrs

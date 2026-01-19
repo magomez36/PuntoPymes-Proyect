@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { apiFetch } from "../../../services/api";
 import Plot from "react-plotly.js";
-import "./dashboard-superadmin.css";
+import "./dashboard-adminRRH.css";
 
 function KpiCard({ title, value, sub }) {
   return (
@@ -38,7 +38,7 @@ function parseFig(figJson) {
   }
 }
 
-export default function DashboardSuperAdmin() {
+export default function DashboardAdminRRH() {
   const [data, setData] = useState(null);
   const [days, setDays] = useState(180);
   const [question, setQuestion] = useState("overview");
@@ -48,12 +48,12 @@ export default function DashboardSuperAdmin() {
     setLoading(true);
     try {
       const res = await apiFetch(
-        `/api/dashboard/superadmin/overview-plotly/?days=${days}&question=${question}`
+        `/api/dashboard/adminrrhh/overview-plotly/?days=${days}&question=${question}`
       );
       const json = await res.json();
       setData(json);
     } catch (e) {
-      console.error("Dashboard error:", e);
+      console.error("Dashboard RRHH error:", e);
       setData(null);
     } finally {
       setLoading(false);
@@ -68,7 +68,7 @@ export default function DashboardSuperAdmin() {
   const brand = data?.brand?.primary || "#D51F36";
   const kpis = data?.kpis || {};
   const questions = data?.questions || [];
-  const alerts = data?.alerts || [];
+  const top = data?.top_empleados_tardanzas || [];
   const figs = data?.figures || {};
 
   const charts = useMemo(() => {
@@ -76,13 +76,16 @@ export default function DashboardSuperAdmin() {
     for (const [key, figJson] of Object.entries(figs)) {
       const fig = parseFig(figJson);
       if (!fig) continue;
-      const title = fig?.layout?.title?.text || key;
-      items.push({ key, title, fig });
+      items.push({
+        key,
+        title: fig?.layout?.title?.text || key,
+        fig,
+      });
     }
     return items;
   }, [figs]);
 
-  if (loading) return <div className="tt-page">Cargando dashboard...</div>;
+  if (loading) return <div className="tt-page">Cargando dashboard RRHH...</div>;
   if (!data) return <div className="tt-page">Sin datos</div>;
 
   return (
@@ -90,8 +93,8 @@ export default function DashboardSuperAdmin() {
       {/* HEADER */}
       <div className="tt-header">
         <div>
-          <div className="tt-h1">Dashboard SuperAdmin</div>
-          <div className="tt-h2">Multiempresa • Preguntas inteligentes • Plotly</div>
+          <div className="tt-h1">Dashboard Admin RRHH</div>
+          <div className="tt-h2">Tu empresa • Ausencias • Asistencia • KPIs</div>
         </div>
         <div className="tt-filters">
           <button className={days === 30 ? "tt-btn tt-btn-primary" : "tt-btn"} onClick={() => setDays(30)}>30d</button>
@@ -115,16 +118,16 @@ export default function DashboardSuperAdmin() {
 
       {/* KPIs */}
       <div className="tt-kpis">
-        <KpiCard title="Empresas activas" value={kpis.total_empresas ?? "-"} sub="con empleados" />
-        <KpiCard title="Total empleados" value={kpis.total_empleados ?? "-"} sub="consolidado" />
+        <KpiCard title="Empleados" value={kpis.total_empleados ?? "-"} sub="en mi empresa" />
+        <KpiCard title="Ausencias pendientes" value={kpis.ausencias_pendientes ?? "-"} sub="requieren acción" />
         <KpiCard title="Tardanza promedio" value={Number(kpis.tardanza_promedio || 0).toFixed(1)} sub="minutos (prom)" />
         <KpiCard title="KPIs críticos" value={kpis.kpi_criticos ?? "-"} sub="cumplimiento < 70" />
       </div>
 
-      {/* GRID: más gráficas (hasta 6) */}
-      <div className="tt-grid-6">
-        {charts.slice(0, 6).map((c) => (
-          <ChartCard key={c.key} title={c.title} subtitle="Interactivo • click/hover • responsive">
+      {/* GRID de gráficas */}
+      <div className="tt-grid-2">
+        {charts.map((c) => (
+          <ChartCard key={c.key} title={c.title} subtitle="Plotly • Interactivo • Filtrado por empresa">
             <Plot
               data={c.fig.data}
               layout={{
@@ -140,40 +143,39 @@ export default function DashboardSuperAdmin() {
           </ChartCard>
         ))}
 
-        {/* Tabla */}
-        <div className="tt-card tt-card-span2">
+        {/* Tabla Top empleados tardíos */}
+        <div className="tt-card tt-span2">
           <div className="tt-card-head">
             <div>
-              <div className="tt-card-title">Top incidencias (tardanzas) • resumen</div>
-              <div className="tt-card-sub">Ranking por empresa (último rango seleccionado)</div>
+              <div className="tt-card-title">Top empleados con tardanzas</div>
+              <div className="tt-card-sub">Ranking del rango seleccionado</div>
             </div>
             <div className="tt-card-actions">
-              <button className="tt-btn tt-btn-primary">Solicitar acción RRHH</button>
+              <button className="tt-btn tt-btn-primary">Abrir Jornadas</button>
             </div>
           </div>
-
           <div className="tt-card-body">
             <div className="tt-table-wrap">
               <table className="tt-table">
                 <thead>
                   <tr>
-                    <th>Empresa</th>
+                    <th>Empleado</th>
                     <th>Tardanzas</th>
                     <th>Prom (min)</th>
                     <th>Severidad</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {alerts.length === 0 ? (
-                    <tr><td colSpan={4} style={{ textAlign: "center", padding: 14 }}>Sin incidencias</td></tr>
+                  {top.length === 0 ? (
+                    <tr><td colSpan={4} style={{ textAlign: "center", padding: 14 }}>Sin registros</td></tr>
                   ) : (
-                    alerts.map((r, idx) => {
+                    top.map((r, idx) => {
                       const t = Number(r.tardanzas || 0);
-                      const sev = t >= 20 ? "ALTA" : t >= 10 ? "MEDIA" : "BAJA";
-                      const cls = t >= 20 ? "tt-badge-high" : t >= 10 ? "tt-badge-med" : "tt-badge-low";
+                      const sev = t >= 15 ? "ALTA" : t >= 8 ? "MEDIA" : "BAJA";
+                      const cls = t >= 15 ? "tt-badge-high" : t >= 8 ? "tt-badge-med" : "tt-badge-low";
                       return (
                         <tr key={idx}>
-                          <td>{r.empresa__razon_social}</td>
+                          <td>{r.empleado__nombres} {r.empleado__apellidos}</td>
                           <td>{t}</td>
                           <td>{Number(r.prom || 0).toFixed(1)}</td>
                           <td><span className={`tt-badge ${cls}`}>{sev}</span></td>

@@ -20,6 +20,9 @@ from apps.ausencias.views_rrhh_saldo_vacaciones import (
     RRHHEmpleadosEmpresaVacacionesHelperAPIView,
 )
 
+from .views import SolicitudesEmpleadoAPIView, SolicitudEmpleadoDetalleAPIView
+from apps.ausencias.views import TiposAusenciaEmpleadoAPIView
+
 urlpatterns = [
     path("tipos-ausencias/", TipoAusenciaListCreateAPIView.as_view(), name="tipos_ausencias_list_create"),
     path("tipos-ausencias/<int:pk>/", TipoAusenciaDetailUpdateDeleteAPIView.as_view(), name="tipos_ausencias_detail"),
@@ -35,4 +38,9 @@ urlpatterns = [
     path("rrhh/vacaciones/saldos/", RRHHSaldosVacacionesListCreateAPIView.as_view(), name="rrhh_saldos_vacaciones"),
     path("rrhh/vacaciones/saldos/<int:pk>/", RRHHSaldosVacacionesPatchDeleteAPIView.as_view(), name="rrhh_saldo_vacaciones_patch_delete"),
     path("rrhh/vacaciones/helpers/empleados/", RRHHEmpleadosEmpresaVacacionesHelperAPIView.as_view(), name="rrhh_vacaciones_helpers_empleados"),
+
+    path("empleado/ausencias/", SolicitudesEmpleadoAPIView.as_view()),
+    path("empleado/ausencias/<int:pk>/", SolicitudEmpleadoDetalleAPIView.as_view()),
+    path("empleado/ausencias/<int:pk>/cancelar/", SolicitudEmpleadoDetalleAPIView.as_view()),
+    path("empleado/tipos-ausencia/", TiposAusenciaEmpleadoAPIView.as_view(), name="empleado_tipos_ausencia"),
 ]

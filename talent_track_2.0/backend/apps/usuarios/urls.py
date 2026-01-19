@@ -19,6 +19,10 @@ from apps.usuarios.views import (
     PermisoDetalleAPIView,
 )
 
+from apps.empleados.views import MiPerfilEmpleadoAPIView
+from apps.usuarios.views import MiCuentaUsuarioAPIView
+from apps.usuarios.views import MiUsuarioCambiarPasswordAPIView
+
 urlpatterns = [
     path("auth/login/", LoginView.as_view(), name="auth-login"),
     path("auth/refresh/", TokenRefreshView.as_view(), name="auth-refresh"),
@@ -38,4 +42,8 @@ urlpatterns = [
     path("permisos-por-empresa/", PermisosPorEmpresaAPIView.as_view(), name="permisos_por_empresa"),
     path("permisos/", PermisoCreateAPIView.as_view(), name="permiso_create"),
     path("permisos/<int:pk>/", PermisoDetalleAPIView.as_view(), name="permiso_detail"),
+
+    path("empleado/perfil/", MiPerfilEmpleadoAPIView.as_view(), name="empleado_perfil"),
+    path("empleado/cuenta/", MiCuentaUsuarioAPIView.as_view(), name="empleado_cuenta"),
+    path("empleado/usuario/cambiar-password/", MiUsuarioCambiarPasswordAPIView.as_view()),
 ]

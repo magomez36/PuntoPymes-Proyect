@@ -142,3 +142,85 @@ class ReglaAsistenciaUpdateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("No se permiten números negativos.")
         return value
 
+
+# apps/asistencia/serializers.py
+from rest_framework import serializers
+from apps.asistencia.models import EventoAsistencia
+
+TIPO_EVENTO_LABEL = {
+    1: "check_in",
+    2: "check_out",
+    3: "pausa_in",
+    4: "pausa_out",
+}
+
+FUENTE_LABEL = {
+    1: "app",
+    2: "web",
+    3: "lector",
+}
+
+
+class EventoAsistenciaHoySerializer(serializers.ModelSerializer):
+    tipo_label = serializers.SerializerMethodField()
+    fuente_label = serializers.SerializerMethodField()
+
+    class Meta:
+        model = EventoAsistencia
+        fields = [
+            "id",
+            "tipo",
+            "tipo_label",
+            "registrado_el",
+            "fuente",
+            "fuente_label",
+            "observaciones",
+        ]
+
+    def get_tipo_label(self, obj):
+        return TIPO_EVENTO_LABEL.get(obj.tipo, f"tipo({obj.tipo})")
+
+    def get_fuente_label(self, obj):
+        return FUENTE_LABEL.get(obj.fuente, f"fuente({obj.fuente})")
+
+
+class RegistrarEventoAsistenciaSerializer(serializers.Serializer):
+    # El front puede mandar id_empresa/id_empleado si tú quieres,
+    # pero el backend NO los usa para decidir; solo los ignora/valida por seguridad.
+    tipo = serializers.IntegerField()
+    observaciones = serializers.CharField(required=False, allow_null=True, allow_blank=True, max_length=150)
+
+    def validate_tipo(self, value):
+        if value not in (1, 2, 3, 4):
+            raise serializers.ValidationError("tipo inválido (1 check_in, 2 check_out, 3 pausa_in, 4 pausa_out).")
+        return value
+
+from rest_framework import serializers
+from apps.asistencia.models import JornadaCalculada
+
+JORNADA_ESTADO_LABEL = {
+    1: "completo",
+    2: "incompleto",
+    3: "sin_registros",
+}
+
+
+class JornadaCalculadaEmpleadoSerializer(serializers.ModelSerializer):
+    estado_label = serializers.SerializerMethodField()
+
+    class Meta:
+        model = JornadaCalculada
+        fields = [
+            "id",
+            "fecha",
+            "hora_primera_entrada",
+            "hora_ultimo_salida",
+            "minutos_trabajados",
+            "minutos_tardanza",
+            "minutos_extra",
+            "estado",
+            "estado_label",
+        ]
+
+    def get_estado_label(self, obj):
+        return JORNADA_ESTADO_LABEL.get(obj.estado, f"estado({obj.estado})")

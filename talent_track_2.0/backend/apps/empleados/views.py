@@ -121,3 +121,77 @@ class EmpleadoToggleEstadoAPIView(APIView):
 
         e.save()
         return Response({"estado": e.estado}, status=200)
+
+
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+from apps.empleados.models import Empleado
+from apps.usuarios.models import UsuarioRol
+from .serializers import MiEmpleadoSerializer, MiEmpleadoUpdateSerializer
+
+
+def _ctx(request):
+    u = request.user.usuario
+    return u.empresa_id, u.empleado_id, u.id
+
+
+def _require_empleado(request):
+    return UsuarioRol.objects.filter(
+        usuario_id=request.user.usuario.id,
+        rol__nombre="empleado"
+    ).exists()
+
+
+# apps/empleados/views.py
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from apps.usuarios.scopes import get_scope
+from apps.empleados.models import Empleado
+from apps.empleados.serializers import MiEmpleadoSerializer
+
+class MiPerfilEmpleadoAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        scope = get_scope(request)
+        empleado_id = scope.get("empleado_id")
+        empresa_id = scope.get("empresa_id")
+
+        if not empleado_id or not empresa_id:
+            return Response({"detail": "Token sin empleado/empresa."}, status=401)
+
+        emp = Empleado.objects.filter(id=empleado_id, empresa_id=empresa_id).first()
+        if not emp:
+            return Response({"detail": "Empleado no encontrado."}, status=404)
+
+        return Response(MiEmpleadoSerializer(emp).data, status=200)
+
+
+    def put(self, request):
+        if not _require_empleado(request):
+            return Response({"detail": "No autorizado."}, status=401)
+
+        empresa_id, empleado_id, _ = _ctx(request)
+
+        obj = Empleado.objects.filter(id=empleado_id, empresa_id=empresa_id).first()
+        if not obj:
+            return Response({"detail": "Empleado no encontrado."}, status=404)
+
+        ser = MiEmpleadoUpdateSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        data = ser.validated_data
+
+        # aplicar solo campos permitidos
+        if "telefono" in data:
+            obj.telefono = data.get("telefono")
+        if "direccion" in data:
+            obj.direccion = data.get("direccion")
+        if "fecha_nacimiento" in data:
+            obj.fecha_nacimiento = data.get("fecha_nacimiento")
+
+        obj.save()
+
+        return Response(MiEmpleadoSerializer(obj).data, status=200)

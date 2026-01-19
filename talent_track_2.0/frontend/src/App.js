@@ -158,6 +158,28 @@ import AuditorAsistenciasEmpleados from "./pages/auditor/seccionAsistencia/Asist
 import AuditorJornadasEmpleados from "./pages/auditor/seccionAsistencia/JornadasEmpleados";
 import AuditorTurnosEmpleados from "./pages/auditor/seccionAsistencia/TurnosEmpleados";
 
+import AsistenciaDiaria from "./pages/empleado/seccionAsistencia/AsistenciaDiaria";
+
+import HistorialJornadas from "./pages/empleado/seccionJornadas/HistorialJornadas";
+
+import SolicitudesAusenciasEmp from "./pages/empleado/seccionAusencias/SolicitudesAusenciasEmp";
+import CrearSolicitudAusencia from "./pages/empleado/seccionAusencias/CrearSolicitudAusencia";
+import EditarSolicitudAusencia from "./pages/empleado/seccionAusencias/EditarSolicitudAusencia";
+
+import NotificacionesEmp from "./pages/empleado/seccionNotificaciones/NotificacionesEmp";
+
+import MiPerfilCuentaEmp from "./pages/empleado/seccionPerfil/MiPerfilCuentaEmp";
+
+import SoporteEmp from "./pages/empleado/seccionSoporte/SoporteEmp";
+
+import DesempenoKpisEmp from "./pages/empleado/seccionKPI/DesempenoKpisEmp";
+
+import DashboardSuperAdmin from "./pages/superAdmin/DashboardSuperAdmin/DashboardSuperAdmin";
+
+import LogsAuditoriaSuperAdmin from "./pages/superAdmin/seccionTrazabilidad/LogsAuditoriaSuperAdmin";
+
+import DashboardAdminRRH from "./pages/adminRRHH/DashboardAdminRRHH/DashboardAdminRRH";
+
 
 // Guard
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -267,590 +289,183 @@ function App() {
 
           {/* EPICA 15 -  */}
           {/* EPICA 16 -  */}
+          <Route path="/empleado/asistencia" element={<ProtectedRoute allowedRoles={["empleado"]}><AsistenciaDiaria /></ProtectedRoute>} />
+          
           {/* EPICA 17 -  */}
+          <Route path="/empleado/jornadas" element={<ProtectedRoute allowedRoles={["empleado"]}><HistorialJornadas /></ProtectedRoute>} />
+
           {/* EPICA 18 -  */}
+          <Route path="/empleado/ausencias" element={<ProtectedRoute allowedRoles={["empleado"]}><SolicitudesAusenciasEmp /></ProtectedRoute>} />
+          <Route path="/empleado/ausencias/crear" element={<ProtectedRoute allowedRoles={["empleado"]}><CrearSolicitudAusencia /></ProtectedRoute>} />
+          <Route path="/empleado/ausencias/editar/:id" element={<ProtectedRoute allowedRoles={["empleado"]}><EditarSolicitudAusencia /></ProtectedRoute>} />
+          
           {/* EPICA 19 -  */}
+          <Route path="/empleado/notificaciones" element={<ProtectedRoute allowedRoles={["empleado"]}><NotificacionesEmp /></ProtectedRoute>} />
+
           {/* EPICA 20 -  */}
+          <Route path="/empleado/mi-perfil" element={<ProtectedRoute allowedRoles={["empleado"]}><MiPerfilCuentaEmp /></ProtectedRoute>} />
 
-          {/* ======== RUTAS ADMIN RRHH ======== */}
-
+          {/* ======== RUTAS RRHH ======== */}
 
           {/* EPICA 21 -  */} 
-          
-          <Route
-            path="/rrhh/unidades-organizacionales"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <UnidadesOrg />
-              </ProtectedRoute>
-            }
-          />
 
-          <Route
-            path="/rrhh/unidades-organizacionales/crear"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <CrearUnidadOrg />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/rrhh/unidades-organizacionales/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <EditarUnidadOrg />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/rrhh/unidades-organizacionales" element={<ProtectedRoute allowedRoles={["rrhh"]}><UnidadesOrg /></ProtectedRoute>} />
+          <Route path="/rrhh/unidades-organizacionales/crear" element={<ProtectedRoute allowedRoles={["rrhh"]}><CrearUnidadOrg /></ProtectedRoute>} />
+          <Route path="/rrhh/unidades-organizacionales/editar/:id" element={<ProtectedRoute allowedRoles={["rrhh"]}><EditarUnidadOrg /></ProtectedRoute>} />
 
           {/* EPICA 22 -  */} 
 
-          <Route
-            path="/rrhh/puestos"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <Puestos />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/rrhh/puestos" element={<ProtectedRoute allowedRoles={["rrhh"]}><Puestos /></ProtectedRoute>} />
+          <Route path="/rrhh/puestos/crear" element={<ProtectedRoute allowedRoles={["rrhh"]}><CrearPuesto /></ProtectedRoute>} />
+          <Route path="/rrhh/puestos/editar/:id" element={<ProtectedRoute allowedRoles={["rrhh"]}><EditarPuesto /></ProtectedRoute>} />
 
-          <Route
-            path="/rrhh/puestos/crear"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <CrearPuesto />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 23 -  */}
 
-          <Route
-            path="/rrhh/puestos/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <EditarPuesto />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/rrhh/turnos" element={<ProtectedRoute allowedRoles={["rrhh"]}><Turnos /></ProtectedRoute>} />
+          <Route path="/rrhh/turnos/crear" element={<ProtectedRoute allowedRoles={["rrhh"]}><CrearTurno /></ProtectedRoute>} />
+          <Route path="/rrhh/turnos/editar/:id" element={<ProtectedRoute allowedRoles={["rrhh"]}><EditarTurno /></ProtectedRoute>} />
 
-          {/* EPICA 23 -  */} 
+          {/* EPICA 24 -  */}
 
-          <Route
-            path="/rrhh/turnos"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <Turnos />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/rrhh/turnos/crear"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <CrearTurno />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/rrhh/turnos/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <EditarTurno />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* EPICA 24 -  */} 
-
-          <Route
-            path="/rrhh/empleados"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <Empleados />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/rrhh/empleados/crear"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <CrearEmpleado />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/rrhh/empleados/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <EditarEmpleado />
-              </ProtectedRoute>
-            }
-          />
-
+          <Route path="/rrhh/empleados" element={<ProtectedRoute allowedRoles={["rrhh"]}><Empleados /></ProtectedRoute>} />
+          <Route path="/rrhh/empleados/crear" element={<ProtectedRoute allowedRoles={["rrhh"]}><CrearEmpleado /></ProtectedRoute>} />
+          <Route path="/rrhh/empleados/editar/:id" element={<ProtectedRoute allowedRoles={["rrhh"]}><EditarEmpleado /></ProtectedRoute>} />
 
           {/* EPICA 25 -  */} 
 
-          <Route
-            path="/rrhh/contratos"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <Contratos />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/rrhh/contratos" element={<ProtectedRoute allowedRoles={["rrhh"]}><Contratos /></ProtectedRoute>} />
+          <Route path="/rrhh/contratos/crear" element={<ProtectedRoute allowedRoles={["rrhh"]}><CrearContrato /></ProtectedRoute>} />
+          <Route path="/rrhh/contratos/editar/:id" element={<ProtectedRoute allowedRoles={["rrhh"]}><EditarContrato /></ProtectedRoute>} />
 
-          <Route
-            path="/rrhh/contratos/crear"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <CrearContrato />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/rrhh/contratos/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <EditarContrato />
-              </ProtectedRoute>
-            }
-          />
-
-          
           {/* EPICA 26 -  */} 
 
-          <Route
-            path="/rrhh/tipos-ausencias"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <TiposAusencias />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/rrhh/tipos-ausencias" element={<ProtectedRoute allowedRoles={["rrhh"]}><TiposAusencias /></ProtectedRoute>} />
+          <Route path="/rrhh/tipos-ausencias/crear" element={<ProtectedRoute allowedRoles={["rrhh"]}><CrearTipoAusencia /></ProtectedRoute>} />
+          <Route path="/rrhh/tipos-ausencias/editar/:id" element={<ProtectedRoute allowedRoles={["rrhh"]}><EditarTipoaAusencia /></ProtectedRoute>} />
 
-          <Route
-            path="/rrhh/tipos-ausencias/crear"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <CrearTipoAusencia />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 27 -  */}
 
-          <Route
-            path="/rrhh/tipos-ausencias/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <EditarTipoaAusencia />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/rrhh/kpis" element={<ProtectedRoute allowedRoles={["rrhh"]}><KPIs /></ProtectedRoute>} />
+          <Route path="/rrhh/kpis/crear" element={<ProtectedRoute allowedRoles={["rrhh"]}><CrearKPI /></ProtectedRoute>} />
+          <Route path="/rrhh/kpis/editar/:id" element={<ProtectedRoute allowedRoles={["rrhh"]}><EditarKPI /></ProtectedRoute>} />
 
+          {/* EPICA 28 -  */}
 
-          {/* EPICA 27 -  */} 
+          <Route path="/rrhh/ausencias/solicitudes" element={<ProtectedRoute allowedRoles={["rrhh"]}><SolicitudesAusencias /></ProtectedRoute>} />
+          <Route path="/rrhh/ausencias/solicitudes/:id" element={<ProtectedRoute allowedRoles={["rrhh"]}><AprobacionSolicitud /></ProtectedRoute>} />
+          <Route path="/rrhh/ausencias/aprobaciones" element={<ProtectedRoute allowedRoles={["rrhh"]}><AprobacionesSolicitudes /></ProtectedRoute>} />
+          <Route path="/rrhh/jornadas-calculadas" element={<ProtectedRoute allowedRoles={["rrhh"]}><JornadasEmpleados /></ProtectedRoute>} />
 
-          <Route
-            path="/rrhh/kpis"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <KPIs />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 29 -  */}
 
-          <Route
-            path="/rrhh/kpis/crear"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <CrearKPI />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/rrhh/kpi/asignaciones" element={<ProtectedRoute allowedRoles={["rrhh"]}><AsignacionesKPIs /></ProtectedRoute>} />
+          <Route path="/rrhh/kpi/asignaciones/crear" element={<ProtectedRoute allowedRoles={["rrhh"]}><CrearAsignacionKPI /></ProtectedRoute>} />
+          <Route path="/rrhh/kpi/asignaciones/:id/editar" element={<ProtectedRoute allowedRoles={["rrhh"]}><EditarAsignacionKPI /></ProtectedRoute>} />
 
-          <Route
-            path="/rrhh/kpis/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <EditarKPI />
-              </ProtectedRoute>
-            }
-          />
+          {/* EPICA 30 -  */}
 
-
-          {/* EPICA 28 -  */} 
-
-          <Route
-            path="/rrhh/ausencias/solicitudes"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <SolicitudesAusencias />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/rrhh/ausencias/solicitudes/:id"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <AprobacionSolicitud />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/rrhh/ausencias/aprobaciones"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <AprobacionesSolicitudes />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/rrhh/jornadas-calculadas"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <JornadasEmpleados />
-              </ProtectedRoute>
-            }
-          />
-
-
-          {/* EPICA 29 -  */} 
-
-          <Route
-            path="/rrhh/kpi/asignaciones"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <AsignacionesKPIs />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/rrhh/kpi/asignaciones/crear"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <CrearAsignacionKPI />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/rrhh/kpi/asignaciones/:id/editar"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <EditarAsignacionKPI />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* EPICA 30 -  */} 
-
-          <Route
-            path="/rrhh/vacaciones/saldos"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <SaldoVacaciones />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/rrhh/vacaciones/saldos/crear"
-            element={
-              <ProtectedRoute allowedRoles={["rrhh"]}>
-                <CrearSaldoVacacion />
-              </ProtectedRoute>
-            }
-          />
-
+          <Route path="/rrhh/vacaciones/saldos" element={<ProtectedRoute allowedRoles={["rrhh"]}><SaldoVacaciones /></ProtectedRoute>} />
+          <Route path="/rrhh/vacaciones/saldos/crear" element={<ProtectedRoute allowedRoles={["rrhh"]}><CrearSaldoVacacion /></ProtectedRoute>} />
 
           {/* ======== RUTAS MANAGER ======== */}
 
-          {/* EPICA 31 -  */}  
+          {/* EPICA 31 -  */}
 
-          <Route
-            path="/manager/mi-equipo/empleados"
-            element={
-              <ProtectedRoute allowedRoles={["manager"]}>
-                <EmpleadosMi_Equipo />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/manager/mi-equipo/empleados" element={<ProtectedRoute allowedRoles={["manager"]}><EmpleadosMi_Equipo /></ProtectedRoute>} />
+          <Route path="/manager/mi-equipo/empleados/:id" element={<ProtectedRoute allowedRoles={["manager"]}><DetalleEmpleado /></ProtectedRoute>} />
+          <Route path="/manager/mi-equipo/empleados/:id/jornadas" element={<ProtectedRoute allowedRoles={["manager"]}><JornadasEmpleado /></ProtectedRoute>} />
 
-          <Route
-            path="/manager/mi-equipo/empleados/:id"
-            element={
-              <ProtectedRoute allowedRoles={["manager"]}>
-                <DetalleEmpleado />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/manager/mi-equipo/empleados/:id/jornadas"
-            element={
-              <ProtectedRoute allowedRoles={["manager"]}>
-                <JornadasEmpleado />
-              </ProtectedRoute>
-            }
-          />
-          
           {/* EPICA 32 -  */} 
 
+          <Route path="/manager/evaluaciones" element={<ProtectedRoute allowedRoles={["manager"]}><EvaluacionesDesempeno /></ProtectedRoute>} />
+          <Route path="/manager/evaluaciones/crear" element={<ProtectedRoute allowedRoles={["manager"]}><CrearEvaluacionDesempeno /></ProtectedRoute>} />
+          <Route path="/manager/evaluaciones/editar/:id" element={<ProtectedRoute allowedRoles={["manager"]}><EditarEvaluacionDesempeno /></ProtectedRoute>} />
+
+          {/* EPICA 33 -  */}  
+
+          <Route path="/manager/supervision/asistencia" element={<ProtectedRoute allowedRoles={["manager"]}><AsistenciaDia /></ProtectedRoute>} />
+          <Route path="/manager/supervision/jornadas" element={<ProtectedRoute allowedRoles={["manager"]}><JornadasDia /></ProtectedRoute>} />
+
+          {/* EPICA 34 -  */}
+
+          <Route path="/manager/ausencias/solicitudes" element={<ProtectedRoute allowedRoles={["manager"]}><SolicitudesAusenciasManager /></ProtectedRoute>} />
+          <Route path="/manager/ausencias/solicitudes/:id" element={<ProtectedRoute allowedRoles={["manager"]}><AprobacionSolicitudManager /></ProtectedRoute>} />
+          <Route path="/manager/ausencias/aprobaciones" element={<ProtectedRoute allowedRoles={["manager"]}><AprobacionesSolicitudesManager /></ProtectedRoute>} />
+
+          {/* ======== RUTAS AUDITOR ======== */}
+
+          {/* EPICA 35 -  */}
+
+          <Route path="/auditor/accesos/usuarios" element={<ProtectedRoute allowedRoles={["auditor"]}><AuditorUsuarios /></ProtectedRoute>} />
+          <Route path="/auditor/accesos/permisos" element={<ProtectedRoute allowedRoles={["auditor"]}><AuditorPermisos /></ProtectedRoute>} />
+
+          {/* EPICA 36 -  */}  
+
+          <Route path="/auditor/trazabilidad/logs" element={<ProtectedRoute allowedRoles={["auditor"]}><LogsAuditoria /></ProtectedRoute>} />
+
+          {/* EPICA 37 -  */}
+
+          <Route path="/auditor/expedientes/empleados" element={<ProtectedRoute allowedRoles={["auditor"]}><EmpleadosAuditor /></ProtectedRoute>} />
+          <Route path="/auditor/expedientes/empleados/:id" element={<ProtectedRoute allowedRoles={["auditor"]}><DetallesEmpleadoAuditor /></ProtectedRoute>} />
+          <Route path="/auditor/expedientes/empleados/:id/contrato" element={<ProtectedRoute allowedRoles={["auditor"]}><ContratoEmpleadoAuditor /></ProtectedRoute>} />
+          <Route path="/auditor/expedientes/empleados/:id/jornadas" element={<ProtectedRoute allowedRoles={["auditor"]}><JornadasEmpleadoAuditor /></ProtectedRoute>} />
+
+          {/* EPICA 38 -  */}
+
+          <Route path="/auditor/ausencias/solicitudes" element={<ProtectedRoute allowedRoles={["auditor"]}><AuditorSolicitudesAusencias /></ProtectedRoute>} />
+          <Route path="/auditor/ausencias/aprobaciones" element={<ProtectedRoute allowedRoles={["auditor"]}><AuditorAprobacionesAusencias /></ProtectedRoute>} />
+          <Route path="/auditor/ausencias/saldos-vacaciones" element={<ProtectedRoute allowedRoles={["auditor"]}><AuditorSaldoVacacionesEmpleados /></ProtectedRoute>} />
+
+          {/* EPICA 39 -  */}  
+
+          <Route path="/auditor/desempeno/asignaciones-kpi" element={<ProtectedRoute allowedRoles={["auditor"]}><AuditorAsignacionesKPI /></ProtectedRoute>} />
+          <Route path="/auditor/desempeno/resultados-kpi" element={<ProtectedRoute allowedRoles={["auditor"]}><AuditorResultadosKPI /></ProtectedRoute>} />
+          <Route path="/auditor/desempeno/evaluaciones" element={<ProtectedRoute allowedRoles={["auditor"]}><AuditorEvaluacionesDesempeno /></ProtectedRoute>} />
+
+          {/* EPICA 40 -  */}
+
+          <Route path="/auditor/asistencia/eventos" element={<ProtectedRoute allowedRoles={["auditor"]}><AuditorAsistenciasEmpleados /></ProtectedRoute>} />
+          <Route path="/auditor/asistencia/jornadas" element={<ProtectedRoute allowedRoles={["auditor"]}><AuditorJornadasEmpleados /></ProtectedRoute>} />
+          <Route path="/auditor/asistencia/turnos-empleados" element={<ProtectedRoute allowedRoles={["auditor"]}><AuditorTurnosEmpleados /></ProtectedRoute>} />
+
+          {/* ======== RUTAS SPRINT 5 ======== */}
+
+          {/* EPICA 41 -  */}
+          <Route path="/superadmin/dashboard" element={<ProtectedRoute allowedRoles={["superadmin"]}><DashboardSuperAdmin /></ProtectedRoute>} />
+          
+          {/* EPICA 42 -  */}  
+
+          <Route path="/superadmin/trazabilidad/logs" element={<ProtectedRoute allowedRoles={["superadmin"]}><LogsAuditoriaSuperAdmin /></ProtectedRoute>} />
+
+          {/* EPICA 43 -  */} 
+
+          {/* EPICA 44 -  */}  
+
+          {/* EPICA 45 -  */}  
+
+          {/* EPICA 46 -  */} 
+          <Route path="/empleado/desempeno-kpis" element={<ProtectedRoute allowedRoles={["empleado"]}><DesempenoKpisEmp /></ProtectedRoute>} />
+
+          {/* EPICA 47 -  */} 
+          <Route path="/empleado/soporte" element={<ProtectedRoute allowedRoles={["empleado"]}><SoporteEmp /></ProtectedRoute>} />
+
+          {/* EPICA 48 -  */} 
 
           <Route
-            path="/manager/evaluaciones"
+            path="/rrhh/dashboard"
             element={
-              <ProtectedRoute allowedRoles={["manager"]}>
-                <EvaluacionesDesempeno />
+              <ProtectedRoute allowedRoles={["rrhh"]}>
+                <DashboardAdminRRH />
               </ProtectedRoute>
             }
           />
-
-          <Route
-            path="/manager/evaluaciones/crear"
-            element={
-              <ProtectedRoute allowedRoles={["manager"]}>
-                <CrearEvaluacionDesempeno />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/manager/evaluaciones/editar/:id"
-            element={
-              <ProtectedRoute allowedRoles={["manager"]}>
-                <EditarEvaluacionDesempeno />
-              </ProtectedRoute>
-            }
-          />         
-
-          {/* EPICA 33 -  */} 
-
-          <Route
-            path="/manager/supervision/asistencia"
-            element={
-              <ProtectedRoute allowedRoles={["manager"]}>
-                <AsistenciaDia />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/manager/supervision/jornadas"
-            element={
-              <ProtectedRoute allowedRoles={["manager"]}>
-                <JornadasDia />
-              </ProtectedRoute>
-            }
-          />
-
-
-          {/* EPICA 34 -  */} 
-
-          <Route
-            path="/manager/ausencias/solicitudes"
-            element={
-              <ProtectedRoute allowedRoles={["manager"]}>
-                <SolicitudesAusenciasManager />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/manager/ausencias/solicitudes/:id"
-            element={
-              <ProtectedRoute allowedRoles={["manager"]}>
-                <AprobacionSolicitudManager />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/manager/ausencias/aprobaciones"
-            element={
-              <ProtectedRoute allowedRoles={["manager"]}>
-                <AprobacionesSolicitudesManager />
-              </ProtectedRoute>
-            }
-          />
-
-
-          {/* ======== RUTAS AUDITOR ======== */} 
-
-          {/* EPICA 35 -  */} 
-
-          <Route
-            path="/auditor/accesos/usuarios"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <AuditorUsuarios />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/auditor/accesos/permisos"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <AuditorPermisos />
-              </ProtectedRoute>
-            }
-          />
-
-
-          {/* EPICA 36 -  */}
-
-          <Route
-            path="/auditor/trazabilidad/logs"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <LogsAuditoria />
-              </ProtectedRoute>
-            }
-          />
-
-
-          {/* EPICA 37 -  */} 
-
-          <Route
-            path="/auditor/expedientes/empleados"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <EmpleadosAuditor />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/auditor/expedientes/empleados/:id"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <DetallesEmpleadoAuditor />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/auditor/expedientes/empleados/:id/contrato"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <ContratoEmpleadoAuditor />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/auditor/expedientes/empleados/:id/jornadas"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <JornadasEmpleadoAuditor />
-              </ProtectedRoute>
-            }
-          />
-
-
-          {/* EPICA 38 -  */} 
-
-          <Route
-            path="/auditor/ausencias/solicitudes"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <AuditorSolicitudesAusencias />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/auditor/ausencias/aprobaciones"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <AuditorAprobacionesAusencias />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/auditor/ausencias/saldos-vacaciones"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <AuditorSaldoVacacionesEmpleados />
-              </ProtectedRoute>
-            }
-          />
-
-
-          {/* EPICA 39 -  */} 
-
-          <Route
-            path="/auditor/desempeno/asignaciones-kpi"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <AuditorAsignacionesKPI />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/auditor/desempeno/resultados-kpi"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <AuditorResultadosKPI />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/auditor/desempeno/evaluaciones"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <AuditorEvaluacionesDesempeno />
-              </ProtectedRoute>
-            }
-          />
-
-
-          {/* EPICA 40 -  */}   
-
-          <Route
-            path="/auditor/asistencia/eventos"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <AuditorAsistenciasEmpleados />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/auditor/asistencia/jornadas"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <AuditorJornadasEmpleados />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/auditor/asistencia/turnos-empleados"
-            element={
-              <ProtectedRoute allowedRoles={["auditor"]}>
-                <AuditorTurnosEmpleados />
-              </ProtectedRoute>
-            }
-          />
-
-
+      
+     
           {/* =========================
               COMPATIBILIDAD (rutas viejas)
               Para no romper enlaces existentes
           ========================== */}
+
           <Route path="/admin/inicio" element={<Navigate to="/superadmin/inicio" replace />} />
 
           {/* Si tu InicioSuperAdmin tiene botón que iba a /admin/empresas/crear-empresa */}

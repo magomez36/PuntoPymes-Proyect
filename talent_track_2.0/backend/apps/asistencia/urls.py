@@ -21,6 +21,9 @@ from apps.asistencia.views_rrhh_turnos import (
 
 from apps.asistencia.views_rrhh_jornadas import RRHHJornadasCalculadasAPIView
 
+from apps.asistencia.views import EmpleadoAsistenciaHoyAPIView, EmpleadoRegistrarAsistenciaAPIView
+
+from apps.asistencia.views import EmpleadoJornadasMensualAPIView
 
 urlpatterns = [
     path("turnos/", TurnoListAPIView.as_view(), name="turnos_list"),
@@ -37,4 +40,9 @@ urlpatterns = [
     path("rrhh/turnos/<int:pk>/", RRHHTurnosDetailAPIView.as_view(), name="rrhh_turnos_detail"),
 
     path("rrhh/jornadas-calculadas/", RRHHJornadasCalculadasAPIView.as_view(), name="rrhh_jornadas_calculadas"),
+
+    path("empleado/asistencia/hoy/", EmpleadoAsistenciaHoyAPIView.as_view(), name="empleado_asistencia_hoy"),
+    path("empleado/asistencia/registrar/", EmpleadoRegistrarAsistenciaAPIView.as_view(), name="empleado_asistencia_registrar"),
+
+    path("empleado/jornadas/", EmpleadoJornadasMensualAPIView.as_view(), name="empleado_jornadas_mensual"),
 ]

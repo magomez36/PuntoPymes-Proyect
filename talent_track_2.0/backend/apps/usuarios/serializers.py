@@ -397,3 +397,77 @@ class PermisoUpdateSerializer(serializers.Serializer):
         attrs["codigo"] = codigo
         attrs["rol_obj"] = rol
         return attrs
+
+
+from rest_framework import serializers
+from django.contrib.auth.password_validation import validate_password
+from apps.usuarios.models import Usuario
+
+
+class MiUsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = [
+            "id",
+            "empresa_id",
+            "empleado_id",
+            "email",
+            "phone",
+            "mfa_habilitado",
+            "estado",
+            "ultimo_acceso",
+        ]
+        read_only_fields = [
+            "id",
+            "empresa_id",
+            "empleado_id",
+            "mfa_habilitado",
+            "estado",
+            "ultimo_acceso",
+        ]
+
+
+class MiUsuarioUpdateSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=False)
+    phone = serializers.CharField(required=False, allow_blank=True, allow_null=True)
+
+    # password triple (opcional)
+    new_password_1 = serializers.CharField(required=False, allow_blank=False)
+    new_password_2 = serializers.CharField(required=False, allow_blank=False)
+    new_password_3 = serializers.CharField(required=False, allow_blank=False)
+
+    def validate(self, attrs):
+        # Si llega cualquiera de los 3, exigimos los 3
+        p1 = attrs.get("new_password_1")
+        p2 = attrs.get("new_password_2")
+        p3 = attrs.get("new_password_3")
+
+        any_pass = any(x is not None for x in [p1, p2, p3])
+        if any_pass:
+            if not (p1 and p2 and p3):
+                raise serializers.ValidationError("Para cambiar contraseña debes llenar las 3 repeticiones.")
+            if not (p1 == p2 == p3):
+                raise serializers.ValidationError("Las 3 contraseñas deben ser idénticas.")
+
+            # valida reglas de Django (longitud, comunes, etc.)
+            validate_password(p1)
+
+        if "phone" in attrs and attrs["phone"] is not None:
+            attrs["phone"] = str(attrs["phone"]).strip()
+
+        return attrs
+
+
+from rest_framework import serializers
+
+class CambiarPasswordSerializer(serializers.Serializer):
+    password_actual = serializers.CharField(write_only=True)
+    password_nueva = serializers.CharField(write_only=True)
+    password_nueva_repetir = serializers.CharField(write_only=True)
+
+    def validate(self, attrs):
+        if attrs["password_nueva"] != attrs["password_nueva_repetir"]:
+            raise serializers.ValidationError({"password_nueva_repetir": "La nueva contraseña no coincide."})
+        if len(attrs["password_nueva"]) < 6:
+            raise serializers.ValidationError({"password_nueva": "La nueva contraseña debe tener al menos 6 caracteres."})
+        return attrs
