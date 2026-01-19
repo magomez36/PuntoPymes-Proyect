@@ -1,0 +1,95 @@
+
+.jornadas-main {
+  padding: 32px 24px 32px 48px; /* Aumenta el padding izquierdo */
+  background: #f7f8fa;
+  min-height: 100vh;
+}
+
+@media (max-width: 900px) {
+  .jornadas-main {
+    padding-left: 16px;
+    padding-right: 8px;
+  }
+}
+
+.jornadas-header-blocks {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.jornadas-block {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  padding: 18px 24px;
+  min-width: 320px;
+  font-size: 1.05rem;
+}
+
+.jornadas-table-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  padding: 24px;
+  margin-top: 8px;
+}
+
+.jornadas-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.98rem;
+}
+.jornadas-table th {
+  background: #f1f5f9;
+  color: #222;
+  font-weight: 600;
+  padding: 12px 8px;
+  border-bottom: 2px solid #e5e7eb;
+  text-align: left;
+}
+.jornadas-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.jornadas-table tr:last-child td {
+  border-bottom: none;
+}
+.jornadas-empty {
+  text-align: center;
+  color: #888;
+  font-size: 1.05rem;
+  padding: 32px 0;
+}
+
+.jornadas-btn-group {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
+.jornadas-btn {
+  background: #e5e7eb;
+  color: #222;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s;
+  box-shadow: none;
+  cursor: pointer;
+}
+.jornadas-btn:hover,
+.jornadas-btn:focus {
+  background: #cbd5e1;
+}
+.volver-lista-btn {
+  background: #e5e7eb;
+  color: #222;
+  box-shadow: none;
+}
+.volver-lista-btn:hover,
+.volver-lista-btn:focus {
+  background: #cbd5e1;
+}

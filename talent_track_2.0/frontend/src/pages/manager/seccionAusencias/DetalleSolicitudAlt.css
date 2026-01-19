@@ -1,0 +1,93 @@
+/* Alternativa visual para Detalle Solicitud */
+.solicitud-card-bloques {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  max-width: 900px;
+  margin: 2.5rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.solicitud-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 2.2rem;
+  color: #1a1a1a;
+  letter-spacing: -1px;
+}
+
+.solicitud-seccion {
+  margin-bottom: 2.2rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1.5px solid #f0f0f0;
+}
+
+.solicitud-seccion:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.solicitud-seccion h3 {
+  font-size: 1.13rem;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+  color: #333;
+}
+
+.solicitud-info-grid, .solicitud-detalle-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem 2.5rem;
+}
+
+.solicitud-info-grid > div,
+.solicitud-detalle-grid > div {
+  min-width: 220px;
+  font-size: 1rem;
+}
+
+.solicitud-calendario table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #f9f9f9;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.solicitud-calendario th, .solicitud-calendario td {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+}
+
+.solicitud-calendario th {
+  background: #f1f3f6;
+  font-weight: 600;
+}
+
+.solicitud-calendario tr:last-child td {
+  border-bottom: none;
+}
+
+.solicitud-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.solicitud-volver {
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+.solicitud-volver a {
+  color: #1976d2;
+  text-decoration: underline;
+  font-size: 1rem;
+}

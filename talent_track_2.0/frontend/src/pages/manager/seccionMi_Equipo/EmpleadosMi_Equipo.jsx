@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Sidebar from "../../../components/Sidebar";
+import SidebarManager from "../../../components/SidebarManager";
 import { apiFetch } from "../../../services/api";
+import "../../../assets/css/manager-table.css";
 
 const ESTADOS = {
   1: "activo",
@@ -62,57 +63,79 @@ export default function EmpleadosMi_Equipo() {
   };
 
   return (
-    <div className="layout">
-      <Sidebar />
-      <main className="main-content">
-        <h2>Mi Equipo - Empleados</h2>
-
-        {loading && <p>Cargando...</p>}
-        {err && <p style={{ color: "crimson" }}>{err}</p>}
-
-        {!loading && (
-          <table border="1" cellPadding="6" style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr>
-                <th>Nombres</th>
-                <th>Apellidos</th>
-                <th>Unidad Organizacional</th>
-                <th>Puesto</th>
-                <th>Email</th>
-                <th>Dirección</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r) => (
-                <tr key={r.id}>
-                  <td>{r.nombres}</td>
-                  <td>{r.apellidos}</td>
-                  <td>{r.unidad_organizacional || "N/A"}</td>
-                  <td>{r.puesto || "N/A"}</td>
-                  <td>{r.email}</td>
-                  <td>{r.direccion || "N/A"}</td>
-                  <td>{r.estado_label || ESTADOS[r.estado] || "N/A"}</td>
-                  <td>
-                    <button onClick={() => navigate(`/manager/mi-equipo/empleados/${r.id}`)}>Detalle</button>{" "}
-                    <button onClick={() => navigate(`/manager/mi-equipo/empleados/${r.id}/jornadas`)}>Jornadas</button>{" "}
-                    <button onClick={() => cambiarEstado(r.id, r.estado)}>Cambiar estado</button>
-                  </td>
-                </tr>
-              ))}
-              {rows.length === 0 && (
-                <tr>
-                  <td colSpan="8">No tienes empleados asignados a tu equipo.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        )}
-
-        <div style={{ marginTop: 12 }}>
-          <Link to="/manager/inicio">Volver</Link>
+    <div className="layout" style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+      <SidebarManager />
+      <main className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column', marginLeft: '80px', padding: '32px' }}>
+        <div className="manager-table-title-row" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '4px' }}>
+          <span className="manager-table-title" style={{ marginBottom: 0 }}>Mi Equipo - Empleados</span>
+          <p style={{ margin: '0 0 0 24px', color: '#64748b', fontSize: '1.05rem' }}>Gestione los perfiles, asistencia y estados de los colaboradores a su cargo.</p>
         </div>
+        <div className="manager-table-container">
+          {loading && <p>Cargando...</p>}
+          {err && <p style={{ color: "crimson" }}>{err}</p>}
+          {!loading && (
+            <table className="manager-table">
+              <thead>
+                <tr>
+                  <th>Nombres</th>
+                  <th>Apellidos</th>
+                  <th>Unidad Organizacional</th>
+                  <th>Puesto</th>
+                  <th>Email</th>
+                  <th>Dirección</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.id}>
+                    <td>{r.nombres}</td>
+                    <td>{r.apellidos}</td>
+                    <td>{r.unidad_organizacional || "N/A"}</td>
+                    <td>{r.puesto || "N/A"}</td>
+                    <td>
+                      <span className="email-cell">{r.email}</span>
+                    </td>
+                    <td>{r.direccion || "N/A"}</td>
+                    <td>
+                      <span className={
+                        "estado-badge " + (
+                          r.estado_label === "activo"
+                            ? "estado-activo"
+                            : r.estado_label === "suspendido"
+                              ? "estado-suspendido"
+                              : r.estado_label === "baja"
+                                ? "estado-baja"
+                                : ""
+                        )
+                      }>
+                        {r.estado_label ? r.estado_label.toUpperCase() : (ESTADOS[r.estado] || "N/A").toUpperCase()}
+                      </span>
+                    </td>
+                    <td className="manager-table-actions">
+                      <button className="manager-action-btn manager-action-view" title="Detalle" onClick={() => navigate(`/manager/mi-equipo/empleados/${r.id}`)}>
+                        <i className="bx bx-show"></i>
+                      </button>
+                      <button className="manager-action-btn manager-action-edit" title="Jornadas" onClick={() => navigate(`/manager/mi-equipo/empleados/${r.id}/jornadas`)}>
+                        <i className="bx bx-edit"></i>
+                      </button>
+                      <button className="manager-action-btn manager-action-status" title="Cambiar estado" onClick={() => cambiarEstado(r.id, r.estado)}>
+                        <i className="bx bx-power-off"></i>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {rows.length === 0 && (
+                  <tr>
+                    <td colSpan="8" className="manager-table-empty">No tienes empleados asignados a tu equipo.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
+        </div>
+        {/* ...el resto del contenido... */}
       </main>
     </div>
   );

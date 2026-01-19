@@ -1,0 +1,237 @@
+
+/* Bloques visuales y grid para la solicitud */
+.solicitud-card-bloques {
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.solicitud-bloques-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 2rem auto;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 900px) {
+  .solicitud-bloques-grid {
+    flex-direction: row;
+    gap: 3rem;
+    align-items: flex-start;
+    justify-content: center;
+  }
+}
+
+.solicitud-bloque {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 1.5rem 2.2rem 1.5rem 2.2rem;
+  min-width: 320px;
+  max-width: 420px;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  align-items: flex-start;
+}
+
+.solicitud-bloque-title {
+  font-size: 1.13rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #222;
+}
+
+.solicitud-bloque-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.solicitud-info-grid, .solicitud-detalle-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.2rem 1.2rem;
+}
+
+@media (min-width: 600px) {
+  .solicitud-info-grid, .solicitud-detalle-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.solicitud-calendario {
+  margin: 0.5rem 0 0 0;
+}
+
+/* Envolver todo el contenido en un contenedor central más ancho */
+
+.solicitud-outer {
+  width: 100vw;
+  min-height: 100vh;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+}
+
+
+
+
+.solicitud-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  box-sizing: border-box;
+  transition: max-width 0.2s;
+}
+
+@media (min-width: 600px) {
+  .solicitud-card {
+    max-width: 700px;
+  }
+}
+@media (min-width: 900px) {
+  .solicitud-card {
+    max-width: 900px;
+  }
+}
+@media (max-width: 500px) {
+  .solicitud-card {
+    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@media (min-width: 600px) {
+  .solicitud-card {
+    max-width: 520px;
+  }
+}
+@media (min-width: 900px) {
+  .solicitud-card {
+    max-width: 600px;
+  }
+}
+@media (max-width: 500px) {
+  .solicitud-card {
+    padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+.solicitud-title {
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #222;
+}
+
+
+.solicitud-info, .solicitud-detalle {
+  /* No usar aquí, los grids están en los bloques */
+}
+
+.solicitud-calendario table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+.solicitud-calendario th {
+  background: #f1f3f6;
+  font-weight: 600;
+}
+
+.solicitud-calendario tr:last-child td {
+  border-bottom: none;
+}
+
+.solicitud-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.btn {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn.aprobar {
+  background: #4caf50;
+  color: #fff;
+}
+
+.btn.aprobar:hover {
+  background: #388e3c;
+}
+
+.btn.rechazar {
+  background: #f44336;
+  color: #fff;
+}
+
+.btn.rechazar:hover {
+  background: #c62828;
+}
+
+.btn.cancelar {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.btn.cancelar:hover {
+  background: #bdbdbd;
+}
+
+.solicitud-volver {
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+.solicitud-volver a {
+  color: #1976d2;
+  text-decoration: underline;
+  font-size: 1rem;
+}
+
+.estado {
+  padding: 0.2em 0.7em;
+  border-radius: 5px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.estado-pendiente {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.estado-aprobada {
+  background: #d4edda;
+  color: #155724;
+}
+
+.estado-rechazada {
+  background: #f8d7da;
+  color: #721c24;
+}

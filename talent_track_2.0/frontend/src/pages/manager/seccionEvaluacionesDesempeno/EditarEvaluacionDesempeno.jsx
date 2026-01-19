@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Sidebar from "../../../components/Sidebar";
+import ManagerSidebar from "../../../components/SidebarManager";
 import { apiFetch } from "../../../services/api";
 
 const TIPOS = [
@@ -160,133 +160,320 @@ export default function EditarEvaluacionDesempeno() {
     }
   };
 
-  return (
-    <div className="layout">
-      <Sidebar />
-      <main className="main-content">
-        <h2>Editar Evaluación de Desempeño</h2>
+  // Styles
+  const styles = {
+    layout: {
+      display: 'flex',
+      minHeight: '100vh',
+      backgroundColor: '#f8fafc',
+    },
+    main: {
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '40px',
+      marginLeft: '80px', // FIX: Offset for fixed sidebar
+      overflowX: 'hidden',
+    },
+    card: {
+      backgroundColor: 'white',
+      borderRadius: '16px',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+      padding: '32px',
+      border: '1px solid #e2e8f0',
+      marginBottom: '24px'
+    },
+    title: {
+      fontSize: '1.8rem',
+      fontWeight: '800',
+      color: '#1e293b',
+      margin: 0,
+    },
+    subtitle: {
+      fontSize: '1.1rem',
+      color: '#64748b',
+      marginTop: '4px'
+    },
+    sectionTitle: {
+      fontSize: '1.1rem',
+      fontWeight: '700',
+      color: '#1e293b',
+      marginBottom: '20px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '8px'
+    },
+    formGroup: {
+      marginBottom: '20px'
+    },
+    label: {
+      display: 'block',
+      fontSize: '0.85rem',
+      fontWeight: '600',
+      color: '#475569',
+      marginBottom: '8px',
+      textTransform: 'uppercase'
+    },
+    infoText: {
+      fontSize: '0.95rem',
+      color: '#1e293b',
+      padding: '10px 12px',
+      backgroundColor: '#f1f5f9',
+      borderRadius: '6px',
+      border: '1px solid #cbd5e1'
+    },
+    input: {
+      width: '100%',
+      padding: '10px 12px',
+      borderRadius: '6px',
+      border: '1px solid #cbd5e1',
+      fontSize: '0.95rem',
+      color: '#1e293b',
+      transition: 'border-color 0.2s'
+    },
+    select: {
+      width: '100%',
+      padding: '10px 12px',
+      borderRadius: '6px',
+      border: '1px solid #cbd5e1',
+      fontSize: '0.95rem',
+      color: '#1e293b',
+      backgroundColor: 'white'
+    },
+    row: {
+      display: 'flex',
+      gap: '24px',
+      flexWrap: 'wrap'
+    },
+    col: {
+      flex: 1,
+      minWidth: '250px'
+    },
+    buttonPrimary: {
+      backgroundColor: '#dc2626',
+      color: 'white',
+      border: 'none',
+      padding: '12px 24px',
+      borderRadius: '8px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      fontSize: '1rem',
+      transition: 'background-color 0.2s',
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '8px'
+    },
+    buttonSecondary: {
+      backgroundColor: 'white',
+      color: '#475569',
+      border: '1px solid #cbd5e1',
+      padding: '12px 24px',
+      borderRadius: '8px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      fontSize: '1rem',
+      transition: 'background-color 0.2s',
+      marginRight: '12px'
+    },
+    buttonSmall: {
+      backgroundColor: '#f1f5f9',
+      color: '#475569',
+      border: '1px solid #cbd5e1',
+      padding: '8px 16px',
+      borderRadius: '6px',
+      fontWeight: '600',
+      cursor: 'pointer',
+      fontSize: '0.9rem',
+    },
+    tableBox: {
+      border: '1px solid #e2e8f0',
+      borderRadius: '8px',
+      overflow: 'hidden',
+      marginTop: '16px'
+    }
+  };
 
-        {loading && <p>Cargando...</p>}
-        {err && <p style={{ color: "crimson" }}>{err}</p>}
+  return (
+    <div style={styles.layout}>
+      <ManagerSidebar />
+      <main style={styles.main}>
+        {/* Header */}
+        <div style={{ marginBottom: '32px' }}>
+          <h2 style={styles.title}>Editar Evaluación</h2>
+          <div style={styles.subtitle}>Modifique los detalles de la evaluación o actualice resultados.</div>
+        </div>
+
+        {loading && <p>Cargando información...</p>}
+        {err && <div style={{ padding: '16px', backgroundColor: '#fef2f2', color: '#dc2626', borderRadius: '8px', marginBottom: '24px', border: '1px solid #fecaca' }}>{err}</div>}
 
         {!loading && data && (
-          <>
-            <div style={{ marginBottom: 12 }}>
-              <p>
-                <strong>Empleado:</strong> {data.email} — {data.nombres} {data.apellidos}
-              </p>
-              <p>
-                <strong>Evaluador:</strong> {data.evaluador_nombre || "N/A"}
-              </p>
+          <form onSubmit={onSubmit}>
+
+            {/* Card 1: General Info */}
+            <div style={styles.card}>
+              <div style={styles.sectionTitle}>
+                <i className='bx bx-user-pin' style={{ color: '#dc2626', fontSize: '1.2rem' }}></i>
+                Información del Colaborador
+              </div>
+
+              <div style={styles.row}>
+                <div style={styles.col}>
+                  <div style={styles.formGroup}>
+                    <label style={styles.label}>Empleado</label>
+                    <div style={styles.infoText}>
+                      {data.nombres} {data.apellidos} ({data.email})
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={styles.row}>
+                <div style={styles.col}>
+                  <div style={styles.formGroup}>
+                    <label style={styles.label}>Evaluador Responsable</label>
+                    <div style={styles.infoText}>
+                      {data.evaluador_nombre || "N/A"}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ borderTop: '1px solid #e2e8f0', margin: '20px 0' }}></div>
+
+              <div style={styles.row}>
+                <div style={styles.col}>
+                  <div style={styles.formGroup}>
+                    <label style={styles.label}>Periodo (Año - Cuarto) *</label>
+                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                      <select name="year" value={form.year} onChange={onChange} style={styles.select}>
+                        {yearsRange().map((y) => <option key={y} value={y}>{y}</option>)}
+                      </select>
+                      <select name="quarter" value={form.quarter} onChange={onChange} style={styles.select}>
+                        {QUARTERS.map((q) => <option key={q} value={q}>{q}</option>)}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div style={styles.col}>
+                  <div style={styles.formGroup}>
+                    <label style={styles.label}>Tipo de Evaluación *</label>
+                    <select name="tipo" value={form.tipo} onChange={onChange} style={styles.select}>
+                      {TIPOS.map((t) => (
+                        <option key={t.id} value={t.id}>{t.label.toUpperCase()}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <form onSubmit={onSubmit}>
-              <div>
-                <label>Periodo *</label>{" "}
-                <select name="year" value={form.year} onChange={onChange}>
-                  {yearsRange().map((y) => (
-                    <option key={y} value={y}>
-                      {y}
-                    </option>
-                  ))}
-                </select>{" "}
-                <select name="quarter" value={form.quarter} onChange={onChange}>
-                  {QUARTERS.map((q) => (
-                    <option key={q} value={q}>
-                      {q}
-                    </option>
-                  ))}
-                </select>{" "}
-                <span style={{ marginLeft: 8 }}>
-                  <strong>{periodo}</strong>
-                </span>
+            {/* Card 2: Instrument Builder */}
+            <div style={styles.card}>
+              <div style={styles.sectionTitle}>
+                <i className='bx bx-list-check' style={{ color: '#dc2626', fontSize: '1.2rem' }}></i>
+                Definición de Instrumento
               </div>
 
-              <div style={{ marginTop: 8 }}>
-                <label>Tipo *</label>
-                <select name="tipo" value={form.tipo} onChange={onChange}>
-                  {TIPOS.map((t) => (
-                    <option key={t.id} value={t.id}>
-                      {t.label}
-                    </option>
-                  ))}
-                </select>
+              <div style={{ backgroundColor: '#f8fafc', padding: '20px', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '20px' }}>
+                <div style={styles.row}>
+                  <div style={{ flex: 1 }}>
+                    <div style={styles.formGroup}>
+                      <label style={styles.label}>Competencia *</label>
+                      <input name="competencia" value={instTmp.competencia} onChange={onChangeTmp} placeholder="Ej: Trabajo en equipo" style={styles.input} />
+                    </div>
+                  </div>
+                  <div style={{ width: '150px' }}>
+                    <div style={styles.formGroup}>
+                      <label style={styles.label}>Peso (0-1)</label>
+                      <input type="number" step="0.01" min="0" name="peso" value={instTmp.peso} onChange={onChangeTmp} style={styles.input} />
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', marginTop: '14px' }}>
+                    <button type="button" onClick={agregar} style={{ ...styles.buttonSmall, backgroundColor: '#1e293b', color: 'white', border: 'none' }}>
+                      <i className='bx bx-plus'></i> Añadir
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <hr />
-
-              <h3>Instrumento (obligatorio, mínimo 1)</h3>
-
-              <div>
-                <label>Peso (decimal = 0)</label>
-                <input type="number" step="0.01" min="0" name="peso" value={instTmp.peso} onChange={onChangeTmp} />
-              </div>
-
-              <div>
-                <label>Competencia *</label>
-                <input name="competencia" value={instTmp.competencia} onChange={onChangeTmp} />
-              </div>
-
-              <div style={{ marginTop: 8 }}>
-                <button type="button" onClick={agregar}>
-                  + Añadir al instrumento
-                </button>
-              </div>
-
-              <div style={{ marginTop: 12 }}>
-                {instrumento.length ? (
-                  <table border="1" cellPadding="6" style={{ width: "100%", borderCollapse: "collapse" }}>
+              {/* Table of items */}
+              {instrumento.length > 0 ? (
+                <div style={styles.tableBox}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                     <thead>
-                      <tr>
-                        <th>Competencia</th>
-                        <th>Peso</th>
-                        <th></th>
+                      <tr style={{ backgroundColor: '#f1f5f9', borderBottom: '1px solid #e2e8f0' }}>
+                        <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '0.85rem', color: '#64748b' }}>COMPETENCIA</th>
+                        <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '0.85rem', color: '#64748b' }}>PESO</th>
+                        <th style={{ padding: '12px 16px', textAlign: 'right', fontSize: '0.85rem', color: '#64748b' }}>ACCIONES</th>
                       </tr>
                     </thead>
                     <tbody>
                       {instrumento.map((it, idx) => (
-                        <tr key={idx}>
-                          <td>{it.competencia}</td>
-                          <td>{it.peso}</td>
-                          <td>
-                            <button type="button" onClick={() => quitar(idx)}>
-                              Quitar
+                        <tr key={idx} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                          <td style={{ padding: '12px 16px', color: '#334155' }}>{it.competencia}</td>
+                          <td style={{ padding: '12px 16px', color: '#334155' }}>{it.peso}</td>
+                          <td style={{ padding: '12px 16px', textAlign: 'right' }}>
+                            <button type="button" onClick={() => quitar(idx)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1.2rem' }}>
+                              <i className='bx bx-trash'></i>
                             </button>
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
-                ) : (
-                  <p>No hay ítems en el instrumento.</p>
-                )}
+                </div>
+              ) : (
+                <div style={{ textAlign: 'center', padding: '30px', color: '#94a3b8', fontStyle: 'italic', border: '2px dashed #e2e8f0', borderRadius: '8px' }}>
+                  No se han añadido competencias al instrumento aún.
+                </div>
+              )}
+            </div>
+
+            {/* Card 3: Results & Comments */}
+            <div style={styles.card}>
+              <div style={styles.sectionTitle}>
+                <i className='bx bx-bar-chart-alt-2' style={{ color: '#dc2626', fontSize: '1.2rem' }}></i>
+                Resultados y Feedback
               </div>
 
-              <hr />
-
-              <div>
-                <label>Puntaje total (decimal = 0)</label>
+              <div style={styles.formGroup}>
+                <label style={styles.label}>Puntaje Total (0 - 100)</label>
                 <input
                   type="number"
                   step="0.01"
                   min="0"
+                  max="100"
                   name="puntaje_total"
                   value={form.puntaje_total}
                   onChange={onChange}
+                  style={{ ...styles.input, maxWidth: '200px', fontSize: '1.1rem', fontWeight: 'bold' }}
                 />
               </div>
 
-              <div style={{ marginTop: 8 }}>
-                <label>Comentarios</label>
-                <textarea name="comentarios" value={form.comentarios} onChange={onChange} rows="4" />
+              <div style={styles.formGroup}>
+                <label style={styles.label}>Comentarios Finales</label>
+                <textarea
+                  name="comentarios"
+                  value={form.comentarios}
+                  onChange={onChange}
+                  rows="4"
+                  style={{ ...styles.input, fontFamily: 'inherit' }}
+                  placeholder="Ingrese feedback cualitativo aquí..."
+                />
               </div>
+            </div>
 
-              <div style={{ marginTop: 12 }}>
-                <Link to="/manager/evaluaciones">Cancelar</Link>{" "}
-                <button type="submit">Guardar</button>
-              </div>
-            </form>
-          </>
+            {/* Footer Actions */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: '40px' }}>
+              <button type="button" onClick={() => navigate("/manager/evaluaciones")} style={styles.buttonSecondary}>
+                Cancelar
+              </button>
+              <button type="submit" style={styles.buttonPrimary}>
+                Actualizar Evaluación
+              </button>
+            </div>
+
+          </form>
         )}
       </main>
     </div>

@@ -1,0 +1,247 @@
+/* --- LAYOUT --- */
+.auditor-layout {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f8fafc;
+}
+
+.auditor-main {
+    flex: 1;
+    padding: 40px 50px;
+    min-width: 0;
+}
+
+/* --- HEADER --- */
+.absences-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.absences-header h1 { font-size: 26px; font-weight: 800; color: #1e293b; }
+.absences-header p { color: #64748b; font-size: 14px; margin-top: 4px; }
+
+.header-actions { display: flex; gap: 12px; }
+
+.btn-filter {
+    background: #fff; border: 1px solid #e2e8f0; padding: 10px 20px;
+    border-radius: 8px; color: #475569; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+}
+
+.btn-primary-red {
+    background: #e11d48; color: #fff; border: none; padding: 10px 20px;
+    border-radius: 8px; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+}
+
+/* --- TABS --- */
+.tabs-nav {
+    display: flex;
+    gap: 30px;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 30px;
+}
+
+.tab-link {
+    background: none; border: none; padding: 12px 5px;
+    font-size: 14px; font-weight: 600; color: #64748b;
+    cursor: pointer; position: relative;
+}
+
+.tab-link i { margin-right: 8px; font-size: 18px; vertical-align: middle; }
+
+.tab-link.active { color: #e11d48; }
+.tab-link.active::after {
+    content: ""; position: absolute; bottom: -1px; left: 0;
+    width: 100%; height: 2px; background: #e11d48;
+}
+
+/* --- LISTA DE REGISTROS --- */
+.absences-card-container {
+    background: #fff; border-radius: 12px; border: 1px solid #f1f5f9;
+    overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+}
+
+.table-header-labels {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    padding: 15px 25px;
+    background: #fafbfc;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    letter-spacing: 0.5px;
+}
+
+.absence-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    padding: 20px 25px;
+    align-items: center;
+    border-bottom: 1px solid #f8fafc;
+}
+
+.col-user { display: flex; align-items: center; gap: 12px; }
+.user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.user-info strong { display: block; font-size: 14px; color: #1e293b; }
+.user-info span { font-size: 12px; color: #94a3b8; }
+
+.chip-type {
+    padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
+}
+.chip-type.vacaciones { background: #eff6ff; color: #3b82f6; }
+.chip-type.licencia-médica { background: #fff7ed; color: #f97316; }
+
+.sub-detail { display: block; font-size: 12px; color: #94a3b8; margin-top: 4px; }
+
+.col-dates strong { display: block; font-size: 14px; color: #1e293b; }
+.col-dates span { font-size: 11px; color: #94a3b8; }
+.date-range { display: flex; align-items: center; gap: 6px; }
+.date-range i { color: #94a3b8; }
+
+/* CHIPS DE ESTADO */
+.status-dot-pill {
+    padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 6px;
+}
+.status-dot-pill::before { content: "●"; font-size: 10px; }
+
+.status-dot-pill.aprobado { background: #dcfce7; color: #16a34a; }
+.status-dot-pill.pendiente { background: #fef3c7; color: #d97706; }
+.status-dot-pill.rechazado { background: #fef2f2; color: #e11d48; }
+
+.sub-status { display: block; font-size: 11px; color: #94a3b8; margin-top: 4px; }
+
+.col-audit { font-size: 12px; color: #94a3b8; }
+.col-audit span { display: block; }
+
+/* --- GRILLA ESPECÍFICA PARA APROBACIONES --- */
+.approval-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr 1.5fr 0.5fr; /* Proporciones de la imagen */
+    gap: 20px;
+    align-items: center;
+}
+
+.text-right { text-align: right; }
+
+/* Detalles de la columna Decisión */
+.col-decision {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.decision-by { font-size: 13px; color: #64748b; }
+.decision-by strong { color: #334155; }
+
+.decision-comment {
+    font-size: 12px;
+    color: #64748b;
+    font-style: italic;
+    margin: 0;
+    line-height: 1.4;
+    max-width: 300px;
+}
+
+.date-range-small {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #334155;
+    margin: 4px 0;
+}
+.date-range-small i { color: #94a3b8; }
+
+.days-count { font-size: 12px; font-weight: 700; color: #1e293b; }
+
+/* Estilo para la fecha de decisión a la derecha */
+.col-date-decision strong { display: block; font-size: 14px; color: #1e293b; }
+.col-date-decision span { font-size: 12px; color: #94a3b8; }
+
+.empty-state {
+    padding: 40px;
+    text-align: center;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* Ajuste de chips para que coincidan con la imagen */
+.chip-type.vacaciones { background: #eff6ff; color: #3b82f6; }
+.chip-type.estudios { background: #f5f3ff; color: #8b5cf6; }
+.chip-type.licencia-médica { background: #fff7ed; color: #f97316; }
+
+/* --- GRILLA ESPECÍFICA PARA SALDOS --- */
+.balance-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 20px;
+    align-items: center;
+}
+
+/* Etiqueta de Periodo */
+.period-tag {
+    background: #f1f5f9;
+    color: #475569;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Columna de Consumo */
+.col-consumption {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.consumption-item {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.consumption-item strong {
+    color: #334155;
+}
+
+/* Columna de Disponibilidad y Barra de Progreso */
+.col-available {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.available-count {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1e293b;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 180px;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+
+/* Ajuste general para consistencia visual */
+.absences-card-container {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}

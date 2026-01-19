@@ -1,23 +1,30 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Sidebar from "../../../components/Sidebar";
+import Sidebar from "../../../components/SidebarRRHH"; // Asegúrate del path correcto
 import { apiFetch } from "../../../services/api";
 
+// Importamos estilos globales
+import "../../../assets/css/admin-empresas.css";
+
 const TIPOS = [
-  { id: 1, label: "indefinido" },
-  { id: 2, label: "plazo" },
-  { id: 3, label: "temporal" },
-  { id: 4, label: "practicante" },
+  { id: 1, label: "Indefinido" },
+  { id: 2, label: "Plazo Fijo" },
+  { id: 3, label: "Temporal" },
+  { id: 4, label: "Practicante / Pasante" },
 ];
 
 export default function CrearContrato() {
   const navigate = useNavigate();
 
+  // Estados de datos
   const [empleados, setEmpleados] = useState([]);
   const [turnos, setTurnos] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
+  
+  // Estado para Modal Éxito
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const [form, setForm] = useState({
     empleado_id: "",
@@ -29,6 +36,7 @@ export default function CrearContrato() {
     jornada_semanal_horas: 40,
   });
 
+  // Carga de datos
   const loadData = async () => {
     const [eRes, tRes] = await Promise.all([
       apiFetch("/api/rrhh/helpers/empleados-sin-contrato/"),
@@ -48,7 +56,7 @@ export default function CrearContrato() {
       try {
         await loadData();
       } catch (e) {
-        setErr(e?.message || "Error cargando data.");
+        setErr(e?.message || "Error cargando datos para el contrato.");
       } finally {
         setLoading(false);
       }
@@ -87,8 +95,8 @@ export default function CrearContrato() {
     e.preventDefault();
     setErr("");
 
-    if (!form.empleado_id) return setErr("Selecciona un empleado (sin contrato).");
-    if (!form.fecha_inicio) return setErr("Fecha inicio es obligatoria.");
+    if (!form.empleado_id) return setErr("Debes seleccionar un empleado.");
+    if (!form.fecha_inicio) return setErr("La fecha de inicio es obligatoria.");
 
     const payload = {
       empleado_id: Number(form.empleado_id),
@@ -108,103 +116,262 @@ export default function CrearContrato() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(JSON.stringify(data));
+        throw new Error(data.detail || JSON.stringify(data));
       }
 
-      alert("Contrato creado.");
-      navigate("/rrhh/contratos");
+      // ÉXITO: Abrir modal
+      setShowSuccessModal(true);
+
     } catch (e2) {
-      setErr(e2?.message || "Error creando contrato.");
+      setErr(e2?.message || "Error al crear el contrato.");
     }
   };
 
-  return (
-    <div className="layout">
-      <Sidebar />
-      <main className="main-content">
-        <h2>Crear Contrato</h2>
+  const handleCloseSuccess = () => {
+    setShowSuccessModal(false);
+    navigate("/rrhh/contratos");
+  };
 
-        {loading && <p>Cargando...</p>}
-        {err && <p style={{ color: "crimson" }}>{err}</p>}
+  return (
+    <div className="layout-wrapper">
+      <Sidebar />
+      
+      <main className="page-content">
+        
+        {/* Header */}
+        <div className="page-header-section">
+            <div>
+                <h1 className="page-main-title">Nuevo Contrato</h1>
+                <p className="page-subtitle">Formalizar la relación laboral con un colaborador.</p>
+            </div>
+        </div>
+
+        {loading && <div className="loading-state"><i className='bx bx-loader-alt bx-spin'></i> Preparando formulario...</div>}
+        
+        {err && (
+            <div className="error-state" style={{ padding: '15px', marginBottom: '20px', fontSize: '0.9rem' }}>
+                <i className='bx bx-error-circle'></i> {err}
+            </div>
+        )}
 
         {!loading && (
-          <form onSubmit={onSubmit}>
-            <div>
-              <label>Empleado (sin contrato) *</label>
-              <select name="empleado_id" value={form.empleado_id} onChange={onChange}>
-                <option value="">-- Selecciona --</option>
-                {empleados.map((e) => (
-                  <option key={e.id} value={e.id}>
-                    {e.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+          // --- GRID LAYOUT ---
+          <div className="form-layout-grid">
+              
+              {/* IZQUIERDA: FORMULARIO */}
+              <div className="form-card-main">
+                  <form onSubmit={onSubmit}>
+                    
+                    {/* SECCIÓN 1: DETALLES DEL CONTRATO */}
+                    <div className="form-section-title">Detalles de Contratación</div>
 
-            <div>
-              <label>Turno base (opcional)</label>
-              <select name="turno_base_id" value={form.turno_base_id} onChange={onChange}>
-                <option value="">-- Sin turno base --</option>
-                {turnoOptions.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+                    {/* Empleado y Tipo */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                        <div className="form-group">
+                            <label className="form-label">Empleado (Sin contrato activo) *</label>
+                            <div className="input-with-icon-wrapper">
+                                <i className='bx bx-user input-icon'></i>
+                                <select 
+                                    className="form-select with-icon"
+                                    name="empleado_id" 
+                                    value={form.empleado_id} 
+                                    onChange={onChange}
+                                >
+                                    <option value="">-- Seleccionar Colaborador --</option>
+                                    {empleados.map((e) => (
+                                    <option key={e.id} value={e.id}>
+                                        {e.label}
+                                    </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
 
-            <div>
-              <label>Tipo *</label>
-              <select name="tipo" value={form.tipo} onChange={onChange}>
-                {TIPOS.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+                        <div className="form-group">
+                            <label className="form-label">Tipo de Contrato *</label>
+                            <div className="input-with-icon-wrapper">
+                                <i className='bx bx-file-blank input-icon'></i>
+                                <select 
+                                    className="form-select with-icon"
+                                    name="tipo" 
+                                    value={form.tipo} 
+                                    onChange={onChange}
+                                >
+                                    {TIPOS.map((t) => (
+                                    <option key={t.id} value={t.id}>
+                                        {t.label}
+                                    </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-            <div>
-              <label>Fecha inicio *</label>
-              <input type="date" name="fecha_inicio" value={form.fecha_inicio} onChange={onChange} />
-            </div>
+                    {/* Fechas */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                        <div className="form-group">
+                            <label className="form-label">Fecha de Inicio *</label>
+                            <div className="input-with-icon-wrapper">
+                                <i className='bx bx-calendar input-icon'></i>
+                                <input 
+                                    className="form-input with-icon"
+                                    type="date"
+                                    name="fecha_inicio" 
+                                    value={form.fecha_inicio} 
+                                    onChange={onChange} 
+                                />
+                            </div>
+                        </div>
 
-            <div>
-              <label>Fecha fin (opcional)</label>
-              <input type="date" name="fecha_fin" value={form.fecha_fin} onChange={onChange} />
-            </div>
+                        <div className="form-group">
+                            <label className="form-label">Fecha de Fin (Opcional)</label>
+                            <div className="input-with-icon-wrapper">
+                                <i className='bx bx-calendar-x input-icon'></i>
+                                <input 
+                                    className="form-input with-icon"
+                                    type="date"
+                                    name="fecha_fin" 
+                                    value={form.fecha_fin} 
+                                    onChange={onChange} 
+                                />
+                            </div>
+                        </div>
+                    </div>
 
-            <div>
-              <label>Salario base (= 0, 2 decimales) *</label>
-              <input
-                type="number"
-                name="salario_base"
-                min="0"
-                step="0.01"
-                value={form.salario_base}
-                onChange={onChange}
-                onBlur={onBlurSalary}
-              />
-            </div>
+                    {/* SECCIÓN 2: CONDICIONES ECONÓMICAS */}
+                    <div className="form-section-title" style={{ marginTop: '30px' }}>Condiciones Económicas y Horario</div>
 
-            <div>
-              <label>Jornada semanal horas (entero = 0) *</label>
-              <input
-                type="number"
-                name="jornada_semanal_horas"
-                min="0"
-                step="1"
-                value={form.jornada_semanal_horas}
-                onChange={onChange}
-              />
-            </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px' }}>
+                        
+                        {/* Salario */}
+                        <div className="form-group">
+                            <label className="form-label">Salario Base ($) *</label>
+                            <div className="input-with-icon-wrapper">
+                                <i className='bx bx-dollar input-icon'></i>
+                                <input
+                                    className="form-input with-icon"
+                                    type="number"
+                                    name="salario_base"
+                                    min="0"
+                                    step="0.01"
+                                    value={form.salario_base}
+                                    onChange={onChange}
+                                    onBlur={onBlurSalary}
+                                />
+                            </div>
+                        </div>
 
-            <div style={{ marginTop: 12 }}>
-              <Link to="/rrhh/contratos">Cancelar</Link>{" "}
-              <button type="submit">Crear</button>
-            </div>
-          </form>
+                        {/* Jornada */}
+                        <div className="form-group">
+                            <label className="form-label">Horas Semanales *</label>
+                            <div className="input-with-icon-wrapper">
+                                <i className='bx bx-time input-icon'></i>
+                                <input
+                                    className="form-input with-icon"
+                                    type="number"
+                                    name="jornada_semanal_horas"
+                                    min="0"
+                                    step="1"
+                                    value={form.jornada_semanal_horas}
+                                    onChange={onChange}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Turno */}
+                        <div className="form-group">
+                            <label className="form-label">Turno Base (Opc.)</label>
+                            <div className="input-with-icon-wrapper">
+                                <i className='bx bx-sun input-icon'></i>
+                                <select 
+                                    className="form-select with-icon"
+                                    name="turno_base_id" 
+                                    value={form.turno_base_id} 
+                                    onChange={onChange}
+                                >
+                                    <option value="">-- Ninguno --</option>
+                                    {turnoOptions.map((t) => (
+                                    <option key={t.id} value={t.id}>
+                                        {t.label}
+                                    </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {/* Footer Botones */}
+                    <div className="form-actions-footer">
+                      <Link to="/rrhh/contratos" className="btn-form-cancel">
+                        Cancelar
+                      </Link>
+                      <button type="submit" className="btn-create-company" style={{ padding: '12px 32px' }}>
+                        <i className='bx bx-check-double'></i> Crear Contrato
+                      </button>
+                    </div>
+
+                  </form>
+              </div>
+
+              {/* DERECHA: AYUDA */}
+              <div className="help-card-side">
+                  <div className="help-card-header">
+                      <div className="help-icon-box">
+                          <i className='bx bx-info-circle'></i>
+                      </div>
+                      <h3 className="help-card-title">Antes de Empezar</h3>
+                  </div>
+                  
+                  <div className="help-item">
+                      <h4 className="help-item-title">¿No aparece el empleado?</h4>
+                      <p className="help-item-text">
+                          En la lista solo aparecen colaboradores que <strong>no tienen un contrato activo</strong> actualmente. Si ya tiene uno, debe finalizarlo primero o editarlo.
+                      </p>
+                  </div>
+
+                  <div className="help-item">
+                      <h4 className="help-item-title">Contratos Indefinidos</h4>
+                      <p className="help-item-text">
+                          Para contratos indefinidos, deje el campo <strong>Fecha de Fin</strong> en blanco.
+                      </p>
+                  </div>
+
+                  <div className="help-item">
+                      <h4 className="help-item-title">Salario Base</h4>
+                      <p className="help-item-text">
+                          Ingrese el valor bruto mensual sin descontar aportes al IESS ni impuestos.
+                      </p>
+                  </div>
+              </div>
+
+          </div>
         )}
+
+        {/* --- MODAL DE ÉXITO --- */}
+        {showSuccessModal && (
+            <div className="modal-overlay">
+                <div className="modal-content">
+                    <div className="modal-icon-success">
+                        <i className='bx bx-check-circle'></i>
+                    </div>
+                    <h3 className="modal-title">¡Contrato Creado!</h3>
+                    <p className="modal-text">
+                        Se ha registrado correctamente el contrato laboral en el sistema.
+                    </p>
+                    <div className="modal-actions">
+                        <button 
+                            className="btn-modal" 
+                            style={{ backgroundColor: '#d51e37', color: 'white' }}
+                            onClick={handleCloseSuccess}
+                        >
+                            Ir a la Lista
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+
       </main>
     </div>
   );

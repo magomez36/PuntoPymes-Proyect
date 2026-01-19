@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiFetch } from "../../../services/api";
 import Sidebar from "../../../components/Sidebar";
@@ -18,6 +18,9 @@ export default function EmpleadosEmp() {
   const [puestos, setPuestos] = useState([]); 
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // ESTADO DE RECARGA (La solución al problema de refresco)
+  const [reloadTrigger, setReloadTrigger] = useState(0);
 
   // --- FILTROS ---
   const [filters, setFilters] = useState({
@@ -30,12 +33,10 @@ export default function EmpleadosEmp() {
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  
-  // Modal de Cambio de Estado (NUEVO)
   const [showStatusModal, setShowStatusModal] = useState(false);
+  
   const [itemToChangeStatus, setItemToChangeStatus] = useState(null);
-  const [newStatus, setNewStatus] = useState(1); // 1: Activo, 2: Suspendido, 3: Baja
-
+  const [newStatus, setNewStatus] = useState(1); 
   const [itemToDelete, setItemToDelete] = useState(null);
   const [successTitle, setSuccessTitle] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -44,6 +45,29 @@ export default function EmpleadosEmp() {
     ? { Authorization: `Bearer ${token}`, "Content-Type": "application/json" }
     : { "Content-Type": "application/json" }
   ), [token]);
+
+  // --- HELPERS PARA AVATARES ---
+  const getInitials = (firstName = "", lastName = "") => {
+    const first = firstName ? firstName.charAt(0).toUpperCase() : "";
+    const last = lastName ? lastName.charAt(0).toUpperCase() : "";
+    return `${first}${last}` || "?";
+  };
+
+  const getAvatarColor = (name) => {
+    const colors = ['#ef4444', '#f97316', '#f59e0b', '#10b981', '#3b82f6', '#6366f1', '#8b5cf6', '#ec4899'];
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    return colors[Math.abs(hash) % colors.length];
+  };
+
+  const getStatusBadge = (status) => {
+      switch (status) {
+          case 1: return <span style={{background: '#dcfce7', color: '#16a34a', padding:'4px 10px', borderRadius:'12px', fontSize:'0.75rem', fontWeight:'bold'}}>ACTIVO</span>;
+          case 2: return <span style={{background: '#fef9c3', color: '#ca8a04', padding:'4px 10px', borderRadius:'12px', fontSize:'0.75rem', fontWeight:'bold'}}>SUSPENDIDO</span>;
+          case 3: return <span style={{background: '#fee2e2', color: '#dc2626', padding:'4px 10px', borderRadius:'12px', fontSize:'0.75rem', fontWeight:'bold'}}>BAJA</span>;
+          default: return <span style={{background: '#f1f5f9', color: '#64748b', padding:'4px 10px', borderRadius:'12px', fontSize:'0.75rem', fontWeight:'bold'}}>N/A</span>;
+      }
+  };
 
   // 1. CARGAR EMPRESAS
   useEffect(() => {
@@ -71,30 +95,39 @@ export default function EmpleadosEmp() {
     fetchPuestos();
   }, [filters.empresa_id, authHeaders]);
 
-  // 3. FETCH EMPLEADOS
-  const fetchEmpleados = useCallback(async () => {
-    try {
-        setLoading(true);
-        const params = new URLSearchParams();
-        if (filters.empresa_id) params.append("empresa_id", filters.empresa_id);
-        if (filters.puesto_id) params.append("puesto_id", filters.puesto_id);
-        if (filters.search) params.append("search", filters.search);
-
-        const res = await apiFetch(`${API_BASE}/empleados-empresa/?${params.toString()}`, { headers: authHeaders });
-        if (!res.ok) throw new Error("Error cargando datos");
-        
-        const data = await res.json();
-        setRows(Array.isArray(data) ? data : []);
-    } catch (e) {
-        setRows([]);
-    } finally {
-        setLoading(false);
-    }
-  }, [filters, authHeaders]);
-
+  // 3. FETCH EMPLEADOS (Con gatillo de recarga)
   useEffect(() => {
-    if (token) fetchEmpleados();
-  }, [fetchEmpleados, token]);
+    if (!token) return;
+
+    const timer = setTimeout(async () => {
+        setLoading(true);
+        try {
+            const params = new URLSearchParams();
+            if (filters.empresa_id) params.append("empresa_id", filters.empresa_id);
+            if (filters.puesto_id) params.append("puesto_id", filters.puesto_id);
+            if (filters.search) params.append("search", filters.search);
+
+            // console.log("Cargando empleados..."); // Debug
+
+            const res = await apiFetch(`${API_BASE}/empleados-empresa/?${params.toString()}`, { headers: authHeaders });
+            
+            if (res.ok) {
+                const data = await res.json();
+                setRows(Array.isArray(data) ? data : []);
+            } else {
+                setRows([]);
+            }
+        } catch (e) {
+            console.error(e);
+            setRows([]);
+        } finally {
+            setLoading(false);
+        }
+    }, 300);
+
+    return () => clearTimeout(timer);
+
+  }, [filters, token, authHeaders, reloadTrigger]); // <--- AÑADIDO reloadTrigger AQUÍ
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -105,44 +138,33 @@ export default function EmpleadosEmp() {
     });
   };
 
-  const getStatusBadge = (status) => {
-      switch (status) {
-          case 1: return <span style={{background: '#dcfce7', color: '#16a34a', padding:'4px 10px', borderRadius:'12px', fontSize:'0.75rem', fontWeight:'bold'}}>ACTIVO</span>;
-          case 2: return <span style={{background: '#fef9c3', color: '#ca8a04', padding:'4px 10px', borderRadius:'12px', fontSize:'0.75rem', fontWeight:'bold'}}>SUSPENDIDO</span>;
-          case 3: return <span style={{background: '#fee2e2', color: '#dc2626', padding:'4px 10px', borderRadius:'12px', fontSize:'0.75rem', fontWeight:'bold'}}>BAJA</span>;
-          default: return <span style={{background: '#f1f5f9', color: '#64748b', padding:'4px 10px', borderRadius:'12px', fontSize:'0.75rem', fontWeight:'bold'}}>N/A</span>;
-      }
-  };
-
-  // --- LÓGICA DE CAMBIO DE ESTADO (NUEVA) ---
-  
-  // Paso 1: Abrir Modal
+  // --- ACCIONES (CAMBIO DE ESTADO) ---
   const openStatusModal = (emp) => {
       setItemToChangeStatus(emp);
-      setNewStatus(emp.estado); // Pre-seleccionar el estado actual
+      // Aseguramos que sea un número válido, si no, defecto a 1
+      setNewStatus(emp.estado ? emp.estado : 1); 
       setShowStatusModal(true);
   };
 
-  // Paso 2: Ejecutar Cambio
   const executeStatusChange = async () => {
       if (!itemToChangeStatus) return;
-
       try {
-          // Usamos PATCH para actualizar solo el campo 'estado'
           const res = await apiFetch(`${API_BASE}/empleados-empresa/${itemToChangeStatus.id}/`, {
               method: "PATCH",
               headers: authHeaders,
               body: JSON.stringify({ estado: parseInt(newStatus) })
           });
 
-          if (!res.ok) throw new Error("No se pudo actualizar el estado");
+          if (!res.ok) throw new Error("Error al actualizar");
 
           setShowStatusModal(false);
           setSuccessTitle("Estado Actualizado");
           setSuccessMessage(`El estado de ${itemToChangeStatus.nombres} ha sido modificado correctamente.`);
           setShowSuccessModal(true);
           
-          fetchEmpleados(); // Recargar tabla
+          // FORZAMOS RECARGA AUMENTANDO EL CONTADOR
+          setReloadTrigger(prev => prev + 1);
+
       } catch (error) {
           alert("Error al actualizar el estado.");
       }
@@ -156,11 +178,15 @@ export default function EmpleadosEmp() {
     try {
       const res = await apiFetch(`${API_BASE}/empleados-empresa/${itemToDelete.id}/`, { method: "DELETE", headers: authHeaders });
       if (!res.ok) { alert("No se pudo eliminar."); setShowConfirmModal(false); return; }
+      
       setShowConfirmModal(false);
       setSuccessTitle("Empleado Eliminado");
       setSuccessMessage(`El registro ha sido eliminado.`);
       setShowSuccessModal(true);
-      fetchEmpleados();
+      
+      // FORZAMOS RECARGA
+      setReloadTrigger(prev => prev + 1);
+
     } catch (e) { alert("Error eliminando."); setShowConfirmModal(false); }
   };
 
@@ -235,9 +261,19 @@ export default function EmpleadosEmp() {
 
                             {!loading && rows.map((e) => (
                                 <tr key={e.id} style={{ borderBottom: '1px solid #e2e8f0' }}>
-                                    <td style={{ padding: '16px' }}>
-                                        <div style={{ fontWeight: '600', color: '#1e293b' }}>{e.nombres} {e.apellidos}</div>
-                                        <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Ingreso: {e.fecha_ingreso || "-"}</div>
+                                    <td style={{ padding: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <div style={{ 
+                                            width: '40px', height: '40px', borderRadius: '50%', 
+                                            backgroundColor: getAvatarColor(e.nombres), 
+                                            color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                                            fontWeight: 'bold', fontSize: '0.9rem', flexShrink: 0
+                                        }}>
+                                            {getInitials(e.nombres, e.apellidos)}
+                                        </div>
+                                        <div>
+                                            <div style={{ fontWeight: '600', color: '#1e293b' }}>{e.nombres} {e.apellidos}</div>
+                                            <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Ingreso: {e.fecha_ingreso || "-"}</div>
+                                        </div>
                                     </td>
                                     <td style={{ padding: '16px' }}>
                                         <div style={{ fontWeight: '500', color: '#334155' }}>{e.empresa_razon_social}</div>
@@ -255,10 +291,7 @@ export default function EmpleadosEmp() {
                                     <td style={{ padding: '16px', textAlign: 'center' }}>
                                         <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
                                             <button onClick={() => navigate(`/admin/empleados/editar/${e.id}`)} title="Editar" style={{ background: '#e0e7ff', color: '#4f46e5', border: 'none', borderRadius: '6px', padding: '8px', cursor: 'pointer', transition: 'all 0.2s' }}><i className='bx bx-edit-alt' style={{ fontSize: '1.1rem' }}></i></button>
-                                            
-                                            {/* BOTÓN CAMBIAR ESTADO (Ahora abre modal) */}
                                             <button onClick={() => openStatusModal(e)} title="Cambiar Estado" style={{ background: '#f1f5f9', color: '#475569', border: 'none', borderRadius: '6px', padding: '8px', cursor: 'pointer', transition: 'all 0.2s' }}><i className='bx bx-refresh' style={{ fontSize: '1.1rem' }}></i></button>
-                                            
                                             <button onClick={() => handleDeleteClick(e)} title="Eliminar" style={{ background: '#fee2e2', color: '#dc2626', border: 'none', borderRadius: '6px', padding: '8px', cursor: 'pointer', transition: 'all 0.2s' }}><i className='bx bx-trash' style={{ fontSize: '1.1rem' }}></i></button>
                                         </div>
                                     </td>
@@ -270,7 +303,7 @@ export default function EmpleadosEmp() {
             </div>
         </div>
 
-        {/* --- MODAL CAMBIAR ESTADO (NUEVO) --- */}
+        {/* MODAL ESTADO */}
         {showStatusModal && (
             <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(2px)' }}>
                 <div className="modal-content" style={{ backgroundColor: 'white', padding: '24px', borderRadius: '16px', width: '90%', maxWidth: '400px', textAlign: 'center', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)' }}>
@@ -303,7 +336,7 @@ export default function EmpleadosEmp() {
             </div>
         )}
 
-        {/* MODALES DE ELIMINACIÓN Y ÉXITO (Iguales a los anteriores) */}
+        {/* MODAL ADVERTENCIA Y ÉXITO */}
         {showWarningModal && (
             <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(2px)' }}>
                 <div className="modal-content" style={{ backgroundColor: 'white', padding: '24px', borderRadius: '16px', width: '90%', maxWidth: '450px', textAlign: 'center' }}>

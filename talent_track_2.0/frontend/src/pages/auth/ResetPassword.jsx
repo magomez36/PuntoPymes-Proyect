@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'boxicons/css/boxicons.min.css';
-// Importamos los estilos de autenticación
-import '../../assets/css/auth.css';
+
+// Importamos el icono para la marca de agua
+import logoIcon from "../../assets/img/talentrack_small.svg";
+
+// REUTILIZAMOS EL CSS DEL LOGIN (Login.css)
+// Esto asegura que tengan exactamente el mismo fondo y estilo de vidrio
+import '../../assets/css/login.css';
 
 const ResetPassword = () => {
   const [email, setEmail] = useState('');
@@ -16,17 +21,23 @@ const ResetPassword = () => {
 
   return (
     <div className="login-page">
-      <div className="reset-container">
+      
+      {/* MARCA DE AGUA (FONDO ICONO) */}
+      <img src={logoIcon} alt="" className="background-watermark" />
+
+      {/* Usamos 'login-container' para obtener el efecto GLASSMORPHISM */}
+      <div className="login-container">
         
-        {/* Icono animado del candado */}
+        {/* Icono del candado (Estilizado en el CSS que agregamos) */}
         <div className="reset-icon-wrapper">
           <div className="reset-icon">
             <i className='bx bxs-lock-open'></i>
           </div>
         </div>
 
-        <h2 className="reset-title">Restablecer Contraseña</h2>
-        <p className="reset-subtitle">
+        {/* Usamos las clases de tipografía del Login para que sean blancas */}
+        <h2 className="login-title">Restablecer Contraseña</h2>
+        <p className="login-subtitle">
           Introduce tu correo electrónico para recibir un enlace de recuperación.
         </p>
 
@@ -34,14 +45,13 @@ const ResetPassword = () => {
           <div className="form-group">
             <label className="form-label" htmlFor="email">Correo electrónico</label>
             
-            {/* ESTA ES LA PARTE IMPORTANTE QUE FALTA ACTUALIZAR */}
             <div className="input-wrapper">
-              {/* Icono de sobre rojo */}
-              <i className='bx bxs-envelope input-icon' style={{ color: '#d51e37' }}></i>
+              {/* Quitamos el color inline para que el CSS controle el gris/rojo */}
+              <i className='bx bxs-envelope input-icon'></i>
               <input 
                 type="email" 
                 id="email"
-                className="form-input" /* Esta clase le da el estilo bonito */
+                className="form-input" 
                 placeholder="ej: tuemail@empresa.com" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -50,16 +60,21 @@ const ResetPassword = () => {
             </div>
           </div>
 
-          <button type="submit" className="reset-button">
+          {/* Usamos la clase del botón del login */}
+          <button type="submit" className="login-button">
             Enviar Instrucciones
           </button>
         </form>
 
-        <div style={{ textAlign: 'center' }}>
-          {/* Enlace con estilo y flecha */}
-          <Link to="/login" className="back-to-login">
+        {/* Footer con estilo consistente */}
+        <div className="login-footer-row" style={{ justifyContent: 'center' }}>
+          <Link to="/login" className="footer-link">
             <i className='bx bx-arrow-back'></i> Volver al Inicio de Sesión
           </Link>
+        </div>
+        
+        <div className="copyright-text">
+          © 2025 Talent Track. Seguridad.
         </div>
 
       </div>

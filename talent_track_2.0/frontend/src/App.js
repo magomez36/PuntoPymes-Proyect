@@ -27,6 +27,8 @@ import InicioEmpleado from "./pages/empleado/InicioEmpleado";
 import InicioAuditor from "./pages/auditor/InicioAuditor";
 
 // Superadmin - (Estructura actual)
+/*import DashboardSuperAdmin from "./pages/superAdmin/DashboardSuperAdmin";*/
+
 import Empresas from "./pages/superAdmin/seccionEmpresas/Empresas";
 import CrearEmpresa from "./pages/superAdmin/seccionEmpresas/CrearEmpresa";
 import EditarEmpresa from "./pages/superAdmin/seccionEmpresas/EditarEmpresa";
@@ -193,6 +195,7 @@ function App() {
           <Route path="/auditor/inicio" element={<ProtectedRoute allowedRoles={["auditor"]}><InicioAuditor /></ProtectedRoute>} />
 
           {/* ======== RUTAS SUPERADMIN ======== */}
+          {/* <Route path="/superadmin" element={<Navigate to="/superadmin/dashboard" replace />} /> */}
 
           {/* EPICA 2 - Empresas */}
           <Route path="/admin/empresas" element={<ProtectedRoute allowedRoles={["superadmin"]}><Empresas /></ProtectedRoute>} />

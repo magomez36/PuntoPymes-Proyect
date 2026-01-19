@@ -1,0 +1,244 @@
+/* ============================================
+   ESTILO "DARK GLASS COMPACT"
+   ============================================ */
+
+/* FONDO DEGRADADO OSCURO */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0f0505 0%, #450a0f 50%, #7f1d2e 100%);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+/* MARCA DE AGUA (Icono gigante fondo) - AJUSTADO PARA ICONO */
+.background-watermark {
+    position: absolute;
+    bottom: -10%;
+    right: -10%;
+    height: 85vh;   /* Aumentado de 70vh a 85vh para que sea más imponente */
+    width: auto;
+    
+    /* AQUÍ ESTÁ EL CAMBIO CLAVE: */
+    opacity: 0.15;  /* Aumentado de 0.04 a 0.15 para que se note más */
+    
+    pointer-events: none;
+    z-index: 0;
+    transform: rotate(-20deg);
+    
+    /* Opcional: Si tu icono es negro y no se ve, descomenta la siguiente línea para invertirlo a blanco */
+    /* filter: invert(1) brightness(2); */
+}
+
+/* TARJETA DE VIDRIO (GLASSMORPHISM) - TAMAÑO REDUCIDO */
+.login-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    
+    /* --- CAMBIOS DE TAMAÑO AQUÍ --- */
+    padding: 40px 32px; /* Menos padding interno */
+    width: 90%; /* Para móviles */
+    max-width: 380px; /* Ancho máximo reducido (antes 440px) */
+    /* ------------------------------ */
+
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    
+    text-align: center;
+    position: relative;
+    z-index: 10;
+}
+
+/* LOGO DE LA TARJETA */
+.logo-image {
+    width: 160px; /* Un poco más pequeño para el contenedor reducido */
+    height: auto;
+    margin-bottom: 24px;
+}
+
+/* TÍTULOS */
+.login-title {
+    font-size: 1.6rem; /* Ajustado */
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.login-subtitle {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    margin-bottom: 32px; /* Menos margen */
+    font-weight: 400;
+}
+
+/* LABELS */
+.form-group {
+    margin-bottom: 20px; /* Menos margen entre inputs */
+    text-align: left;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* INPUTS */
+.input-wrapper { position: relative; width: 100%; }
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: #64748b; 
+    pointer-events: none;
+    transition: color 0.3s;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px 12px 48px; /* Un poco menos de padding vertical */
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.95); 
+    color: #334155;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(213, 30, 55, 0.25);
+}
+
+.form-input:focus + .input-icon,
+.input-wrapper:focus-within .input-icon {
+    color: #d51e37;
+}
+
+/* OJITO PASSWORD */
+.password-toggle {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.3rem;
+    color: #94a3b8;
+}
+.password-toggle:hover { color: #d51e37; }
+
+/* OPCIONES */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -10px;
+    margin-bottom: 24px; /* Menos margen */
+}
+
+.checkbox-wrapper { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.checkbox-wrapper input { accent-color: #d51e37; width: 16px; height: 16px; cursor: pointer; }
+
+.checkbox-label {
+    font-size: 0.85rem;
+    color: #e2e8f0;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.forgot-password {
+    font-size: 0.85rem;
+    color: #fda4af;
+    text-decoration: none;
+    font-weight: 600;
+}
+.forgot-password:hover { color: #fff; text-decoration: underline; }
+
+/* BOTÓN */
+.login-button {
+    width: 100%;
+    padding: 14px; /* Botón un poco más delgado */
+    background: linear-gradient(135deg, #d51e37 0%, #b91c1c 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+.login-button:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+/* FOOTER */
+.login-footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.footer-link:hover { color: #fff; }
+
+.footer-link-highlight { color: #fda4af; font-weight: 700; }
+.footer-link-highlight:hover { color: #fff; }
+
+.copyright-text {
+    margin-top: 32px;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ============================================
+   ESTILOS ESPECÍFICOS DE RESET PASSWORD
+   ============================================ */
+
+/* Círculo de vidrio para el candado */
+.reset-icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.05); /* Muy transparente */
+    border-radius: 50%;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.reset-icon i {
+    font-size: 2.5rem;
+    color: #e2e8f0; /* Blanco hueso */
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}

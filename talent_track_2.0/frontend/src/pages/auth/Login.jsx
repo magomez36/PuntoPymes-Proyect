@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../../assets/img/talenTrackLogo_SVG.svg";
+// Importamos el logo completo para el encabezado
+import logoFull from "../../assets/img/talenTrackLogo_SVG.svg";
+// Importamos el icono pequeño para el fondo (marca de agua)
+import logoIcon from "../../assets/img/talentrack_small.svg";
 import "boxicons/css/boxicons.min.css";
+
+// Importamos el nuevo CSS
+import "../../assets/css/login.css";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -41,7 +47,7 @@ const Login = () => {
         password: formData.password,
       };
 
-      // 1) LOGIN
+      // 1. Petición al Backend
       const res = await fetch(`${API_BASE}/api/auth/login/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -50,31 +56,29 @@ const Login = () => {
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        const msg = err?.detail || "Credenciales inválidas.";
-        throw new Error(msg);
+        throw new Error(err?.detail || "Credenciales inválidas.");
       }
 
-      const data = await res.json(); // { access, refresh, context }
+      // 2. Procesar respuesta
+      const data = await res.json();
       const { access, refresh, context } = data;
 
       if (!access || !refresh || !context?.redirect_to) {
-        throw new Error("Respuesta de login incompleta.");
+        throw new Error("Respuesta incompleta del servidor.");
       }
 
+      // 3. Guardar en Storage
       const storage = getStorage();
+      const otherStorage = storage === localStorage ? sessionStorage : localStorage;
+      
+      // Limpiar storage contrario para evitar conflictos
+      ["tt_access", "tt_refresh", "tt_context", "tt_full_name"].forEach((k) => otherStorage.removeItem(k));
 
-      // limpiar la otra storage para evitar conflictos
-      (storage === localStorage ? sessionStorage : localStorage).removeItem("tt_access");
-      (storage === localStorage ? sessionStorage : localStorage).removeItem("tt_refresh");
-      (storage === localStorage ? sessionStorage : localStorage).removeItem("tt_context");
-      (storage === localStorage ? sessionStorage : localStorage).removeItem("tt_full_name");
-
-      // 2) GUARDAR TOKENS + CONTEXTO
       storage.setItem("tt_access", access);
       storage.setItem("tt_refresh", refresh);
       storage.setItem("tt_context", JSON.stringify(context));
 
-      // 3) PERFIL (para "Bienvenido, Nombre Apellido")
+      // 4. Obtener nombre del usuario (Opcional, para mostrar en dashboard)
       const meRes = await fetch(`${API_BASE}/api/auth/me/`, {
         method: "GET",
         headers: { Authorization: `Bearer ${access}` },
@@ -82,13 +86,12 @@ const Login = () => {
 
       if (meRes.ok) {
         const me = await meRes.json();
-        if (me?.full_name) {
-          storage.setItem("tt_full_name", me.full_name);
-        }
+        if (me?.full_name) storage.setItem("tt_full_name", me.full_name);
       }
 
-      // 4) REDIRECCIÓN POR ROL
+      // 5. Redirigir
       navigate(context.redirect_to, { replace: true });
+
     } catch (err) {
       setErrorMsg(err?.message || "Error al iniciar sesión.");
     } finally {
@@ -98,60 +101,63 @@ const Login = () => {
 
   return (
     <div className="login-page">
+      
+      {/* IMAGEN DE FONDO (MARCA DE AGUA) - USAMOS EL ICONO PEQUEÑO */}
+      <img src={logoIcon} alt="" className="background-watermark" />
+
       <div className="login-container">
+        {/* LOGO Y CABECERA - USAMOS EL LOGO COMPLETO */}
         <div className="logo-container">
-          <img
-            src={logo}
-            alt="Logo"
-            className="logo-image"
-            style={{ width: "200px", marginBottom: "10px" }}
-          />
+          <img src={logoFull} alt="TalentTrack Logo" className="logo-image" />
           <h1 className="login-title">Bienvenido de nuevo</h1>
-          <p className="login-subtitle">Inicia sesión para gestionar tu equipo.</p>
+          <p className="login-subtitle">Accede a tu panel de control RH</p>
         </div>
 
-        <form onSubmit={handleSubmit} id="loginForm">
-          {errorMsg && (
-            <div
-              style={{
-                background: "#ffe8ea",
-                color: "#b00020",
-                padding: "10px 12px",
-                borderRadius: "10px",
-                marginBottom: "12px",
-                fontSize: "0.95rem",
-              }}
-            >
-              {errorMsg}
-            </div>
-          )}
+        {/* MENSAJE ERROR */}
+        {errorMsg && (
+          <div style={{
+            background: "rgba(254, 226, 226, 0.9)", 
+            color: "#b91c1c", 
+            padding: "10px", /* Reducido un poco */
+            borderRadius: "12px", 
+            marginBottom: "20px", 
+            fontSize: "0.85rem",
+            border: "1px solid #fca5a5", 
+            display: "flex", 
+            alignItems: "center", 
+            gap: "8px",
+            textAlign: "left"
+          }}>
+            <i className='bx bx-error-circle' style={{fontSize: '1.1rem'}}></i>
+            {errorMsg}
+          </div>
+        )}
 
+        <form onSubmit={handleSubmit}>
+          
+          {/* EMAIL */}
           <div className="form-group">
-            <label className="form-label" htmlFor="email">
-              Email
-            </label>
+            <label className="form-label" htmlFor="email">Email</label>
             <div className="input-wrapper">
-              <i className="bx bxs-user input-icon" style={{ color: "#d51e37" }}></i>
+              <i className="bx bxs-envelope input-icon"></i> 
               <input
                 type="email"
                 id="email"
                 name="email"
                 className="form-input"
-                placeholder="Ingresa tu email"
+                placeholder="ejemplo@talenttrack.com"
                 value={formData.email}
                 onChange={handleChange}
                 required
-                autoComplete="username"
               />
             </div>
           </div>
 
+          {/* CONTRASEÑA */}
           <div className="form-group">
-            <label className="form-label" htmlFor="password">
-              Contraseña
-            </label>
+            <label className="form-label" htmlFor="password">Contraseña</label>
             <div className="input-wrapper">
-              <i className="bx bxs-lock input-icon" style={{ color: "#d51e37" }}></i>
+              <i className="bx bxs-lock-alt input-icon"></i>
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
@@ -161,18 +167,17 @@ const Login = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
-                autoComplete="current-password"
               />
               <i
                 className={`bx ${showPassword ? "bx-show" : "bx-hide"} password-toggle`}
-                style={{ color: "#868988" }}
                 onClick={togglePassword}
               ></i>
             </div>
           </div>
 
+          {/* OPCIONES (Recordar / Olvidé) */}
           <div className="form-options">
-            <div className="checkbox-wrapper">
+            <label className="checkbox-wrapper" htmlFor="remember">
               <input
                 type="checkbox"
                 id="remember"
@@ -180,27 +185,32 @@ const Login = () => {
                 checked={formData.remember}
                 onChange={handleChange}
               />
-              <label className="checkbox-label" htmlFor="remember">
-                Recordar sesión
-              </label>
-            </div>
+              <span className="checkbox-label">Recordar sesión</span>
+            </label>
+            
             <Link to="/reset-password" className="forgot-password">
-              ¿Olvidaste tu contraseña?
+              ¿Olvidaste contraseña?
             </Link>
           </div>
 
+          {/* BOTÓN LOGIN */}
           <button type="submit" className="login-button" disabled={loading}>
-            {loading ? "Iniciando..." : "Iniciar Sesión"}
+            {loading ? <i className='bx bx-loader-alt bx-spin'></i> : "Iniciar Sesión"}
           </button>
+
         </form>
 
-        <Link to="/" className="back-home-link">
-          ← Volver al inicio
-        </Link>
+        {/* FOOTER LINKS */}
+        <div className="login-footer-row">
+            <Link to="/" className="footer-link">
+                <i className='bx bx-arrow-back'></i> Volver
+            </Link>
+        </div>
 
-        <p className="footer-text" style={{ marginTop: "30px" }}>
-          © 2025 UTPL. Todos los derechos reservados.
-        </p>
+        <div className="copyright-text">
+          © 2025 Talent Track. Todos los derechos reservados.
+        </div>
+
       </div>
     </div>
   );

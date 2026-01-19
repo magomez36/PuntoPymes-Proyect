@@ -1,22 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Sidebar from "../../../components/Sidebar";
+import { useNavigate } from "react-router-dom";
+import Sidebar from "../../../components/SidebarRRHH"; // Asegúrate del path correcto
 import { apiFetch } from "../../../services/api";
 
-const TIPO = { 1: "indefinido", 2: "plazo", 3: "temporal", 4: "practicante" };
-const ESTADO = { 1: "activo", 2: "inactivo" };
+// Estilos globales
+import "../../../assets/css/admin-empresas.css";
 
+const TIPO = { 1: "Indefinido", 2: "Plazo Fijo", 3: "Temporal", 4: "Prácticas" };
+const ESTADO = { 1: "Activo", 2: "Inactivo" };
+
+// Formateador de Fechas
 function fmtDate(iso) {
-  if (!iso) return "N/A";
+  if (!iso) return <span className="text-muted" style={{ fontSize: '0.85rem' }}>-</span>;
   const d = new Date(`${iso}T00:00:00`);
-  return d.toLocaleDateString("es-EC");
+  return d.toLocaleDateString("es-EC", { year: 'numeric', month: 'short', day: 'numeric' });
 }
+
+// Formateador de Moneda
+const formatCurrency = (amount) => {
+    if (!amount) return "-";
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+};
 
 export default function Contratos() {
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
+
+  // Estados Modal Cambio de Estado
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [idToToggle, setIdToToggle] = useState(null);
+  const [currentStatusLabel, setCurrentStatusLabel] = useState("");
 
   const load = async () => {
     setErr("");
@@ -36,78 +52,222 @@ export default function Contratos() {
     load();
   }, []);
 
-  const toggleEstado = async (id) => {
+  // --- LÓGICA MODALES ---
+
+  const openToggleModal = (id, estadoActual) => {
+    setIdToToggle(id);
+    const label = ESTADO[estadoActual] || "Desconocido";
+    setCurrentStatusLabel(label);
+    setShowConfirmModal(true);
+  };
+
+  const closeConfirmModal = () => {
+    setShowConfirmModal(false);
+    setIdToToggle(null);
+  };
+
+  const closeSuccessModal = () => {
+    setShowSuccessModal(false);
+  };
+
+  const confirmToggle = async () => {
+    if (!idToToggle) return;
+
     try {
-      const res = await apiFetch(`/api/rrhh/contratos/${id}/`, {
+      const res = await apiFetch(`/api/rrhh/contratos/${idToToggle}/`, {
         method: "PATCH",
         body: JSON.stringify({}), // toggle automático en backend
       });
-      if (!res.ok) throw new Error("No se pudo cambiar estado.");
+
+      if (!res.ok) throw new Error("No se pudo cambiar el estado del contrato.");
+      
       await load();
+      closeConfirmModal();
+      setShowSuccessModal(true);
+
     } catch (e) {
       alert(e?.message || "Error cambiando estado.");
+      closeConfirmModal();
     }
   };
 
-  return (
-    <div className="layout">
-      <Sidebar />
-      <main className="main-content">
-        <h2>Contratos</h2>
+  // Renderizador de Estado con colores
+  const renderEstado = (estadoCode) => {
+    const label = ESTADO[estadoCode] || "Desconocido";
+    let claseColor = "status-inactive"; 
 
-        <div style={{ marginBottom: 12 }}>
-          <button onClick={() => navigate("/rrhh/contratos/crear")}>Crear Contrato</button>
+    if (estadoCode === 1) claseColor = "status-active"; // Activo
+    if (estadoCode === 2) claseColor = "status-inactive"; // Inactivo
+
+    return <span className={`status-badge ${claseColor}`}>{label}</span>;
+  };
+
+  return (
+    <div className="layout-wrapper">
+      <Sidebar />
+      
+      <main className="page-content">
+        
+        {/* Header */}
+        <div className="page-header-section">
+            <div>
+                <h1 className="page-main-title">Gestión de Contratos</h1>
+                <p className="page-subtitle">Administración de relaciones laborales y condiciones contractuales.</p>
+            </div>
+            <button 
+                className="btn-create-company" 
+                onClick={() => navigate("/rrhh/contratos/crear")}
+            >
+                <i className='bx bx-file-plus'></i> Nuevo Contrato
+            </button>
         </div>
 
-        {loading && <p>Cargando...</p>}
-        {err && <p style={{ color: "crimson" }}>{err}</p>}
+        {/* Tabla */}
+        <div className="table-card">
+            {loading && <div className="loading-state"><i className='bx bx-loader-alt bx-spin'></i> Cargando datos...</div>}
+            {err && <div className="error-state"><i className='bx bx-error'></i> {err}</div>}
 
-        {!loading && (
-          <table border="1" cellPadding="6" style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr>
-                <th>Nombres</th>
-                <th>Apellidos</th>
-                <th>Email</th>
-                <th>Tipo</th>
-                <th>Fecha inicio</th>
-                <th>Fecha fin</th>
-                <th>Salario base</th>
-                <th>Jornada semanal (h)</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r) => (
-                <tr key={r.id}>
-                  <td>{r.empleado_nombres}</td>
-                  <td>{r.empleado_apellidos}</td>
-                  <td>{r.empleado_email}</td>
-                  <td>{TIPO[r.tipo] || r.tipo_label || "N/A"}</td>
-                  <td>{fmtDate(r.fecha_inicio)}</td>
-                  <td>{r.fecha_fin ? fmtDate(r.fecha_fin) : "Sin fecha fin"}</td>
-                  <td>{r.salario_base}</td>
-                  <td>{r.jornada_semanal_horas}</td>
-                  <td>{ESTADO[r.estado] || r.estado_label || "N/A"}</td>
-                  <td>
-                    <button onClick={() => navigate(`/rrhh/contratos/editar/${r.id}`)}>Editar</button>{" "}
-                    <button onClick={() => toggleEstado(r.id)}>Cambiar estado</button>
-                  </td>
-                </tr>
-              ))}
-              {rows.length === 0 && (
-                <tr>
-                  <td colSpan="10">No hay contratos registrados.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+            {!loading && !err && (
+                <div className="table-responsive">
+                    <table className="data-table">
+                        <thead>
+                            <tr>
+                                <th>Colaborador</th>
+                                <th>Tipo Contrato</th>
+                                <th>Vigencia (Inicio - Fin)</th>
+                                <th>Salario Base</th>
+                                <th>Jornada (Hs)</th>
+                                <th style={{ textAlign: 'center' }}>Estado</th>
+                                <th style={{ textAlign: 'center' }}>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {rows.length > 0 ? (
+                                rows.map((r) => (
+                                    <tr key={r.id}>
+                                        {/* Columna Colaborador (Nombre + Email) */}
+                                        <td>
+                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                <span className="fw-bold" style={{ fontSize: '0.95rem' }}>
+                                                    {r.empleado_nombres} {r.empleado_apellidos}
+                                                </span>
+                                                <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                                                    {r.empleado_email}
+                                                </span>
+                                            </div>
+                                        </td>
+
+                                        <td>{TIPO[r.tipo] || r.tipo_label || "N/A"}</td>
+                                        
+                                        {/* Fechas en una sola columna para ahorrar espacio */}
+                                        <td style={{ fontSize: '0.9rem', color: '#475569' }}>
+                                            <div><i className='bx bx-calendar-check' style={{color:'#10b981'}}></i> {fmtDate(r.fecha_inicio)}</div>
+                                            <div style={{ marginTop: '4px' }}>
+                                                <i className='bx bx-calendar-x' style={{color:'#ef4444'}}></i> {r.fecha_fin ? fmtDate(r.fecha_fin) : "Indefinido"}
+                                            </div>
+                                        </td>
+                                        
+                                        <td style={{ fontFamily: 'monospace', fontWeight: 600, color: '#1e293b' }}>
+                                            {formatCurrency(r.salario_base)}
+                                        </td>
+
+                                        <td style={{ textAlign: 'center' }}>{r.jornada_semanal_horas} h</td>
+                                        
+                                        <td style={{ textAlign: 'center' }}>
+                                            {renderEstado(r.estado)}
+                                        </td>
+                                        
+                                        <td style={{ textAlign: 'center' }}>
+                                            <div className="action-buttons" style={{ justifyContent: 'center' }}>
+                                                <button 
+                                                    className="btn-action btn-edit" 
+                                                    onClick={() => navigate(`/rrhh/contratos/editar/${r.id}`)}
+                                                    title="Editar Contrato"
+                                                >
+                                                    <i className='bx bx-pencil'></i>
+                                                </button>
+                                                
+                                                {/* Botón Toggle Estado (Switch) */}
+                                                <button 
+                                                    className="btn-action" 
+                                                    style={{ backgroundColor: r.estado === 1 ? '#fee2e2' : '#d1fae5', color: r.estado === 1 ? '#dc2626' : '#059669' }}
+                                                    onClick={() => openToggleModal(r.id, r.estado)}
+                                                    title={r.estado === 1 ? "Desactivar Contrato" : "Activar Contrato"}
+                                                >
+                                                    <i className={`bx ${r.estado === 1 ? 'bx-power-off' : 'bx-check-circle'}`}></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="7" className="empty-state">
+                                        No hay contratos registrados.
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            )}
+        </div>
+
+        {/* --- MODAL 1: CONFIRMACIÓN CAMBIO ESTADO --- */}
+        {showConfirmModal && (
+            <div className="modal-overlay">
+                <div className="modal-content">
+                    <div className="modal-icon-warning" style={{ color: '#f59e0b' }}> {/* Amarillo advertencia */}
+                        <i className='bx bx-refresh'></i>
+                    </div>
+                    <h3 className="modal-title">¿Cambiar Estado?</h3>
+                    <p className="modal-text">
+                        El contrato pasará de <strong>{currentStatusLabel}</strong> a <strong>{currentStatusLabel === "Activo" ? "Inactivo" : "Activo"}</strong>.
+                        <br/>
+                        <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
+                            (Esto podría afectar el acceso y pagos del empleado).
+                        </span>
+                    </p>
+                    <div className="modal-actions">
+                        <button className="btn-modal btn-cancel" onClick={closeConfirmModal}>
+                            Cancelar
+                        </button>
+                        <button 
+                            className="btn-modal" 
+                            style={{ backgroundColor: '#0f172a', color: 'white' }} // Botón oscuro
+                            onClick={confirmToggle}
+                        >
+                            Confirmar Cambio
+                        </button>
+                    </div>
+                </div>
+            </div>
         )}
 
-        <div style={{ marginTop: 12 }}>
-          <Link to="/rrhh/inicio">Volver al inicio</Link>
-        </div>
+        {/* --- MODAL 2: ÉXITO --- */}
+        {showSuccessModal && (
+            <div className="modal-overlay">
+                <div className="modal-content">
+                    <div className="modal-icon-success">
+                        <i className='bx bx-check-circle'></i>
+                    </div>
+                    <h3 className="modal-title">¡Estado Actualizado!</h3>
+                    <p className="modal-text">
+                        El estado del contrato ha sido modificado exitosamente.
+                    </p>
+                    <div className="modal-actions">
+                        <button 
+                            className="btn-modal" 
+                            style={{ backgroundColor: '#d51e37', color: 'white' }}
+                            onClick={closeSuccessModal}
+                        >
+                            Aceptar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
+
       </main>
     </div>
   );
