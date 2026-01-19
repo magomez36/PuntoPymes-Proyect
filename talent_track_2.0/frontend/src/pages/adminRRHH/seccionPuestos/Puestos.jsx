@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../../components/SidebarRRHH"; 
 import { apiFetch } from "../../../services/api";
-import "../../../assets/css/admin-empresas.css"; 
+import logoWatermark from "../../../assets/img/talentrack_small.svg";
 
 export default function Puestos() {
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // --- ESTADOS DE LOS MODALES ---
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
 
   const load = async () => {
@@ -23,7 +22,7 @@ export default function Puestos() {
       const data = await res.json();
       setRows(Array.isArray(data) ? data : []);
     } catch (e) {
-      setErr(e?.message || "Error cargando puestos.");
+      setErr("Error cargando puestos.");
     } finally {
       setLoading(false);
     }
@@ -33,208 +32,154 @@ export default function Puestos() {
     load();
   }, []);
 
-  // --- LÓGICA DE MODALES ---
-
   const openDeleteModal = (id) => {
     setIdToDelete(id);
     setShowConfirmModal(true);
   };
 
-  const closeConfirmModal = () => {
-    setShowConfirmModal(false);
-    setIdToDelete(null);
-  };
-
-  const closeSuccessModal = () => {
-    setShowSuccessModal(false);
-  };
-
-  const confirmDelete = async () => {
-    if (!idToDelete) return;
-
-    try {
-      const res = await apiFetch(`/api/rrhh/puestos/${idToDelete}/`, { method: "DELETE" });
-
-      if (res.status === 409) {
-        const data = await res.json().catch(() => ({}));
-        alert(data?.detail || "No se puede eliminar: el puesto está asignado a empleados.");
-        closeConfirmModal();
-        return;
-      }
-
-      if (!res.ok) throw new Error("No se pudo eliminar.");
-
-      // Éxito
-      await load();
-      closeConfirmModal();
-      setShowSuccessModal(true); // Abrir modal verde
-
-    } catch (e) {
-      alert(e?.message || "Error eliminando.");
-      closeConfirmModal();
-    }
-  };
-
-  // --- UTILIDADES DE FORMATO ---
-  
-  // Formato de Moneda (Ej: $ 1,200.00)
+  // --- Utilidades de Formato ---
   const formatCurrency = (amount) => {
-    if (amount === null || amount === undefined) return "-";
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+    return new Intl.NumberFormat('es-EC', { style: 'currency', currency: 'USD' }).format(amount);
   };
 
-  // Capitalizar texto (Ej: "senior" -> "Senior")
-  const formatText = (text) => {
-    if (!text) return "-";
-    const str = String(text);
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  const getLevelBadge = (level) => {
+    const l = level?.toUpperCase() || "N/A";
+    let bg = "#f1f5f9";
+    let color = "#475569";
+    
+    if (l === 'ESTRATÉGICO') { bg = "#e0e7ff"; color = "#4338ca"; }
+    else if (l === 'TÁCTICO') { bg = "#fef9c3"; color = "#854d0e"; }
+    else if (l === 'OPERATIVO') { bg = "#dcfce7"; color = "#166534"; }
+
+    return (
+      <span style={{ 
+        backgroundColor: bg, color: color, padding: '4px 12px', 
+        borderRadius: '20px', fontSize: '0.7rem', fontWeight: '800', letterSpacing: '0.5px' 
+      }}>
+        {l}
+      </span>
+    );
+  };
+
+  // --- Estilos de Layout ---
+  const layoutStyle = {
+    display: 'flex',
+    minHeight: '100vh',
+    backgroundColor: '#f8fafc',
+    width: '100%'
+  };
+
+  const mainContentStyle = {
+    flex: 1,
+    padding: '40px 60px 40px 110px', // El 110px asegura que nada quede tras el Sidebar
+    position: 'relative',
+    zIndex: 1
+  };
+
+  const watermarkStyle = {
+    position: 'fixed', bottom: '-80px', right: '-80px', width: '450px', 
+    opacity: '0.04', zIndex: 0, pointerEvents: 'none'
   };
 
   return (
-    <div className="layout-wrapper">
+    <div style={layoutStyle}>
       <Sidebar />
+      <img src={logoWatermark} alt="watermark" style={watermarkStyle} />
       
-      <main className="page-content">
+      <main style={mainContentStyle}>
         
-        {/* Header */}
-        <div className="page-header-section">
-            <div>
-                <h1 className="page-main-title">Gestión de Puestos</h1>
-                <p className="page-subtitle">Administra los cargos, niveles salariales y descripciones de funciones.</p>
-            </div>
-            <button 
-                className="btn-create-company" 
-                onClick={() => navigate("/rrhh/puestos/crear")}
-            >
-                <i className='bx bx-plus'></i> Crear Puesto
-            </button>
+        {/* Header de Página */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+          <div>
+            <h1 style={{ fontSize: '2.2rem', fontWeight: '800', color: '#1e293b', margin: 0 }}>Gestión de Puestos</h1>
+            <p style={{ color: '#64748b', marginTop: '5px', fontSize: '1.1rem' }}>Estructura de cargos y rangos salariales.</p>
+          </div>
+          <button 
+            onClick={() => navigate("/rrhh/puestos/crear")}
+            style={{ 
+              backgroundColor: '#d51e37', color: 'white', border: 'none', 
+              padding: '14px 28px', borderRadius: '12px', fontWeight: '700', 
+              cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px',
+              boxShadow: '0 10px 15px -3px rgba(213, 30, 55, 0.2)'
+            }}
+          >
+            <i className='bx bx-plus' style={{ fontSize: '1.2rem' }}></i> Crear Puesto
+          </button>
         </div>
 
-        {/* Tabla */}
-        <div className="table-card">
-            {loading && <div className="loading-state"><i className='bx bx-loader-alt bx-spin'></i> Cargando...</div>}
-            {err && <div className="error-state"><i className='bx bx-error'></i> {err}</div>}
+        {/* Card de Tabla */}
+        <div style={{ backgroundColor: '#fff', borderRadius: '20px', boxShadow: '0 4px 25px rgba(0,0,0,0.04)', padding: '35px', border: '1px solid #f1f5f9' }}>
+          
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '30px' }}>
+            <div style={{ position: 'relative' }}>
+              <i className='bx bx-search' style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}></i>
+              <input 
+                type="text" 
+                placeholder="Buscar por nombre..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{ 
+                  padding: '12px 20px 12px 45px', borderRadius: '12px', 
+                  border: '1px solid #e2e8f0', width: '320px', outline: 'none',
+                  fontSize: '0.95rem', backgroundColor: '#fcfcfd'
+                }}
+              />
+            </div>
+          </div>
 
-            {!loading && !err && (
-                <div className="table-responsive">
-                    <table className="data-table">
-                        <thead>
-                            <tr>
-                                <th>Nombre del Puesto</th>
-                                <th>Unidad Organizacional</th>
-                                <th>Descripción</th>
-                                <th>Nivel</th>
-                                <th>Salario Referencial</th>
-                                <th style={{ textAlign: 'center' }}>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {rows.length > 0 ? (
-                                rows.map((r) => (
-                                    <tr key={r.id}>
-                                        <td className="fw-bold">{r.nombre}</td>
-                                        
-                                        {/* Unidad con estilo suave si es N/A */}
-                                        <td>
-                                            {r.unidad_nombre ? (
-                                                <span style={{ fontWeight: 500 }}>{r.unidad_nombre}</span>
-                                            ) : (
-                                                <span className="text-muted" style={{color:'#9ca3af'}}>-</span>
-                                            )}
-                                        </td>
-                                        
-                                        {/* Descripción truncada visualmente si es muy larga */}
-                                        <td style={{ maxWidth: '300px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: '#64748b' }}>
-                                            {r.descripcion || "-"}
-                                        </td>
-
-                                        <td>{formatText(r.nivel)}</td>
-                                        
-                                        {/* Salario en verde oscuro */}
-                                        <td style={{ fontFamily: 'monospace', fontWeight: 600, color: '#059669' }}>
-                                            {formatCurrency(r.salario_referencial)}
-                                        </td>
-
-                                        <td style={{ textAlign: 'center' }}>
-                                            <div className="action-buttons" style={{ justifyContent: 'center' }}>
-                                                <button 
-                                                    className="btn-action btn-edit" 
-                                                    onClick={() => navigate(`/rrhh/puestos/editar/${r.id}`)}
-                                                    title="Editar"
-                                                >
-                                                    <i className='bx bx-pencil'></i>
-                                                </button>
-                                                <button 
-                                                    className="btn-action btn-delete" 
-                                                    onClick={() => openDeleteModal(r.id)}
-                                                    title="Eliminar"
-                                                >
-                                                    <i className='bx bx-trash'></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="6" className="empty-state">
-                                        No hay puestos registrados.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+          {loading ? (
+            <div style={{ textAlign: 'center', padding: '40px', color: '#64748b' }}>Cargando datos...</div>
+          ) : (
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 10px' }}>
+                <thead>
+                  <tr style={{ textAlign: 'left' }}>
+                    <th style={{ padding: '0 15px 15px 15px', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>Nombre del Puesto</th>
+                    <th style={{ padding: '0 15px 15px 15px', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>Unidad</th>
+                    <th style={{ padding: '0 15px 15px 15px', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>Nivel</th>
+                    <th style={{ padding: '0 15px 15px 15px', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>Salario</th>
+                    <th style={{ padding: '0 15px 15px 15px', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', textAlign: 'center' }}>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.filter(r => r.nombre.toLowerCase().includes(searchTerm.toLowerCase())).map((r) => (
+                    <tr key={r.id} style={{ transition: 'all 0.2s' }}>
+                      <td style={{ padding: '20px 15px', fontWeight: '700', color: '#1e293b', borderBottom: '1px solid #f1f5f9' }}>{r.nombre}</td>
+                      <td style={{ padding: '20px 15px', color: '#475569', borderBottom: '1px solid #f1f5f9' }}>
+                        <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
+                           <i className='bx bx-building-house' style={{ color:'#94a3b8' }}></i>
+                           {r.unidad_nombre || "General"}
+                        </div>
+                      </td>
+                      <td style={{ padding: '20px 15px', borderBottom: '1px solid #f1f5f9' }}>
+                        {getLevelBadge(r.nivel)}
+                      </td>
+                      <td style={{ padding: '20px 15px', color: '#059669', fontWeight: '800', fontSize: '1.05rem', borderBottom: '1px solid #f1f5f9' }}>
+                        {formatCurrency(r.salario_referencial)}
+                      </td>
+                      <td style={{ padding: '20px 15px', textAlign: 'center', borderBottom: '1px solid #f1f5f9' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                          <button 
+                            onClick={() => navigate(`/rrhh/puestos/editar/${r.id}`)}
+                            style={{ border: '1px solid #e2e8f0', background: '#fff', padding: '8px', borderRadius: '10px', cursor: 'pointer', color: '#3b82f6' }}
+                          >
+                            <i className='bx bx-pencil' style={{ fontSize: '1.2rem' }}></i>
+                          </button>
+                          <button 
+                            onClick={() => openDeleteModal(r.id)}
+                            style={{ border: '1px solid #e2e8f0', background: '#fff', padding: '8px', borderRadius: '10px', cursor: 'pointer', color: '#ef4444' }}
+                          >
+                            <i className='bx bx-trash' style={{ fontSize: '1.2rem' }}></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
-
-        {/* --- MODAL 1: CONFIRMACIÓN (Rojo) --- */}
-        {showConfirmModal && (
-            <div className="modal-overlay">
-                <div className="modal-content">
-                    <div className="modal-icon-warning">
-                        <i className='bx bx-error-circle'></i>
-                    </div>
-                    <h3 className="modal-title">¿Eliminar puesto?</h3>
-                    <p className="modal-text">
-                        Esta acción es irreversible. ¿Estás seguro de continuar?
-                    </p>
-                    <div className="modal-actions">
-                        <button className="btn-modal btn-cancel" onClick={closeConfirmModal}>
-                            Cancelar
-                        </button>
-                        <button className="btn-modal btn-confirm-delete" onClick={confirmDelete}>
-                            Eliminar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        )}
-
-        {/* --- MODAL 2: ÉXITO (Verde) --- */}
-        {showSuccessModal && (
-            <div className="modal-overlay">
-                <div className="modal-content">
-                    <div className="modal-icon-success">
-                        <i className='bx bx-check-circle'></i>
-                    </div>
-                    <h3 className="modal-title">¡Eliminado!</h3>
-                    <p className="modal-text">
-                        El puesto se ha eliminado correctamente.
-                    </p>
-                    <div className="modal-actions">
-                        <button 
-                            className="btn-modal" 
-                            style={{ backgroundColor: '#d51e37', color: 'white' }}
-                            onClick={closeSuccessModal}
-                        >
-                            Aceptar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        )}
-
       </main>
     </div>
   );
