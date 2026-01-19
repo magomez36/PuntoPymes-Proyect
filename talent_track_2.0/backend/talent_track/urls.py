@@ -24,8 +24,10 @@ urlpatterns = [
     path("api/", include("apps.asistencia.urls")),
     path("api/", include("apps.ausencias.urls")),  
     path("api/", include("apps.kpi.urls")),
+    path("api/", include("apps.notificaciones.urls")),
     path("api/", include("apps.integraciones.urls")),
     path("api/", include("apps.empleados.urls")),
+    path("api/", include("apps.auditoria.urls")),
     path("api/", include("apps.empleados.urls_manager")),
     path("api/", include("apps.kpi.urls_manager")),
     path("api/", include("apps.asistencia.urls_manager")),
@@ -36,4 +38,7 @@ urlpatterns = [
     path("api/", include("apps.ausencias.urls_auditor_ausencias")),
     path("api/", include("apps.kpi.urls_auditor_desempeno")),
     path("api/", include("apps.asistencia.urls_auditor_asistencia")),
+    path("api/", include("apps.notificaciones.urls_empleado_soporte")),
+    path("api/empleado/", include("apps.kpi.urls_empleado")),
+    path("api/", include("apps.auditoria.urls")),
 ]

@@ -145,9 +145,9 @@ STATIC_URL = 'static/'
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://172.17.162.75:3000",
+    "http://172.18.92.61:3000",
+    "http://192.168.56.1:3000",
+    "http://172.18.130.132:3000"
 ]
 
 CORS_ALLOW_HEADERS = [

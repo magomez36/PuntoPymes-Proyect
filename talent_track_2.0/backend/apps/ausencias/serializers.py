@@ -42,3 +42,55 @@ class TipoAusenciaUpdateSerializer(serializers.ModelSerializer):
         model = TipoAusencia
         # NO permitimos cambiar empresa en update (según tu HU03)
         fields = ["nombre", "afecta_sueldo", "requiere_soporte"]
+
+
+from rest_framework import serializers
+from datetime import timedelta
+from apps.ausencias.models import SolicitudAusencia, TipoAusencia
+
+ESTADO_LABEL = {
+    1: "pendiente",
+    2: "aprobado",
+    3: "rechazado",
+    4: "cancelado",
+}
+
+
+class SolicitudAusenciaEmpleadoSerializer(serializers.ModelSerializer):
+    estado_label = serializers.SerializerMethodField()
+    tipo_ausencia_nombre = serializers.CharField(source="tipo_ausencia.nombre", read_only=True)
+
+    class Meta:
+        model = SolicitudAusencia
+        fields = [
+            "id",
+            "fecha_inicio",
+            "fecha_fin",
+            "dias_habiles",
+            "motivo",
+            "estado",
+            "estado_label",
+            "flujo_actual",
+            "tipo_ausencia",
+            "tipo_ausencia_nombre",
+            "creada_el",
+        ]
+
+    def get_estado_label(self, obj):
+        return ESTADO_LABEL.get(obj.estado, f"estado({obj.estado})")
+
+
+class CrearSolicitudAusenciaSerializer(serializers.Serializer):
+    id_tipo_ausencia = serializers.IntegerField()
+    fecha_inicio = serializers.DateField()
+    fecha_fin = serializers.DateField(required=False, allow_null=True)
+    motivo = serializers.CharField()
+
+    def validate(self, attrs):
+        fi = attrs["fecha_inicio"]
+        ff = attrs.get("fecha_fin") or fi
+        if ff < fi:
+            raise serializers.ValidationError("fecha_fin no puede ser menor a fecha_inicio")
+
+        attrs["dias_habiles"] = (ff - fi).days + 1
+        return attrs

@@ -320,3 +320,145 @@ class PermisoDetalleAPIView(APIView):
             return Response({"detail": "No encontrado."}, status=404)
         p.delete()
         return Response(status=204)
+
+
+from django.contrib.auth.hashers import make_password
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+from apps.usuarios.models import Usuario, UsuarioRol
+from .serializers import MiUsuarioSerializer, MiUsuarioUpdateSerializer
+
+
+def _ctx(request):
+    u = request.user.usuario
+    return u.empresa_id, u.empleado_id, u.id
+
+
+def _require_empleado(request):
+    return UsuarioRol.objects.filter(
+        usuario_id=request.user.usuario.id,
+        rol__nombre="empleado"
+    ).exists()
+
+
+class MiCuentaUsuarioAPIView(APIView):
+    """
+    GET /api/empleado/cuenta/
+    PUT /api/empleado/cuenta/
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if not _require_empleado(request):
+            return Response({"detail": "No autorizado."}, status=401)
+
+        empresa_id, empleado_id, usuario_id = _ctx(request)
+
+        obj = Usuario.objects.filter(id=usuario_id, empresa_id=empresa_id, empleado_id=empleado_id).first()
+        if not obj:
+            return Response({"detail": "Usuario no encontrado."}, status=404)
+
+        return Response(MiUsuarioSerializer(obj).data, status=200)
+
+    def put(self, request):
+        if not _require_empleado(request):
+            return Response({"detail": "No autorizado."}, status=401)
+
+        empresa_id, empleado_id, usuario_id = _ctx(request)
+
+        obj = Usuario.objects.filter(id=usuario_id, empresa_id=empresa_id, empleado_id=empleado_id).first()
+        if not obj:
+            return Response({"detail": "Usuario no encontrado."}, status=404)
+
+        ser = MiUsuarioUpdateSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        data = ser.validated_data
+
+        # actualizar email/phone
+        if "email" in data:
+            new_email = data["email"].strip().lower()
+            # evitar duplicados en Usuario
+            exists = Usuario.objects.filter(email=new_email).exclude(id=obj.id).exists()
+            if exists:
+                return Response({"email": "Ya existe un usuario con ese email."}, status=400)
+
+            obj.email = new_email
+
+            # reflejar en auth_user_tt (request.user)
+            # (en tu sistema el autenticado es el que mapea a auth_user_tt)
+            if hasattr(request.user, "email"):
+                request.user.email = new_email
+            if hasattr(request.user, "username"):
+                # si username se usa como email, sincroniza
+                request.user.username = new_email
+            request.user.save()
+
+        if "phone" in data:
+            obj.phone = data.get("phone")
+
+        # cambio de contraseña (si viene)
+        if data.get("new_password_1"):
+            new_pass = data["new_password_1"]
+
+            # ✅ 1) auth_user_tt
+            request.user.set_password(new_pass)
+            request.user.save()
+
+            # ✅ 2) Usuario.hash_password (tu tabla Usuario)
+            obj.hash_password = make_password(new_pass)
+
+        obj.save()
+
+        return Response(MiUsuarioSerializer(obj).data, status=200)
+
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.hashers import check_password, make_password
+
+from apps.usuarios.models import Usuario
+from apps.usuarios.scopes import get_scope
+from .serializers import CambiarPasswordSerializer
+
+class MiUsuarioCambiarPasswordAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def patch(self, request):
+        scope = get_scope(request)
+        usuario_id = scope.get("usuario_id")
+        empresa_id = scope.get("empresa_id")
+
+        if not usuario_id or not empresa_id:
+            return Response({"detail": "Token inválido (sin usuario/empresa)."}, status=401)
+
+        user_tt = Usuario.objects.filter(id=usuario_id, empresa_id=empresa_id).first()
+        if not user_tt:
+            return Response({"detail": "Usuario no encontrado."}, status=404)
+
+        ser = CambiarPasswordSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        data = ser.validated_data
+
+        # 1) validar password actual contra Usuario.hash_password
+        if not check_password(data["password_actual"], user_tt.hash_password):
+            return Response({"password_actual": "La contraseña actual es incorrecta."}, status=400)
+
+        # 2) actualizar Usuario.hash_password
+        new_hash = make_password(data["password_nueva"])
+        user_tt.hash_password = new_hash
+        user_tt.save()
+
+        # 3) actualizar auth_user_tt.password (si existe relación)
+        # En tu login usas AuthUser custom, aquí lo obtenemos desde request.user directamente:
+        try:
+            request.user.set_password(data["password_nueva"])
+            request.user.save()
+        except Exception:
+            # si por alguna razón tu auth_user no se puede guardar, igual ya cambió en Usuario,
+            # pero idealmente esto no debe fallar
+            return Response({"detail": "Contraseña cambiada en Usuario pero falló en auth_user_tt."}, status=500)
+
+        return Response({"detail": "Contraseña actualizada correctamente."}, status=200)

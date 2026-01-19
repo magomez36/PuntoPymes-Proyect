@@ -31,6 +31,9 @@ from apps.core.views_rrhh_puestos import (
     RRHHPuestosDetailAPIView,
 )
 
+from apps.core.dashboard_views import SuperAdminOverviewPlotlyAPIView, AdminRRHHOverviewPlotlyAPIView
+
+
 urlpatterns = [
     # EMPRESAS
     path('listado-empresas/', EmpresaListAPIView.as_view(), name='listar_empresas'),
@@ -55,4 +58,7 @@ urlpatterns = [
 
     path("rrhh/puestos/", RRHHPuestosListCreateAPIView.as_view(), name="rrhh_puestos_list_create"),
     path("rrhh/puestos/<int:pk>/", RRHHPuestosDetailAPIView.as_view(), name="rrhh_puestos_detail"),
+
+    path("dashboard/superadmin/overview-plotly/", SuperAdminOverviewPlotlyAPIView.as_view()),
+    path("dashboard/adminrrhh/overview-plotly/", AdminRRHHOverviewPlotlyAPIView.as_view()),
 ]

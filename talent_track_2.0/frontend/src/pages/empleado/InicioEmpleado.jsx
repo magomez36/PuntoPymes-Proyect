@@ -16,6 +16,22 @@ export default function InicioEmpleado() {
       <h1>Bienvenido{fullName ? `, ${fullName}` : ""}</h1>
       <p>Panel de Empleado: solicitudes, historial y novedades.</p>
 
+
+      <button onClick={() => navigate("/empleado/asistencia")}>Mi asistencia de hoy</button>
+
+      <button onClick={() => navigate("/empleado/jornadas")}>Historial de Jornadas</button>
+
+      <button onClick={() => navigate("/empleado/ausencias")}>Mis Solicitudes de Ausencia</button>
+
+      <button onClick={() => navigate("/empleado/notificaciones")}>Notificaciones</button>
+
+      <button onClick={() => navigate("/empleado/mi-perfil")}>Mi Perfil / Cuenta</button>
+
+      <button onClick={() => navigate("/empleado/soporte")}>Ayuda y soporte</button>
+
+      <button onClick={() => navigate("/empleado/desempeno-kpis")}>KPIs y Desempeño</button>
+
+
       <button
         onClick={logout}
         style={{
