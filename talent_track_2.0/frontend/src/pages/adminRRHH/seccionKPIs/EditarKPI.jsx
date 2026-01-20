@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import Sidebar from "../../../components/Sidebar";
+import Sidebar from "../../../components/SidebarRRHH"; // Sidebar correcto
 import { apiFetch } from "../../../services/api";
+import "../../../assets/css/admin-empresas.css"; // Estilos globales
 
 const UNIDADES = [
-  { id: 1, label: "%" },
-  { id: 2, label: "puntos" },
-  { id: 3, label: "minutos" },
-  { id: 4, label: "horas" },
+  { id: 1, label: "% (Porcentaje)" },
+  { id: 2, label: "Puntos (Score)" },
+  { id: 3, label: "Minutos" },
+  { id: 4, label: "Horas" },
 ];
 
 const ORIGENES = [
-  { id: 1, label: "asistencia" },
-  { id: 2, label: "evaluacion" },
-  { id: 3, label: "mixto" },
+  { id: 1, label: "Asistencia (Automático)" },
+  { id: 2, label: "Evaluación (Manual)" },
+  { id: 3, label: "Mixto (Híbrido)" },
 ];
 
 export default function EditarKPI() {
@@ -21,8 +22,7 @@ export default function EditarKPI() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
-  const [err, setErr] = useState("");
-
+  
   const [form, setForm] = useState({
     codigo: "",
     nombre: "",
@@ -31,8 +31,11 @@ export default function EditarKPI() {
     origen_datos: 1,
   });
 
+  // Modal State
+  const [modalConfig, setModalConfig] = useState({ show: false, type: 'success', title: '', message: '' });
+
+  // --- CARGA DE DATOS ---
   const load = async () => {
-    setErr("");
     setLoading(true);
     try {
       const res = await apiFetch(`/api/rrhh/kpis/${id}/`);
@@ -46,7 +49,7 @@ export default function EditarKPI() {
         origen_datos: Number(data.origen_datos || 1),
       });
     } catch (e) {
-      setErr(e?.message || "Error cargando KPI.");
+      showModal('error', 'Error', e?.message || "No se pudo cargar la información del KPI.");
     } finally {
       setLoading(false);
     }
@@ -57,18 +60,29 @@ export default function EditarKPI() {
     // eslint-disable-next-line
   }, [id]);
 
+  // --- HANDLERS ---
   const onChange = (e) => {
     const { name, value } = e.target;
     setForm((p) => ({ ...p, [name]: value }));
   };
 
+  const showModal = (type, title, message) => {
+      setModalConfig({ show: true, type, title, message });
+  };
+
+  const closeModal = () => {
+      setModalConfig({ ...modalConfig, show: false });
+      if (modalConfig.type === 'success') {
+          navigate("/rrhh/kpis");
+      }
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    setErr("");
 
-    if (!form.codigo.trim()) return setErr("Código es obligatorio.");
-    if (!form.nombre.trim()) return setErr("Nombre es obligatorio.");
-    if (!form.descripcion.trim()) return setErr("Descripción es obligatoria.");
+    if (!form.codigo.trim()) return showModal('error', 'Requerido', "El código es obligatorio.");
+    if (!form.nombre.trim()) return showModal('error', 'Requerido', "El nombre es obligatorio.");
+    if (!form.descripcion.trim()) return showModal('error', 'Requerido', "La descripción es obligatoria.");
 
     const payload = {
       codigo: form.codigo.trim(),
@@ -89,67 +103,144 @@ export default function EditarKPI() {
         throw new Error(JSON.stringify(data));
       }
 
-      alert("KPI actualizado.");
-      navigate("/rrhh/kpis");
+      showModal('success', 'KPI Actualizado', 'Los cambios han sido guardados correctamente.');
+      
     } catch (e2) {
-      setErr(e2?.message || "Error actualizando KPI.");
+      showModal('error', 'Error', e2?.message || "No se pudo actualizar el KPI.");
     }
   };
 
+  // --- ESTILOS ---
+  const layoutWrapperStyle = { display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc', width: '100%' };
+  const mainAreaStyle = { flex: 1, padding: '30px 30px 30px 110px', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '25px' };
+  
+  const cardStyle = { backgroundColor: '#fff', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '30px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)', maxWidth: '700px', width: '100%' };
+  const inputStyle = { width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #d1d5db', outline: 'none', fontSize: '0.95rem', color: '#1e293b', backgroundColor: '#fff' };
+  const labelStyle = { display: 'block', marginBottom: '6px', fontWeight: '600', color: '#64748b', fontSize: '0.9rem' };
+
   return (
-    <div className="layout">
+    <div className="layout layout-watermark" style={layoutWrapperStyle}>
       <Sidebar />
-      <main className="main-content">
-        <h2>Editar KPI</h2>
-
-        {loading && <p>Cargando...</p>}
-        {err && <p style={{ color: "crimson" }}>{err}</p>}
-
-        {!loading && (
-          <form onSubmit={onSubmit}>
+      <main style={mainAreaStyle}>
+        
+        {/* HEADER */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <label>Código *</label>
-              <input name="codigo" value={form.codigo} onChange={onChange} />
+                <h1 style={{ fontSize: '1.8rem', fontWeight: '800', color: '#1e293b', margin: 0 }}>Editar KPI</h1>
+                <p style={{ color: '#64748b', marginTop: '4px', fontSize: '1rem' }}>Modifica la configuración del indicador.</p>
             </div>
+            <Link to="/rrhh/kpis" style={{ display:'flex', alignItems:'center', textDecoration:'none', color:'#64748b', fontWeight:'600', gap:'5px' }}>
+                <i className='bx bx-arrow-back'></i> Volver al catálogo
+            </Link>
+        </div>
 
-            <div>
-              <label>Nombre *</label>
-              <input name="nombre" value={form.nombre} onChange={onChange} />
-            </div>
+        {loading ? (
+             <p style={{ textAlign: 'center', color: '#64748b', marginTop: '40px' }}>Cargando datos...</p>
+        ) : (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', marginTop: '20px' }}>
+                <div style={cardStyle}>
+                    <form onSubmit={onSubmit}>
+                        
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '20px', marginBottom: '20px' }}>
+                            {/* Código */}
+                            <div>
+                                <label style={labelStyle}>Código <span style={{color:'#ef4444'}}>*</span></label>
+                                <input 
+                                    name="codigo" 
+                                    value={form.codigo} 
+                                    onChange={onChange} 
+                                    style={{ ...inputStyle, textTransform: 'uppercase', fontFamily: 'monospace', backgroundColor: '#f1f5f9' }} 
+                                    readOnly // Usualmente el código no se edita, pero si quieres permitirlo quita el readOnly
+                                />
+                            </div>
+                            {/* Nombre */}
+                            <div>
+                                <label style={labelStyle}>Nombre del Indicador <span style={{color:'#ef4444'}}>*</span></label>
+                                <input 
+                                    name="nombre" 
+                                    value={form.nombre} 
+                                    onChange={onChange} 
+                                    style={inputStyle} 
+                                />
+                            </div>
+                        </div>
 
-            <div>
-              <label>Descripción *</label>
-              <textarea name="descripcion" value={form.descripcion} onChange={onChange} rows={3} />
-            </div>
+                        {/* Descripción */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={labelStyle}>Descripción <span style={{color:'#ef4444'}}>*</span></label>
+                            <textarea 
+                                name="descripcion" 
+                                value={form.descripcion} 
+                                onChange={onChange} 
+                                rows={3} 
+                                style={{ ...inputStyle, resize: 'vertical' }} 
+                            />
+                        </div>
 
-            <div>
-              <label>Unidad *</label>
-              <select name="unidad" value={form.unidad} onChange={onChange}>
-                {UNIDADES.map((u) => (
-                  <option key={u.id} value={u.id}>
-                    {u.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '30px' }}>
+                            {/* Unidad */}
+                            <div>
+                                <label style={labelStyle}>Unidad de Medida <span style={{color:'#ef4444'}}>*</span></label>
+                                <select name="unidad" value={form.unidad} onChange={onChange} style={inputStyle}>
+                                    {UNIDADES.map((u) => (
+                                        <option key={u.id} value={u.id}>{u.label}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            {/* Origen */}
+                            <div>
+                                <label style={labelStyle}>Fuente de Datos <span style={{color:'#ef4444'}}>*</span></label>
+                                <select name="origen_datos" value={form.origen_datos} onChange={onChange} style={inputStyle}>
+                                    {ORIGENES.map((o) => (
+                                        <option key={o.id} value={o.id}>{o.label}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
 
-            <div>
-              <label>Origen datos *</label>
-              <select name="origen_datos" value={form.origen_datos} onChange={onChange}>
-                {ORIGENES.map((o) => (
-                  <option key={o.id} value={o.id}>
-                    {o.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+                        {/* Botones */}
+                        <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '20px', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                            <button 
+                                type="button" 
+                                onClick={() => navigate("/rrhh/kpis")} 
+                                style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid #cbd5e1', backgroundColor: 'white', color: '#475569', fontWeight: '600', cursor: 'pointer' }}
+                            >
+                                Cancelar
+                            </button>
+                            <button 
+                                type="submit" 
+                                style={{ padding: '10px 24px', borderRadius: '8px', border: 'none', backgroundColor: '#D51F36', color: 'white', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 4px 6px rgba(213, 31, 54, 0.2)' }}
+                            >
+                                <i className='bx bx-save'></i> Guardar Cambios
+                            </button>
+                        </div>
 
-            <div style={{ marginTop: 12 }}>
-              <Link to="/rrhh/kpis">Cancelar</Link>{" "}
-              <button type="submit">Guardar</button>
+                    </form>
+                </div>
             </div>
-          </form>
         )}
+
+        {/* MODAL DE ÉXITO / ERROR */}
+        {modalConfig.show && (
+            <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(2px)' }}>
+                <div className="modal-content" style={{ backgroundColor: 'white', padding: '32px', borderRadius: '16px', width: '90%', maxWidth: '400px', textAlign: 'center', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)' }}>
+                    <div style={{ 
+                        width: '80px', height: '80px', borderRadius: '50%', 
+                        backgroundColor: modalConfig.type === 'success' ? '#dcfce7' : '#fee2e2', 
+                        color: modalConfig.type === 'success' ? '#16a34a' : '#dc2626', 
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' 
+                    }}>
+                        <i className={`bx ${modalConfig.type === 'success' ? 'bx-check' : 'bx-x'}`} style={{ fontSize: '48px' }}></i>
+                    </div>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: '700', color: '#111827', marginBottom: '12px' }}>{modalConfig.title}</h3>
+                    <p style={{ color: '#6b7280', marginBottom: '24px', lineHeight: '1.5', fontSize:'0.95rem' }}>{modalConfig.message}</p>
+                    <button onClick={closeModal} style={{ width: '100%', padding: '12px', backgroundColor: modalConfig.type === 'success' ? '#16a34a' : '#374151', color: 'white', border: 'none', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '1rem' }}>
+                        {modalConfig.type === 'success' ? 'Continuar' : 'Cerrar'}
+                    </button>
+                </div>
+            </div>
+        )}
+
       </main>
     </div>
   );
