@@ -229,3 +229,29 @@
 /* Utilidades */
 .loading-box { padding: 40px; text-align: center; color: var(--text-secondary); }
 .error-box { padding: 20px; background: #fee2e2; color: #b91c1c; border-radius: 8px; margin-bottom: 20px; }
+
+/* --- MARCA DE AGUA GLOBAL --- */
+
+/* Opción A: Aplicar a un contenedor específico */
+.layout-watermark::after {
+  content: "";
+  position: fixed;
+  bottom: -80px;
+  right: -80px;
+  width: 450px;
+  height: 450px;
+  /* Asegúrate de que la ruta de la imagen sea correcta relativa a este archivo CSS */
+  background-image: url('../img/talentrack_small.svg'); 
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.04;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Opción B: Si quieres asegurarte que el contenido (texto/tarjetas)
+   siempre esté POR ENCIMA de la marca de agua */
+.main-content, .page-content, .content-area {
+  position: relative;
+  z-index: 1;
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../../../components/Sidebar";
 import { getAccessToken } from "../../../services/authStorage";
+// Importamos el CSS donde definiste .layout-watermark
 import "../../../assets/css/admin-empresas.css"; 
 import "../../../assets/css/modal.css";
 
@@ -83,7 +84,7 @@ const EditarEmpresa = () => {
       }
     };
     if (id) fetchEmpresa();
-  }, [id, navigate]); // configuracionPaises ya no es necesario aquí porque es externo
+  }, [id, navigate]); 
 
   const handleChange = (e) => setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
 
@@ -148,10 +149,17 @@ const EditarEmpresa = () => {
   const inputStyle = { width: '100%', padding: '10px 12px 10px 40px', borderRadius: '8px', border: '1px solid #d1d5db', outline: 'none', fontSize: '0.9rem', color: '#1f2937', transition: 'border-color 0.2s' };
   const iconStyle = { position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af', fontSize: '1.25rem', pointerEvents: 'none' };
 
-  if (loading) return <div className="layout" style={{justifyContent:'center', alignItems:'center', background:'#f8fafc'}}>Cargando datos...</div>;
+  if (loading) return (
+    // Agregamos la clase aquí también por si acaso tarda en cargar
+    <div className="layout layout-watermark" style={{justifyContent:'center', alignItems:'center', background:'#f8fafc', minHeight: '100vh', display: 'flex'}}>
+      <Sidebar />
+      <div style={{flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center'}}>Cargando datos...</div>
+    </div>
+  );
 
   return (
-    <div className="layout" style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
+    // CLASE AGREGADA: layout-watermark
+    <div className="layout layout-watermark" style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
       <Sidebar />
       <main className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         
@@ -200,6 +208,7 @@ const EditarEmpresa = () => {
                                 </div>
                              </div>
                         </div>
+
                         <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94a3b8', fontWeight: '700', marginBottom: '20px', marginTop: '10px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>Configuración</h4>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
                             <div>

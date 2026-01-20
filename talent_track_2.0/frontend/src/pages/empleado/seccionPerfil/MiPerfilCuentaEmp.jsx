@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../../components/Sidebar";
+import Sidebar from "../../../components/SidebarEmpleado";
 import { apiFetch } from "../../../services/api";
 import { Link } from "react-router-dom";
+import "../../../assets/css/admin-empresas.css"; // Estilos globales
 
+// --- HELPERS ---
 async function safeJson(res) {
   const text = await res.text();
   try {
@@ -20,14 +22,16 @@ function fmtDate(value) {
 export default function MiPerfilCuentaEmp() {
   const [tab, setTab] = useState("perfil"); // perfil | cuenta
   const [loading, setLoading] = useState(true);
-  const [err, setErr] = useState("");
-
+  
+  // Datos
   const [perfil, setPerfil] = useState(null);
   const [cuenta, setCuenta] = useState(null);
 
+  // Estados de edición
   const [editPerfil, setEditPerfil] = useState(false);
   const [editCuenta, setEditCuenta] = useState(false);
 
+  // Formularios
   const [perfilForm, setPerfilForm] = useState({
     telefono: "",
     direccion: "",
@@ -42,8 +46,11 @@ export default function MiPerfilCuentaEmp() {
     password_nueva_repetir: "",
   });
 
+  // Modal State
+  const [modalConfig, setModalConfig] = useState({ show: false, type: 'success', title: '', message: '' });
+
+  // --- CARGA DE DATOS ---
   const loadAll = async () => {
-    setErr("");
     setLoading(true);
     try {
       const r1 = await apiFetch("/api/empleado/perfil/");
@@ -72,7 +79,7 @@ export default function MiPerfilCuentaEmp() {
         password_nueva_repetir: "",
       }));
     } catch (e) {
-      setErr(e?.message || "Error cargando datos.");
+      showModal('error', 'Error de Conexión', e?.message || "No se pudieron cargar los datos.");
     } finally {
       setLoading(false);
     }
@@ -82,6 +89,7 @@ export default function MiPerfilCuentaEmp() {
     loadAll();
   }, []);
 
+  // --- HANDLERS ---
   const onChangePerfil = (e) => {
     const { name, value } = e.target;
     setPerfilForm((p) => ({ ...p, [name]: value }));
@@ -92,10 +100,16 @@ export default function MiPerfilCuentaEmp() {
     setCuentaForm((p) => ({ ...p, [name]: value }));
   };
 
+  const showModal = (type, title, message) => {
+      setModalConfig({ show: true, type, title, message });
+  };
+
+  const closeModal = () => {
+      setModalConfig({ ...modalConfig, show: false });
+  };
+
   const guardarPerfil = async (e) => {
     e.preventDefault();
-    setErr("");
-
     try {
       const payload = {
         telefono: perfilForm.telefono || null,
@@ -113,30 +127,26 @@ export default function MiPerfilCuentaEmp() {
 
       setPerfil(data);
       setEditPerfil(false);
-      alert("Datos personales actualizados.");
+      showModal('success', 'Perfil Actualizado', 'Tus datos personales se han guardado correctamente.');
     } catch (e2) {
-      setErr(e2?.message || "Error guardando perfil.");
+      showModal('error', 'Error', e2?.message || "No se pudo guardar el perfil.");
     }
   };
 
-  // ✅ 1) Actualiza SOLO email/phone en /api/empleado/cuenta/
-  // ✅ 2) Si quiere cambiar password => PATCH /api/empleado/usuario/cambiar-password/
   const guardarCuenta = async (e) => {
     e.preventDefault();
-    setErr("");
-
+    
     const pa = cuentaForm.password_actual;
     const pn = cuentaForm.password_nueva;
     const pr = cuentaForm.password_nueva_repetir;
-
     const quiereCambiarPass = Boolean(pa || pn || pr);
 
-    // validación front (dinámica)
+    // Validación Front
     if (quiereCambiarPass) {
-      if (!(pa && pn && pr)) return setErr("Para cambiar contraseña debes llenar: actual, nueva y repetir nueva.");
-      if (pn !== pr) return setErr("La nueva contraseña no coincide.");
-      if (pn.length < 6) return setErr("La nueva contraseña debe tener al menos 6 caracteres.");
-      if (pa === pn) return setErr("La nueva contraseña no puede ser igual a la contraseña actual.");
+      if (!(pa && pn && pr)) return showModal('error', 'Faltan datos', "Para cambiar la contraseña debes llenar todos los campos de seguridad.");
+      if (pn !== pr) return showModal('error', 'Error', "Las nuevas contraseñas no coinciden.");
+      if (pn.length < 6) return showModal('error', 'Seguridad', "La nueva contraseña debe tener al menos 6 caracteres.");
+      if (pa === pn) return showModal('error', 'Error', "La nueva contraseña no puede ser igual a la actual.");
     }
 
     try {
@@ -152,11 +162,11 @@ export default function MiPerfilCuentaEmp() {
       });
 
       const dataCuenta = await safeJson(resCuenta);
-      if (!resCuenta.ok) throw new Error(dataCuenta?.detail || JSON.stringify(dataCuenta || {}));
+      if (!resCuenta.ok) throw new Error(dataCuenta?.detail || "Error actualizando cuenta.");
 
       setCuenta(dataCuenta);
 
-      // 2) Cambiar password si aplica (endpoint separado)
+      // 2) Cambiar password (si aplica)
       if (quiereCambiarPass) {
         const payloadPass = {
           password_actual: pa,
@@ -171,15 +181,14 @@ export default function MiPerfilCuentaEmp() {
 
         const dataPass = await safeJson(resPass);
         if (!resPass.ok) {
-          // backend suele devolver {password_actual: "..."} o {detail:"..."}
           const firstKey = dataPass && typeof dataPass === "object" ? Object.keys(dataPass)[0] : null;
           throw new Error(firstKey ? dataPass[firstKey] : dataPass?.detail || "No se pudo cambiar la contraseña.");
         }
       }
 
       setEditCuenta(false);
-
-      // limpiar passwords tras guardar
+      
+      // Limpiar campos de password
       setCuentaForm((p) => ({
         ...p,
         password_actual: "",
@@ -187,154 +196,240 @@ export default function MiPerfilCuentaEmp() {
         password_nueva_repetir: "",
       }));
 
-      alert(quiereCambiarPass ? "Cuenta actualizada (incluye contraseña)." : "Cuenta actualizada.");
+      showModal('success', 'Cuenta Actualizada', quiereCambiarPass ? "Se han actualizado tus datos y tu contraseña." : "Tus datos de contacto han sido actualizados.");
+
     } catch (e2) {
-      setErr(e2?.message || "Error guardando cuenta.");
+      showModal('error', 'Error', e2?.message || "Ocurrió un error al guardar los cambios.");
     }
   };
 
+  // --- ESTILOS ---
+  const layoutWrapperStyle = { display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc', width: '100%' };
+  const mainAreaStyle = { flex: 1, padding: '30px 30px 30px 110px', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '25px' };
+  
+  const cardStyle = { backgroundColor: '#fff', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '30px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)' };
+  
+  const labelStyle = { display: 'block', fontSize: '0.85rem', fontWeight: '600', color: '#64748b', marginBottom: '6px' };
+  const inputStyle = { width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #d1d5db', outline: 'none', fontSize: '0.95rem', color: '#1e293b' };
+  
+  // --- NUEVO ESTILO DE PESTAÑAS (TABS SUBRAYADAS) ---
+  const tabBtnStyle = (isActive) => ({
+    padding: '12px 20px', 
+    border: 'none', 
+    borderBottom: isActive ? '3px solid #D51F36' : '3px solid transparent', // Línea roja activa
+    backgroundColor: 'transparent', 
+    color: isActive ? '#D51F36' : '#64748b', // Texto rojo activo
+    fontWeight: isActive ? '700' : '600', 
+    cursor: 'pointer', 
+    transition: 'all 0.2s', 
+    fontSize: '0.95rem',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px'
+  });
+
   return (
-    <div className="layout">
+    <div className="layout layout-watermark" style={layoutWrapperStyle}>
       <Sidebar />
-      <main className="main-content">
-        <h2>Mi Perfil</h2>
-
-        <div style={{ display: "flex", gap: 10, marginBottom: 10 }}>
-          <button onClick={() => setTab("perfil")} disabled={tab === "perfil"}>Datos personales</button>
-          <button onClick={() => setTab("cuenta")} disabled={tab === "cuenta"}>Cuenta</button>
-          <button onClick={loadAll}>Refrescar</button>
+      <main style={mainAreaStyle}>
+        
+        {/* HEADER */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+                <h1 style={{ fontSize: '1.8rem', fontWeight: '800', color: '#1e293b', margin: 0 }}>Mi Perfil</h1>
+                <p style={{ color: '#64748b', marginTop: '4px', fontSize: '1rem' }}>Gestiona tu información personal y seguridad.</p>
+            </div>
+            <Link to="/empleado/inicio" style={{ display:'flex', alignItems:'center', textDecoration:'none', color:'#64748b', fontWeight:'600', gap:'5px' }}>
+                <i className='bx bx-arrow-back'></i> Volver
+            </Link>
         </div>
 
-        {loading && <p>Cargando...</p>}
-        {err && <p style={{ color: "crimson" }}>{err}</p>}
+        {/* --- TABS DE NAVEGACIÓN (NUEVO DISEÑO) --- */}
+        <div style={{ borderBottom: '1px solid #e2e8f0', display: 'flex', gap: '15px', marginBottom: '10px' }}>
+            <button onClick={() => setTab("perfil")} style={tabBtnStyle(tab === "perfil")}>
+                <i className='bx bx-user'></i> Datos Personales
+            </button>
+            <button onClick={() => setTab("cuenta")} style={tabBtnStyle(tab === "cuenta")}>
+                <i className='bx bx-shield-quarter'></i> Cuenta & Seguridad
+            </button>
+        </div>
 
+        {loading && <p style={{ textAlign: 'center', color: '#64748b', marginTop: '40px' }}>Cargando datos...</p>}
+
+        {/* --- TAB: PERFIL --- */}
         {!loading && tab === "perfil" && perfil && (
-          <div>
-            <h3>Datos personales</h3>
-
-            {!editPerfil ? (
-              <div>
-                <p><strong>Nombres:</strong> {perfil.nombres} {perfil.apellidos}</p>
-                <p><strong>Email:</strong> {perfil.email}</p>
-                <p><strong>Teléfono:</strong> {perfil.telefono || "—"}</p>
-                <p><strong>Dirección:</strong> {perfil.direccion || "—"}</p>
-                <p><strong>Fecha nacimiento:</strong> {perfil.fecha_nacimiento ? fmtDate(perfil.fecha_nacimiento) : "—"}</p>
-
-                <button onClick={() => setEditPerfil(true)}>Editar</button>
-              </div>
-            ) : (
-              <form onSubmit={guardarPerfil}>
-                <div>
-                  <label>Teléfono</label>
-                  <input name="telefono" value={perfilForm.telefono} onChange={onChangePerfil} />
+            <div style={{ display: 'flex', gap: '30px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+                
+                {/* Avatar Card (Decorativo) */}
+                <div style={{ flex: '0 0 280px', ...cardStyle, textAlign: 'center' }}>
+                    <div style={{ width: '120px', height: '120px', borderRadius: '50%', backgroundColor: '#f1f5f9', margin: '0 auto 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', color: '#64748b', fontWeight: '700' }}>
+                        {perfil.nombres?.charAt(0)}{perfil.apellidos?.charAt(0)}
+                    </div>
+                    <h2 style={{ fontSize: '1.2rem', color: '#1e293b', margin: '0 0 5px 0' }}>{perfil.nombres} {perfil.apellidos}</h2>
+                    <p style={{ color: '#64748b', fontSize: '0.9rem', margin: 0 }}>Colaborador</p>
                 </div>
 
-                <div style={{ marginTop: 8 }}>
-                  <label>Dirección</label>
-                  <input name="direccion" value={perfilForm.direccion} onChange={onChangePerfil} />
-                </div>
+                {/* Formulario Datos */}
+                <div style={{ flex: 1, ...cardStyle }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', borderBottom: '1px solid #f1f5f9', paddingBottom: '15px' }}>
+                        <h3 style={{ margin: 0, color: '#1e293b' }}>Información Básica</h3>
+                        {!editPerfil && (
+                            <button onClick={() => setEditPerfil(true)} style={{ border: 'none', background: 'transparent', color: '#0f172a', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                <i className='bx bx-edit'></i> Editar
+                            </button>
+                        )}
+                    </div>
 
-                <div style={{ marginTop: 8 }}>
-                  <label>Fecha nacimiento</label>
-                  <input type="date" name="fecha_nacimiento" value={perfilForm.fecha_nacimiento} onChange={onChangePerfil} />
+                    {!editPerfil ? (
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '25px' }}>
+                            <div>
+                                <label style={labelStyle}>Correo Electrónico</label>
+                                <div style={{ fontSize: '1rem', color: '#334155' }}>{perfil.email}</div>
+                            </div>
+                            <div>
+                                <label style={labelStyle}>Teléfono</label>
+                                <div style={{ fontSize: '1rem', color: '#334155' }}>{perfil.telefono || "No registrado"}</div>
+                            </div>
+                            <div>
+                                <label style={labelStyle}>Fecha de Nacimiento</label>
+                                <div style={{ fontSize: '1rem', color: '#334155' }}>{perfil.fecha_nacimiento ? fmtDate(perfil.fecha_nacimiento) : "No registrada"}</div>
+                            </div>
+                            <div style={{ gridColumn: '1 / -1' }}>
+                                <label style={labelStyle}>Dirección Domiciliaria</label>
+                                <div style={{ fontSize: '1rem', color: '#334155' }}>{perfil.direccion || "No registrada"}</div>
+                            </div>
+                        </div>
+                    ) : (
+                        <form onSubmit={guardarPerfil}>
+                            <div style={{ display: 'grid', gap: '20px' }}>
+                                <div>
+                                    <label style={labelStyle}>Teléfono de Contacto</label>
+                                    <input name="telefono" value={perfilForm.telefono} onChange={onChangePerfil} style={inputStyle} placeholder="Ej: 0991234567" />
+                                </div>
+                                <div>
+                                    <label style={labelStyle}>Fecha de Nacimiento</label>
+                                    <input type="date" name="fecha_nacimiento" value={perfilForm.fecha_nacimiento} onChange={onChangePerfil} style={inputStyle} />
+                                </div>
+                                <div>
+                                    <label style={labelStyle}>Dirección Domiciliaria</label>
+                                    <input name="direccion" value={perfilForm.direccion} onChange={onChangePerfil} style={inputStyle} placeholder="Ej: Av. Loja y Mercadillo" />
+                                </div>
+                            </div>
+                            <div style={{ marginTop: '25px', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                                <button type="button" onClick={() => { setEditPerfil(false); loadAll(); }} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid #cbd5e1', backgroundColor: 'white', color: '#475569', fontWeight: '600', cursor: 'pointer' }}>Cancelar</button>
+                                <button type="submit" style={{ padding: '10px 24px', borderRadius: '8px', border: 'none', backgroundColor: '#0f172a', color: 'white', fontWeight: '600', cursor: 'pointer' }}>Guardar Cambios</button>
+                            </div>
+                        </form>
+                    )}
                 </div>
-
-                <div style={{ marginTop: 12 }}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setEditPerfil(false);
-                      setPerfilForm({
-                        telefono: perfil.telefono || "",
-                        direccion: perfil.direccion || "",
-                        fecha_nacimiento: fmtDate(perfil.fecha_nacimiento),
-                      });
-                    }}
-                  >
-                    Cancelar
-                  </button>{" "}
-                  <button type="submit">Guardar</button>
-                </div>
-              </form>
-            )}
-          </div>
+            </div>
         )}
 
+        {/* --- TAB: CUENTA --- */}
         {!loading && tab === "cuenta" && cuenta && (
-          <div>
-            <h3>Cuenta de usuario</h3>
-
-            {!editCuenta ? (
-              <div>
-                <p><strong>Email (login):</strong> {cuenta.email}</p>
-                <p><strong>Phone:</strong> {cuenta.phone || "—"}</p>
-                <p><strong>MFA:</strong> {cuenta.mfa_habilitado ? "Sí" : "No"}</p>
-
-                <button onClick={() => setEditCuenta(true)}>Editar</button>
-              </div>
-            ) : (
-              <form onSubmit={guardarCuenta}>
-                <div>
-                  <label>Email *</label>
-                  <input name="email" value={cuentaForm.email} onChange={onChangeCuenta} />
+            <div style={cardStyle}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', borderBottom: '1px solid #f1f5f9', paddingBottom: '15px' }}>
+                    <h3 style={{ margin: 0, color: '#1e293b' }}>Configuración de Cuenta</h3>
+                    {!editCuenta && (
+                        <button onClick={() => setEditCuenta(true)} style={{ border: 'none', background: 'transparent', color: '#0f172a', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                            <i className='bx bx-edit'></i> Editar
+                        </button>
+                    )}
                 </div>
 
-                <div style={{ marginTop: 8 }}>
-                  <label>Phone</label>
-                  <input name="phone" value={cuentaForm.phone} onChange={onChangeCuenta} />
-                </div>
+                {!editCuenta ? (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '30px' }}>
+                        <div>
+                            <label style={labelStyle}>Email (Usuario de Acceso)</label>
+                            <div style={{ fontSize: '1rem', color: '#334155', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <i className='bx bx-envelope' style={{color:'#94a3b8'}}></i> {cuenta.email}
+                            </div>
+                        </div>
+                        <div>
+                            <label style={labelStyle}>Teléfono de Recuperación</label>
+                            <div style={{ fontSize: '1rem', color: '#334155', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <i className='bx bx-phone' style={{color:'#94a3b8'}}></i> {cuenta.phone || "No configurado"}
+                            </div>
+                        </div>
+                        <div>
+                            <label style={labelStyle}>Estado MFA (2FA)</label>
+                            <div style={{ display: 'inline-block', padding: '5px 12px', borderRadius: '20px', backgroundColor: cuenta.mfa_habilitado ? '#dcfce7' : '#f1f5f9', color: cuenta.mfa_habilitado ? '#166534' : '#64748b', fontSize: '0.85rem', fontWeight: '700' }}>
+                                {cuenta.mfa_habilitado ? "ACTIVADO" : "DESACTIVADO"}
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <form onSubmit={guardarCuenta}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '30px' }}>
+                            <div>
+                                <label style={labelStyle}>Email <span style={{color:'#ef4444'}}>*</span></label>
+                                <input name="email" value={cuentaForm.email} onChange={onChangeCuenta} style={inputStyle} />
+                            </div>
+                            <div>
+                                <label style={labelStyle}>Teléfono Recuperación</label>
+                                <input name="phone" value={cuentaForm.phone} onChange={onChangeCuenta} style={inputStyle} />
+                            </div>
+                        </div>
 
-                <hr style={{ marginTop: 12 }} />
-                <h4>Cambiar contraseña (opcional)</h4>
-                <small>Debes ingresar la contraseña actual y repetir la nueva.</small>
+                        {/* SECCIÓN CAMBIO DE CONTRASEÑA */}
+                        <div style={{ backgroundColor: '#f8fafc', padding: '20px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
+                            <h4 style={{ margin: '0 0 15px 0', fontSize: '0.95rem', color: '#334155', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <i className='bx bx-lock-alt'></i> Cambio de Contraseña
+                            </h4>
+                            
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                                <div style={{ gridColumn: '1 / -1' }}>
+                                    <label style={labelStyle}>Contraseña Actual</label>
+                                    <input type="password" name="password_actual" value={cuentaForm.password_actual} onChange={onChangeCuenta} style={inputStyle} placeholder="Solo si deseas cambiarla..." />
+                                </div>
+                                <div>
+                                    <label style={labelStyle}>Nueva Contraseña</label>
+                                    <input type="password" name="password_nueva" value={cuentaForm.password_nueva} onChange={onChangeCuenta} style={inputStyle} />
+                                </div>
+                                <div>
+                                    <label style={labelStyle}>Repetir Nueva Contraseña</label>
+                                    <input type="password" name="password_nueva_repetir" value={cuentaForm.password_nueva_repetir} onChange={onChangeCuenta} style={inputStyle} />
+                                </div>
+                            </div>
+                        </div>
 
-                <div style={{ marginTop: 8 }}>
-                  <label>Contraseña actual</label>
-                  <input type="password" name="password_actual" value={cuentaForm.password_actual} onChange={onChangeCuenta} />
-                </div>
-
-                <div style={{ marginTop: 8 }}>
-                  <label>Nueva contraseña</label>
-                  <input type="password" name="password_nueva" value={cuentaForm.password_nueva} onChange={onChangeCuenta} />
-                </div>
-
-                <div style={{ marginTop: 8 }}>
-                  <label>Repetir nueva contraseña</label>
-                  <input
-                    type="password"
-                    name="password_nueva_repetir"
-                    value={cuentaForm.password_nueva_repetir}
-                    onChange={onChangeCuenta}
-                  />
-                </div>
-
-                <div style={{ marginTop: 12 }}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setEditCuenta(false);
-                      setCuentaForm((p) => ({
-                        ...p,
-                        email: cuenta.email || "",
-                        phone: cuenta.phone || "",
-                        password_actual: "",
-                        password_nueva: "",
-                        password_nueva_repetir: "",
-                      }));
-                    }}
-                  >
-                    Cancelar
-                  </button>{" "}
-                  <button type="submit">Guardar</button>
-                </div>
-              </form>
-            )}
-          </div>
+                        <div style={{ marginTop: '25px', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                            <button type="button" onClick={() => { setEditCuenta(false); loadAll(); }} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid #cbd5e1', backgroundColor: 'white', color: '#475569', fontWeight: '600', cursor: 'pointer' }}>Cancelar</button>
+                            <button type="submit" style={{ padding: '10px 24px', borderRadius: '8px', border: 'none', backgroundColor: '#0f172a', color: 'white', fontWeight: '600', cursor: 'pointer' }}>Guardar Cambios</button>
+                        </div>
+                    </form>
+                )}
+            </div>
         )}
 
-        <div style={{ marginTop: 12 }}>
-          <Link to="/empleado/inicio">Volver</Link>
-        </div>
+        {/* --- MODAL --- */}
+        {modalConfig.show && (
+            <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(2px)' }}>
+                <div className="modal-content" style={{ backgroundColor: 'white', padding: '32px', borderRadius: '16px', width: '90%', maxWidth: '400px', textAlign: 'center', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)' }}>
+                    <div style={{ 
+                        width: '80px', height: '80px', borderRadius: '50%', 
+                        backgroundColor: modalConfig.type === 'success' ? '#dcfce7' : '#fee2e2', 
+                        color: modalConfig.type === 'success' ? '#16a34a' : '#dc2626', 
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' 
+                    }}>
+                        <i className={`bx ${modalConfig.type === 'success' ? 'bx-check' : 'bx-x'}`} style={{ fontSize: '48px' }}></i>
+                    </div>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: '700', color: '#111827', marginBottom: '12px' }}>
+                        {modalConfig.title}
+                    </h3>
+                    <p style={{ color: '#6b7280', marginBottom: '24px', lineHeight: '1.5', fontSize:'0.95rem' }}>
+                        {modalConfig.message}
+                    </p>
+                    <button 
+                        onClick={closeModal} 
+                        style={{ width: '100%', padding: '12px', backgroundColor: modalConfig.type === 'success' ? '#16a34a' : '#374151', color: 'white', border: 'none', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '1rem' }}
+                    >
+                        {modalConfig.type === 'success' ? 'Continuar' : 'Cerrar'}
+                    </button>
+                </div>
+            </div>
+        )}
+
       </main>
     </div>
   );

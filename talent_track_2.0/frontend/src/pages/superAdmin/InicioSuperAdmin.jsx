@@ -3,13 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { clearSession } from "../../services/session";
 import Sidebar from "../../components/Sidebar";
 
-// Estilos
+// Estilos globales (Activa la marca de agua)
 import "../../assets/css/admin-empresas.css"; 
 
 export default function InicioSuperAdmin() {
   const navigate = useNavigate();
-  
-  // Estado para el reloj
   const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
@@ -22,7 +20,6 @@ export default function InicioSuperAdmin() {
     navigate("/login", { replace: true });
   };
 
-  // --- LÓGICA DE SALUDO ---
   const saludo = useMemo(() => {
     const hour = currentDate.getHours();
     if (hour >= 6 && hour < 12) return "Buenos días";
@@ -33,7 +30,6 @@ export default function InicioSuperAdmin() {
   const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const formattedDate = currentDate.toLocaleDateString('es-ES', dateOptions);
 
-  // --- MENÚ ORGANIZADO (LO QUE SÍ EXISTE) ---
   const menuItems = [
     {
       category: "Estructura Organizacional",
@@ -57,6 +53,9 @@ export default function InicioSuperAdmin() {
         { title: "Usuarios", icon: "bx-user-circle", path: "/admin/usuarios", desc: "Cuentas de acceso al sistema." },
         { title: "Roles", icon: "bx-shield", path: "/admin/roles", desc: "Perfiles (Admin, Gerente, etc.)." },
         { title: "Permisos", icon: "bx-key", path: "/admin/permisos", desc: "Reglas de autorización granular." },
+        
+        // --- NUEVA TARJETA AQUÍ ---
+        { title: "Trazabilidad", icon: "bx-history", path: "/superadmin/trazabilidad/logs", desc: "Auditoría global de eventos y logs del sistema." },
       ]
     },
     {
@@ -84,9 +83,9 @@ export default function InicioSuperAdmin() {
   };
 
   return (
-    <div className="layout" style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+    <div className="layout layout-watermark" style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
       <Sidebar />
-      <main className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <main className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative', zIndex: 1 }}>
         
         {/* HEADER */}
         <header style={{ background: 'white', padding: '0 40px', borderBottom: '1px solid #e2e8f0', height: '70px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -164,7 +163,6 @@ export default function InicioSuperAdmin() {
                                     <div style={{ width: '56px', height: '56px', borderRadius: '12px', background: '#fef2f2', color: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.75rem', transition:'all 0.3s' }}>
                                         <i className={`bx ${item.icon}`}></i>
                                     </div>
-                                    
                                     <div style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#f8fafc', display:'flex', alignItems:'center', justifyContent:'center', color:'#cbd5e1' }}>
                                         <i className='bx bx-chevron-right' style={{ fontSize:'1.2rem' }}></i>
                                     </div>

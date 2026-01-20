@@ -1,48 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../../../components/SidebarRRHH"; // Asegúrate del path correcto
+import Sidebar from "../../../components/SidebarRRHH"; 
 import { apiFetch } from "../../../services/api";
+import logoWatermark from "../../../assets/img/talentrack_small.svg";
 
-// Estilos globales
-import "../../../assets/css/admin-empresas.css";
+const ESTADO = { 1: "Activo", 2: "Suspendido", 3: "Baja" };
 
-const TIPO = { 1: "Indefinido", 2: "Plazo Fijo", 3: "Temporal", 4: "Prácticas" };
-const ESTADO = { 1: "Activo", 2: "Inactivo" };
-
-// Formateador de Fechas
 function fmtDate(iso) {
-  if (!iso) return <span className="text-muted" style={{ fontSize: '0.85rem' }}>-</span>;
+  if (!iso) return "N/A";
   const d = new Date(`${iso}T00:00:00`);
   return d.toLocaleDateString("es-EC", { year: 'numeric', month: 'short', day: 'numeric' });
 }
 
-// Formateador de Moneda
-const formatCurrency = (amount) => {
-    if (!amount) return "-";
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
-};
-
-export default function Contratos() {
+export default function Empleados() {
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // Estados Modal Cambio de Estado
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [idToToggle, setIdToToggle] = useState(null);
-  const [currentStatusLabel, setCurrentStatusLabel] = useState("");
+  const [idToDelete, setIdToDelete] = useState(null);
 
   const load = async () => {
     setErr("");
     setLoading(true);
     try {
-      const res = await apiFetch("/api/rrhh/contratos/");
+      const res = await apiFetch("/api/rrhh/empleados/");
       const data = await res.json();
       setRows(Array.isArray(data) ? data : []);
     } catch (e) {
-      setErr(e?.message || "Error cargando contratos.");
+      setErr("Error cargando empleados.");
     } finally {
       setLoading(false);
     }
@@ -52,223 +41,144 @@ export default function Contratos() {
     load();
   }, []);
 
-  // --- LÓGICA MODALES ---
-
-  const openToggleModal = (id, estadoActual) => {
-    setIdToToggle(id);
-    const label = ESTADO[estadoActual] || "Desconocido";
-    setCurrentStatusLabel(label);
-    setShowConfirmModal(true);
+  const getInitials = (nombre, apellido) => {
+    const n = nombre ? nombre.charAt(0).toUpperCase() : "";
+    const a = apellido ? apellido.charAt(0).toUpperCase() : "";
+    return n + a;
   };
 
-  const closeConfirmModal = () => {
-    setShowConfirmModal(false);
-    setIdToToggle(null);
-  };
-
-  const closeSuccessModal = () => {
-    setShowSuccessModal(false);
-  };
-
-  const confirmToggle = async () => {
-    if (!idToToggle) return;
-
+  const confirmDelete = async () => {
+    if (!idToDelete) return;
     try {
-      const res = await apiFetch(`/api/rrhh/contratos/${idToToggle}/`, {
-        method: "PATCH",
-        body: JSON.stringify({}), // toggle automático en backend
-      });
-
-      if (!res.ok) throw new Error("No se pudo cambiar el estado del contrato.");
-      
+      const res = await apiFetch(`/api/rrhh/empleados/${idToDelete}/`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Error");
       await load();
-      closeConfirmModal();
+      setShowConfirmModal(false);
       setShowSuccessModal(true);
-
     } catch (e) {
-      alert(e?.message || "Error cambiando estado.");
-      closeConfirmModal();
+      alert("Error eliminando.");
     }
   };
 
-  // Renderizador de Estado con colores
-  const renderEstado = (estadoCode) => {
-    const label = ESTADO[estadoCode] || "Desconocido";
-    let claseColor = "status-inactive"; 
+  // --- Estilos de Layout ---
+  const mainAreaStyle = {
+    flex: 1,
+    paddingLeft: '110px', 
+    paddingRight: '40px',
+    paddingTop: '40px',
+    paddingBottom: '40px',
+    backgroundColor: '#f8fafc',
+    minHeight: '100vh',
+    position: 'relative'
+  };
 
-    if (estadoCode === 1) claseColor = "status-active"; // Activo
-    if (estadoCode === 2) claseColor = "status-inactive"; // Inactivo
+  const watermarkStyle = {
+    position: 'fixed', bottom: '-80px', right: '-80px', width: '450px',
+    opacity: '0.04', zIndex: 0, pointerEvents: 'none'
+  };
 
-    return <span className={`status-badge ${claseColor}`}>{label}</span>;
+  const renderEstadoBadge = (estadoCode, estadoLabel) => {
+    const label = ESTADO[estadoCode] || estadoLabel || "N/A";
+    let bg = label.toLowerCase() === "activo" ? "#dcfce7" : "#fee2e2";
+    let color = label.toLowerCase() === "activo" ? "#166534" : "#b91c1c";
+    return (
+      <span style={{ backgroundColor: bg, color: color, padding: '4px 12px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: '800', textTransform: 'uppercase' }}>
+        {label}
+      </span>
+    );
   };
 
   return (
-    <div className="layout-wrapper">
+    <div style={{ display: 'flex' }}>
       <Sidebar />
+      <img src={logoWatermark} alt="watermark" style={watermarkStyle} />
       
-      <main className="page-content">
-        
-        {/* Header */}
-        <div className="page-header-section">
-            <div>
-                <h1 className="page-main-title">Gestión de Contratos</h1>
-                <p className="page-subtitle">Administración de relaciones laborales y condiciones contractuales.</p>
-            </div>
-            <button 
-                className="btn-create-company" 
-                onClick={() => navigate("/rrhh/contratos/crear")}
-            >
-                <i className='bx bx-file-plus'></i> Nuevo Contrato
-            </button>
+      <main style={mainAreaStyle}>
+        {/* Header similar a la imagen */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+          <div>
+            <h1 style={{ fontSize: '2.2rem', fontWeight: '800', color: '#1e293b', margin: 0 }}>Directorio de Empleados</h1>
+            <p style={{ color: '#64748b', marginTop: '5px', fontSize: '1.05rem' }}>Gestión integral de colaboradores y perfiles.</p>
+          </div>
+          <button 
+            onClick={() => navigate("/rrhh/empleados/crear")}
+            style={{ backgroundColor: '#d51e37', color: 'white', border: 'none', padding: '14px 28px', borderRadius: '12px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }}
+          >
+            <i className='bx bx-user-plus'></i> Crear Empleado
+          </button>
         </div>
 
-        {/* Tabla */}
-        <div className="table-card">
-            {loading && <div className="loading-state"><i className='bx bx-loader-alt bx-spin'></i> Cargando datos...</div>}
-            {err && <div className="error-state"><i className='bx bx-error'></i> {err}</div>}
+        {/* Card de Tabla Estilo Profesional */}
+        <div style={{ backgroundColor: '#fff', borderRadius: '20px', boxShadow: '0 4px 25px rgba(0,0,0,0.04)', padding: '35px', border: '1px solid #f1f5f9' }}>
+          
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '30px' }}>
+            <div style={{ position: 'relative' }}>
+              <i className='bx bx-search' style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }}></i>
+              <input 
+                type="text" 
+                placeholder="Buscar por nombre..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{ padding: '12px 20px 12px 45px', borderRadius: '12px', border: '1px solid #e2e8f0', width: '320px', outline: 'none', fontSize: '0.95rem' }}
+              />
+            </div>
+          </div>
 
-            {!loading && !err && (
-                <div className="table-responsive">
-                    <table className="data-table">
-                        <thead>
-                            <tr>
-                                <th>Colaborador</th>
-                                <th>Tipo Contrato</th>
-                                <th>Vigencia (Inicio - Fin)</th>
-                                <th>Salario Base</th>
-                                <th>Jornada (Hs)</th>
-                                <th style={{ textAlign: 'center' }}>Estado</th>
-                                <th style={{ textAlign: 'center' }}>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {rows.length > 0 ? (
-                                rows.map((r) => (
-                                    <tr key={r.id}>
-                                        {/* Columna Colaborador (Nombre + Email) */}
-                                        <td>
-                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                <span className="fw-bold" style={{ fontSize: '0.95rem' }}>
-                                                    {r.empleado_nombres} {r.empleado_apellidos}
-                                                </span>
-                                                <span style={{ fontSize: '0.8rem', color: '#64748b' }}>
-                                                    {r.empleado_email}
-                                                </span>
-                                            </div>
-                                        </td>
-
-                                        <td>{TIPO[r.tipo] || r.tipo_label || "N/A"}</td>
-                                        
-                                        {/* Fechas en una sola columna para ahorrar espacio */}
-                                        <td style={{ fontSize: '0.9rem', color: '#475569' }}>
-                                            <div><i className='bx bx-calendar-check' style={{color:'#10b981'}}></i> {fmtDate(r.fecha_inicio)}</div>
-                                            <div style={{ marginTop: '4px' }}>
-                                                <i className='bx bx-calendar-x' style={{color:'#ef4444'}}></i> {r.fecha_fin ? fmtDate(r.fecha_fin) : "Indefinido"}
-                                            </div>
-                                        </td>
-                                        
-                                        <td style={{ fontFamily: 'monospace', fontWeight: 600, color: '#1e293b' }}>
-                                            {formatCurrency(r.salario_base)}
-                                        </td>
-
-                                        <td style={{ textAlign: 'center' }}>{r.jornada_semanal_horas} h</td>
-                                        
-                                        <td style={{ textAlign: 'center' }}>
-                                            {renderEstado(r.estado)}
-                                        </td>
-                                        
-                                        <td style={{ textAlign: 'center' }}>
-                                            <div className="action-buttons" style={{ justifyContent: 'center' }}>
-                                                <button 
-                                                    className="btn-action btn-edit" 
-                                                    onClick={() => navigate(`/rrhh/contratos/editar/${r.id}`)}
-                                                    title="Editar Contrato"
-                                                >
-                                                    <i className='bx bx-pencil'></i>
-                                                </button>
-                                                
-                                                {/* Botón Toggle Estado (Switch) */}
-                                                <button 
-                                                    className="btn-action" 
-                                                    style={{ backgroundColor: r.estado === 1 ? '#fee2e2' : '#d1fae5', color: r.estado === 1 ? '#dc2626' : '#059669' }}
-                                                    onClick={() => openToggleModal(r.id, r.estado)}
-                                                    title={r.estado === 1 ? "Desactivar Contrato" : "Activar Contrato"}
-                                                >
-                                                    <i className={`bx ${r.estado === 1 ? 'bx-power-off' : 'bx-check-circle'}`}></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="7" className="empty-state">
-                                        No hay contratos registrados.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+          {loading ? (
+            <p style={{ textAlign: 'center', color: '#64748b' }}>Cargando datos...</p>
+          ) : (
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '0 10px' }}>
+                <thead>
+                  <tr style={{ textAlign: 'left' }}>
+                    <th style={{ padding: '0 15px 15px 15px', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>Colaborador</th>
+                    <th style={{ padding: '0 15px 15px 15px', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>Puesto</th>
+                    <th style={{ padding: '0 15px 15px 15px', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>Área</th>
+                    <th style={{ padding: '0 15px 15px 15px', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase' }}>Ingreso</th>
+                    <th style={{ padding: '0 15px 15px 15px', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', textAlign: 'center' }}>Estado</th>
+                    <th style={{ padding: '0 15px 15px 15px', color: '#64748b', fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', textAlign: 'center' }}>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.filter(r => (r.nombres + r.apellidos).toLowerCase().includes(searchTerm.toLowerCase())).map((r) => (
+                    <tr key={r.id} style={{ transition: 'all 0.2s' }}>
+                      <td style={{ padding: '15px', borderBottom: '1px solid #f1f5f9' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700', color: '#475569', border: '1px solid #e2e8f0' }}>
+                            {getInitials(r.nombres, r.apellidos)}
+                          </div>
+                          <div>
+                            <div style={{ fontWeight: '700', color: '#1e293b' }}>{r.nombres} {r.apellidos}</div>
+                            <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{r.email}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={{ padding: '15px', color: '#475569', borderBottom: '1px solid #f1f5f9' }}>{r.puesto_nombre || "-"}</td>
+                      <td style={{ padding: '15px', color: '#475569', borderBottom: '1px solid #f1f5f9' }}>{r.unidad_nombre || "-"}</td>
+                      <td style={{ padding: '15px', color: '#475569', borderBottom: '1px solid #f1f5f9', fontSize: '0.85rem' }}>{fmtDate(r.fecha_ingreso)}</td>
+                      <td style={{ padding: '15px', textAlign: 'center', borderBottom: '1px solid #f1f5f9' }}>
+                        {renderEstadoBadge(r.estado, r.estado_label)}
+                      </td>
+                      <td style={{ padding: '15px', textAlign: 'center', borderBottom: '1px solid #f1f5f9' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                          <button onClick={() => navigate(`/rrhh/empleados/editar/${r.id}`)} style={{ border: '1px solid #e2e8f0', background: '#fff', padding: '8px', borderRadius: '10px', cursor: 'pointer', color: '#3b82f6' }}>
+                            <i className='bx bx-pencil'></i>
+                          </button>
+                          <button onClick={() => { setIdToDelete(r.id); setShowConfirmModal(true); }} style={{ border: '1px solid #e2e8f0', background: '#fff', padding: '8px', borderRadius: '10px', cursor: 'pointer', color: '#ef4444' }}>
+                            <i className='bx bx-trash'></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
-
-        {/* --- MODAL 1: CONFIRMACIÓN CAMBIO ESTADO --- */}
-        {showConfirmModal && (
-            <div className="modal-overlay">
-                <div className="modal-content">
-                    <div className="modal-icon-warning" style={{ color: '#f59e0b' }}> {/* Amarillo advertencia */}
-                        <i className='bx bx-refresh'></i>
-                    </div>
-                    <h3 className="modal-title">¿Cambiar Estado?</h3>
-                    <p className="modal-text">
-                        El contrato pasará de <strong>{currentStatusLabel}</strong> a <strong>{currentStatusLabel === "Activo" ? "Inactivo" : "Activo"}</strong>.
-                        <br/>
-                        <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
-                            (Esto podría afectar el acceso y pagos del empleado).
-                        </span>
-                    </p>
-                    <div className="modal-actions">
-                        <button className="btn-modal btn-cancel" onClick={closeConfirmModal}>
-                            Cancelar
-                        </button>
-                        <button 
-                            className="btn-modal" 
-                            style={{ backgroundColor: '#0f172a', color: 'white' }} // Botón oscuro
-                            onClick={confirmToggle}
-                        >
-                            Confirmar Cambio
-                        </button>
-                    </div>
-                </div>
-            </div>
-        )}
-
-        {/* --- MODAL 2: ÉXITO --- */}
-        {showSuccessModal && (
-            <div className="modal-overlay">
-                <div className="modal-content">
-                    <div className="modal-icon-success">
-                        <i className='bx bx-check-circle'></i>
-                    </div>
-                    <h3 className="modal-title">¡Estado Actualizado!</h3>
-                    <p className="modal-text">
-                        El estado del contrato ha sido modificado exitosamente.
-                    </p>
-                    <div className="modal-actions">
-                        <button 
-                            className="btn-modal" 
-                            style={{ backgroundColor: '#d51e37', color: 'white' }}
-                            onClick={closeSuccessModal}
-                        >
-                            Aceptar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        )}
-
       </main>
+
+      {/* Aquí reinsertarías los componentes de Modal si los necesitas */}
     </div>
   );
 }

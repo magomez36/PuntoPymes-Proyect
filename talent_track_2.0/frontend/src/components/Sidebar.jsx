@@ -10,7 +10,7 @@ import 'boxicons/css/boxicons.min.css';
 import logoIcon from "../assets/img/talentrack_small.svg"; 
 import logoFull from "../assets/img/talenTrackLogo_SVG.svg"; 
 
-const SidebarSuperAdmin = () => {
+const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
@@ -49,20 +49,17 @@ const SidebarSuperAdmin = () => {
       <div className="sidebar-top">
         
         {/* GRUPO 1: RESUMEN */}
-        {/* Nota: Si quieres línea arriba de Inicio, agrega un div vacío con la clase sidebar-section-label aquí, si no, déjalo así */}
-        
         <Link to="/superadmin/inicio" className={`sidebar-item ${isActive("/superadmin/inicio")}`}>
           <div className="sidebar-icon-box"><i className='bx bxs-home'></i></div>
           <span>Inicio</span>
         </Link>
-        
-        <Link to="/admin/dashboard" className={`sidebar-item ${isActive("/admin/dashboard")}`}>
+
+        <Link to="/superadmin/dashboard" className={`sidebar-item ${isActive("/superadmin/dashboard")}`}>
           <div className="sidebar-icon-box"><i className='bx bxs-dashboard'></i></div>
           <span>Dashboard</span>
         </Link>
 
         {/* GRUPO 2: GESTIÓN EMPRESAS */}
-        {/* El CSS transformará esto en una línea cuando el sidebar esté cerrado */}
         <div className="sidebar-section-label">Gestión Empresas</div>
         
         <Link to="/admin/empresas" className={`sidebar-item ${isActive("/admin/empresas")}`}>
@@ -141,6 +138,15 @@ const SidebarSuperAdmin = () => {
           <span>Permisos</span>
         </Link>
 
+        {/* GRUPO 5: AUDITORÍA (NUEVA SECCIÓN PARA CORREGIR EL "-") */}
+        {/* Al agregar este label, aparecerá el separador "-" cuando el sidebar se oculte */}
+        <div className="sidebar-section-label">Auditoría</div>
+
+        <Link to="/superadmin/trazabilidad/logs" className={`sidebar-item ${isActive("/superadmin/trazabilidad/logs")}`}>
+          <div className="sidebar-icon-box"><i className='bx bx-history'></i></div>
+          <span>Trazabilidad</span>
+        </Link>
+
          <div className="sidebar-item" style={{ opacity: 0.6, cursor: 'not-allowed' }}>
           <div className="sidebar-icon-box"><i className='bx bx-code-alt'></i></div>
           <span>Webhooks</span>
@@ -165,4 +171,4 @@ const SidebarSuperAdmin = () => {
   );
 };
 
-export default SidebarSuperAdmin;
+export default Sidebar;

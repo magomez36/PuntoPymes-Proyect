@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "../../../components/Sidebar";
 import { getAccessToken } from "../../../services/authStorage";
+// La importación del CSS que contiene la clase .layout-watermark
 import "../../../assets/css/admin-empresas.css"; 
 
 const CrearEmpresa = () => {
@@ -79,7 +80,8 @@ const CrearEmpresa = () => {
   const iconStyle = { position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af', fontSize: '1.25rem', pointerEvents: 'none' };
 
   return (
-    <div className="layout" style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
+    // AQUÍ AGREGAMOS LA CLASE 'layout-watermark' PARA LA MARCA DE AGUA
+    <div className="layout layout-watermark" style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
       <Sidebar />
       <main className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         
