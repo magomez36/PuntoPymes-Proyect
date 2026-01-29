@@ -56,7 +56,7 @@ const SidebarEmpleado = () => {
 
         <Link to="/empleado/asistencia" className={`sidebar-item ${isActive("/empleado/asistencia")}`}>
           <div className="sidebar-icon-box"><i className='bx bxs-watch'></i></div>
-          <span>Mi Reloj</span>
+          <span>Mi Asistencia</span>
         </Link>
 
         {/* GRUPO 2: GESTIÓN DE TIEMPO */}
