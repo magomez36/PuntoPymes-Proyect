@@ -120,3 +120,12 @@ TalentTrack evidencia la importancia de centralizar la gestión del talento huma
 ## Proyecto Académico
 
 Desarrollado como parte de la carrera de Ciencias Computacionales, aplicando buenas prácticas de desarrollo web y arquitectura de software.
+
+**Autores**
+
+- Manuel Gómez
+- Víctor Mendoza
+- Juan Diego Villamagua
+- David León
+
+--- 
