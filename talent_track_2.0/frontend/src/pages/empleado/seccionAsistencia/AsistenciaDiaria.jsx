@@ -117,7 +117,7 @@ export default function AsistenciaDiaria() {
         {/* --- HEADER --- */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-                <h1 style={{ fontSize: '1.8rem', fontWeight: '800', color: '#1e293b', margin: 0 }}>Mi Reloj</h1>
+                <h1 style={{ fontSize: '1.8rem', fontWeight: '800', color: '#1e293b', margin: 0 }}>Mi Asistencia</h1>
                 <p style={{ color: '#64748b', marginTop: '4px', fontSize: '1rem' }}>Gestiona tu asistencia diaria.</p>
             </div>
             <Link to="/empleado/inicio" style={{ display:'flex', alignItems:'center', textDecoration:'none', color:'#64748b', fontWeight:'600', gap:'5px' }}>
