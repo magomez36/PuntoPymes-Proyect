@@ -124,7 +124,8 @@ export default function RolesEmp() {
   const tableCellStyle = { padding: '16px', borderBottom: '1px solid #f8fafc', fontSize: '0.9rem', color: '#334155', verticalAlign: 'middle' };
 
   return (
-    <div className="layout" style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
+    // AQUÍ SE AÑADIÓ LA CLASE 'layout-watermark'
+    <div className="layout layout-watermark" style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc' }}>
       <Sidebar />
       <main className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '32px' }}>
         
@@ -187,11 +188,8 @@ export default function RolesEmp() {
                                     {renderPermisos(r.nombre_texto)}
                                 </td>
                                 
-                                {/* COLUMNA ACCIONES MODIFICADA */}
                                 <td style={{ ...tableCellStyle, textAlign: 'center' }}>
                                     <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
-                                        
-                                        {/* Botón Editar corregido: Sin <Link> envolvente */}
                                         <button 
                                             onClick={() => navigate(`/admin/roles/editar/${r.id}`)}
                                             style={{ 

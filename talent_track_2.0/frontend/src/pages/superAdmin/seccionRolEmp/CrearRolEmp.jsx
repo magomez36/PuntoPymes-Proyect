@@ -1,57 +1,75 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Sidebar from "../../../components/Sidebar";
+import Sidebar from "../../../components/Sidebar"; // Sidebar de Admin General
 import { apiFetch } from "../../../services/api";
+import "../../../assets/css/admin-empresas.css"; // Estilos globales
 
 const ROLES = [
-  { id: 1, label: "superadmin" },
-  { id: 2, label: "rrhh" },
-  { id: 3, label: "manager" },
-  { id: 4, label: "empleado" },
-  { id: 5, label: "auditor" },
+  { id: 1, label: "Super Admin" },
+  { id: 2, label: "RRHH (Recursos Humanos)" },
+  { id: 3, label: "Manager / Supervisor" },
+  { id: 4, label: "Empleado" },
+  { id: 5, label: "Auditor" },
 ];
 
 export default function CrearRolEmp() {
   const navigate = useNavigate();
   const [empresas, setEmpresas] = useState([]);
-  const [err, setErr] = useState("");
-
+  
   const [form, setForm] = useState({
     empresa: "",
     nombre: 2, // rrhh por defecto
     descripcion: "",
   });
 
+  const [loading, setLoading] = useState(true);
+  
+  // Modal State
+  const [modalConfig, setModalConfig] = useState({ show: false, type: 'success', title: '', message: '' });
+
   useEffect(() => {
     (async () => {
+      setLoading(true);
       try {
         const res = await apiFetch("/api/listado-empresas/");
         const data = await res.json();
         if (!res.ok) throw new Error(JSON.stringify(data));
         setEmpresas(Array.isArray(data) ? data : []);
       } catch (e) {
-        setErr("No se pudieron cargar empresas.");
+        showModal('error', 'Error', "No se pudieron cargar las empresas disponibles.");
+      } finally {
+        setLoading(false);
       }
     })();
   }, []);
 
+  // --- HANDLERS ---
   const onChange = (e) => {
     const { name, value } = e.target;
     setForm((p) => ({ ...p, [name]: value }));
   };
 
+  const showModal = (type, title, message) => {
+      setModalConfig({ show: true, type, title, message });
+  };
+
+  const closeModal = () => {
+      setModalConfig({ ...modalConfig, show: false });
+      if (modalConfig.type === 'success') {
+          navigate("/admin/roles");
+      }
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    setErr("");
 
-    if (!form.empresa) return setErr("Selecciona empresa.");
+    if (!form.empresa) return showModal('error', 'Faltan datos', "Debes seleccionar una empresa.");
 
     const payload = {
-      empresa: Number(form.empresa),       // solo en crear
-      nombre: String(form.nombre),         // OJO: lo mando como string "1".."5"
+      empresa: Number(form.empresa),
+      nombre: String(form.nombre),
       descripcion: form.descripcion || "",
     };
-
 
     try {
       const res = await apiFetch("/api/roles-empresa/", {
@@ -62,54 +80,178 @@ export default function CrearRolEmp() {
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(JSON.stringify(data));
 
-      alert("Rol creado.");
-      navigate("/admin/roles");
+      showModal('success', 'Rol Creado', 'El nuevo rol ha sido asignado a la empresa correctamente.');
+      
     } catch (e2) {
-      setErr(e2?.message || "Error creando.");
+      showModal('error', 'Error', e2?.message || "No se pudo crear el rol.");
     }
   };
 
+  // --- ESTILOS ---
+  const layoutWrapperStyle = { display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc', width: '100%' };
+  const mainAreaStyle = { flex: 1, padding: '30px 30px 30px 110px', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '25px' };
+  
+  const cardStyle = { backgroundColor: '#fff', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '30px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.02)' };
+  
+  // Estilo para el panel de ayuda (Tips)
+  const tipsPanelStyle = { 
+    backgroundColor: '#f8fafc', 
+    borderRadius: '16px', 
+    border: '1px dashed #cbd5e1', 
+    padding: '30px',
+    height: 'fit-content'
+  };
+
+  const inputStyle = { width: '100%', padding: '10px 12px', borderRadius: '8px', border: '1px solid #d1d5db', outline: 'none', fontSize: '0.95rem', color: '#1e293b', backgroundColor: '#fff' };
+  const labelStyle = { display: 'block', marginBottom: '6px', fontWeight: '600', color: '#64748b', fontSize: '0.9rem' };
+
   return (
-    <div className="layout">
+    <div className="layout layout-watermark" style={layoutWrapperStyle}>
       <Sidebar />
-      <main className="main-content">
-        <h2>Crear Rol</h2>
-        {err && <p style={{ color: "crimson" }}>{err}</p>}
+      <main style={mainAreaStyle}>
+        
+        {/* HEADER */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+                <h1 style={{ fontSize: '1.8rem', fontWeight: '800', color: '#1e293b', margin: 0 }}>Crear Rol</h1>
+                <p style={{ color: '#64748b', marginTop: '4px', fontSize: '1rem' }}>Define los permisos y accesos para una empresa.</p>
+            </div>
+            <Link to="/admin/roles" style={{ display:'flex', alignItems:'center', textDecoration:'none', color:'#64748b', fontWeight:'600', gap:'5px' }}>
+                <i className='bx bx-arrow-back'></i> Volver
+            </Link>
+        </div>
 
-        <form onSubmit={onSubmit}>
-          <div>
-            <label>Empresa *</label>
-            <select name="empresa" value={form.empresa} onChange={onChange} required>
-              <option value="">-- Selecciona --</option>
-              {empresas.map((e) => (
-                <option key={e.id} value={e.id}>
-                  {e.razon_social}
-                </option>
-              ))}
-            </select>
-          </div>
+        {/* LOADING STATE */}
+        {loading && <p style={{ textAlign: 'center', color: '#64748b', marginTop: '40px' }}>Cargando datos...</p>}
 
-          <div>
-            <label>Rol *</label>
-            <select name="nombre" value={form.nombre} onChange={onChange}>
-              {ROLES.map((r) => (
-                <option key={r.id} value={r.id}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
-          </div>
+        {/* CONTENIDO EN GRID DE 2 COLUMNAS */}
+        {!loading && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '30px', alignItems: 'start' }}>
+                
+                {/* COLUMNA IZQUIERDA: FORMULARIO */}
+                <div style={cardStyle}>
+                    <form onSubmit={onSubmit}>
+                        <div style={{ marginBottom: '25px' }}>
+                            <label style={labelStyle}>Empresa <span style={{color:'#ef4444'}}>*</span></label>
+                            <select 
+                                name="empresa" 
+                                value={form.empresa} 
+                                onChange={onChange} 
+                                style={inputStyle}
+                                required
+                            >
+                                <option value="">-- Selecciona una empresa --</option>
+                                {empresas.map((e) => (
+                                    <option key={e.id} value={e.id}>
+                                        {e.razon_social}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-          <div>
-            <label>Descripción</label>
-            <textarea name="descripcion" value={form.descripcion} onChange={onChange} rows={3} />
-          </div>
+                        <div style={{ marginBottom: '25px' }}>
+                            <label style={labelStyle}>Tipo de Rol <span style={{color:'#ef4444'}}>*</span></label>
+                            <select 
+                                name="nombre" 
+                                value={form.nombre} 
+                                onChange={onChange} 
+                                style={inputStyle}
+                            >
+                                {ROLES.map((r) => (
+                                    <option key={r.id} value={r.id}>
+                                        {r.label}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
-          <div style={{ marginTop: 12 }}>
-            <Link to="/admin/roles">Cancelar</Link>{" "}
-            <button type="submit">Crear</button>
-          </div>
-        </form>
+                        <div style={{ marginBottom: '30px' }}>
+                            <label style={labelStyle}>Descripción (Opcional)</label>
+                            <textarea 
+                                name="descripcion" 
+                                value={form.descripcion} 
+                                onChange={onChange} 
+                                rows={4} 
+                                placeholder="Escribe detalles adicionales sobre por qué se asigna este rol..."
+                                style={{ ...inputStyle, resize: 'vertical' }} 
+                            />
+                        </div>
+
+                        <div style={{ borderTop: '1px solid #f1f5f9', paddingTop: '20px', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                            <button 
+                                type="button" 
+                                onClick={() => navigate("/admin/roles")} 
+                                style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid #cbd5e1', backgroundColor: 'white', color: '#475569', fontWeight: '600', cursor: 'pointer' }}
+                            >
+                                Cancelar
+                            </button>
+                            <button 
+                                type="submit" 
+                                style={{ padding: '10px 24px', borderRadius: '8px', border: 'none', backgroundColor: '#D51F36', color: 'white', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 4px 6px rgba(213, 31, 54, 0.2)' }}
+                            >
+                                <i className='bx bx-check-shield'></i> Crear Rol
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                {/* COLUMNA DERECHA: TIPS Y GUÍA */}
+                <div style={tipsPanelStyle}>
+                    <h3 style={{ margin: '0 0 15px 0', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <i className='bx bx-info-circle' style={{ color: '#D51F36', fontSize: '1.4rem' }}></i> Guía de Roles
+                    </h3>
+                    <p style={{ color: '#64748b', fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '20px' }}>
+                        Seleccionar el rol adecuado es crucial para mantener la seguridad y la correcta jerarquía dentro de la organización.
+                    </p>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                        {[
+                            { role: 'RRHH', desc: 'Gestión completa de personal, nóminas, vacaciones y asistencia.', icon: 'bx-user-pin' },
+                            { role: 'Manager', desc: 'Aprobación de solicitudes y supervisión de equipos asignados.', icon: 'bx-briefcase-alt-2' },
+                            { role: 'Auditor', desc: 'Acceso de solo lectura para revisiones de cumplimiento.', icon: 'bx-search-alt' },
+                            { role: 'Empleado', desc: 'Acceso estándar para marcaje de reloj y solicitudes personales.', icon: 'bx-user' }
+                        ].map((item, idx) => (
+                            <div key={idx} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                                <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#fff', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#475569' }}>
+                                    <i className={`bx ${item.icon}`}></i>
+                                </div>
+                                <div>
+                                    <strong style={{ display: 'block', fontSize: '0.9rem', color: '#334155' }}>{item.role}</strong>
+                                    <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{item.desc}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div style={{ marginTop: '25px', padding: '15px', backgroundColor: '#fff7ed', borderRadius: '8px', borderLeft: '4px solid #f97316', color: '#9a3412', fontSize: '0.85rem', lineHeight: '1.5' }}>
+                        <strong>Nota Importante:</strong> Al asignar un rol de "Super Admin", el usuario tendrá acceso total a la configuración global de la empresa seleccionada.
+                    </div>
+                </div>
+
+            </div>
+        )}
+
+        {/* MODAL DE ÉXITO / ERROR */}
+        {modalConfig.show && (
+            <div className="modal-overlay" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(2px)' }}>
+                <div className="modal-content" style={{ backgroundColor: 'white', padding: '32px', borderRadius: '16px', width: '90%', maxWidth: '400px', textAlign: 'center', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)' }}>
+                    <div style={{ 
+                        width: '80px', height: '80px', borderRadius: '50%', 
+                        backgroundColor: modalConfig.type === 'success' ? '#dcfce7' : '#fee2e2', 
+                        color: modalConfig.type === 'success' ? '#16a34a' : '#dc2626', 
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' 
+                    }}>
+                        <i className={`bx ${modalConfig.type === 'success' ? 'bx-check' : 'bx-x'}`} style={{ fontSize: '48px' }}></i>
+                    </div>
+                    <h3 style={{ fontSize: '1.3rem', fontWeight: '700', color: '#111827', marginBottom: '12px' }}>{modalConfig.title}</h3>
+                    <p style={{ color: '#6b7280', marginBottom: '24px', lineHeight: '1.5', fontSize:'0.95rem' }}>{modalConfig.message}</p>
+                    <button onClick={closeModal} style={{ width: '100%', padding: '12px', backgroundColor: modalConfig.type === 'success' ? '#16a34a' : '#374151', color: 'white', border: 'none', borderRadius: '8px', fontWeight: '600', cursor: 'pointer', fontSize: '1rem' }}>
+                        {modalConfig.type === 'success' ? 'Continuar' : 'Cerrar'}
+                    </button>
+                </div>
+            </div>
+        )}
+
       </main>
     </div>
   );
