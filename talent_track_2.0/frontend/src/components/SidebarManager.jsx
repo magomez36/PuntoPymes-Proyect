@@ -32,10 +32,6 @@ const SidebarManager = () => {
           <i className='bx bxs-home sidebar-icon-box'></i>
           <span>Inicio</span>
         </Link>
-        <Link to="/manager/dashboard" className={getActiveClass('/manager/dashboard')} data-tooltip="Dashboard">
-          <i className='bx bxs-dashboard sidebar-icon-box'></i>
-          <span>Dashboard</span>
-        </Link>
 
         {/* SECCIÓN GESTIÓN DE EQUIPO */}
         <div className="sidebar-section-label">Gestión de Equipo</div>

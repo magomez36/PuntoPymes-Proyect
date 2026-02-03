@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import Sidebar from "../../../components/SidebarEmpleado";
 import { apiFetch } from "../../../services/api";
 import { Link } from "react-router-dom";
-import "../../../assets/css/admin-empresas.css"; // Global styles
+import "../../../assets/css/admin-empresas.css"; // Estilos globales
 
 // --- HELPERS ---
 async function safeJson(res) {
@@ -28,8 +28,69 @@ function PctBar({ value }) {
   );
 }
 
+// --- HELPER ROBUSTO PARA OBJETIVOS (CORRECCIÓN VISUAL) ---
+const renderObjetivos = (data) => {
+    if (!data || (typeof data === 'object' && Object.keys(data).length === 0)) {
+        return <span style={{ color: '#94a3b8', fontStyle: 'italic', fontSize: '0.8rem' }}>Sin objetivos específicos</span>;
+    }
+
+    // Intentar parsear si viene como string
+    let obj = data;
+    if (typeof data === 'string') {
+        try { obj = JSON.parse(data); } catch { return data; }
+    }
+
+    // Sub-función para pintar un objeto Key-Value como etiquetas
+    const renderKeyValueBadges = (o) => (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+            {Object.entries(o).map(([key, value]) => {
+                // Si el valor es otro objeto, lo aplanamos a string para evitar errores
+                const displayValue = (typeof value === 'object' && value !== null) ? JSON.stringify(value) : String(value);
+                return (
+                    <span key={key} style={{ 
+                        backgroundColor: '#f1f5f9', 
+                        border: '1px solid #e2e8f0', 
+                        borderRadius: '6px', 
+                        padding: '2px 8px', 
+                        fontSize: '0.75rem', 
+                        color: '#475569',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                    }}>
+                        <strong style={{ color: '#334155' }}>{key}:</strong> {displayValue}
+                    </span>
+                );
+            })}
+        </div>
+    );
+
+    // Caso 1: Array (Lista de cosas)
+    if (Array.isArray(obj)) {
+        return (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                {obj.map((item, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: '#334155' }}>
+                        <i className='bx bx-check-circle' style={{ color: '#cbd5e1' }}></i>
+                        {/* Si el item de la lista es un objeto, renderizamos sus claves */}
+                        {typeof item === 'object' && item !== null ? renderKeyValueBadges(item) : <span>{String(item)}</span>}
+                    </div>
+                ))}
+            </div>
+        );
+    }
+
+    // Caso 2: Objeto único (Clave: Valor)
+    if (typeof obj === 'object') {
+        return renderKeyValueBadges(obj);
+    }
+
+    // Caso 3: String o número simple
+    return <span>{String(obj)}</span>;
+};
+
 export default function DesempenoKpisEmp() {
-  const [tab, setTab] = useState("asignados"); // asignados | resultados | evaluaciones | evolucion
+  const [tab, setTab] = useState("asignados"); 
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
@@ -46,14 +107,13 @@ export default function DesempenoKpisEmp() {
     periodo: "",
   });
 
-  // --- API LOADING ---
   const loadAll = async () => {
     setErr("");
     setLoading(true);
     try {
       const rCat = await apiFetch("/api/empleado/kpis/catalogo/");
       const dCat = await safeJson(rCat);
-      if (!rCat.ok) throw new Error(dCat?.detail || "Error cargando catálogo de KPIs.");
+      if (!rCat.ok) throw new Error(dCat?.detail || "Error cargando catálogo.");
 
       const rAs = await apiFetch("/api/empleado/kpis/asignados/");
       const dAs = await safeJson(rAs);
@@ -86,7 +146,7 @@ export default function DesempenoKpisEmp() {
     try {
       const res = await apiFetch(`/api/empleado/kpis/resultados/${buildQuery()}`);
       const data = await safeJson(res);
-      if (!res.ok) throw new Error(data?.detail || JSON.stringify(data || {}));
+      if (!res.ok) throw new Error(data?.detail || JSON.stringify(data));
       setResultados(data || []);
     } catch (e) {
       setErr(e?.message || "Error cargando resultados.");
@@ -101,7 +161,7 @@ export default function DesempenoKpisEmp() {
     try {
       const res = await apiFetch(`/api/empleado/kpis/evaluaciones/${buildQuery()}`);
       const data = await safeJson(res);
-      if (!res.ok) throw new Error(data?.detail || JSON.stringify(data || {}));
+      if (!res.ok) throw new Error(data?.detail || JSON.stringify(data));
       setEvaluaciones(data || []);
     } catch (e) {
       setErr(e?.message || "Error cargando evaluaciones.");
@@ -120,7 +180,7 @@ export default function DesempenoKpisEmp() {
       const q = params.toString();
       const res = await apiFetch(`/api/empleado/kpis/evolucion/${q ? `?${q}` : ""}`);
       const data = await safeJson(res);
-      if (!res.ok) throw new Error(data?.detail || JSON.stringify(data || {}));
+      if (!res.ok) throw new Error(data?.detail || JSON.stringify(data));
       setEvolucion(data || { kpi_avg: [], eval_avg: [] });
     } catch (e) {
       setErr(e?.message || "Error cargando evolución.");
@@ -146,20 +206,14 @@ export default function DesempenoKpisEmp() {
     setFiltro((p) => ({ ...p, [name]: value }));
   };
 
-  // --- STYLES ---
   const layoutWrapperStyle = { display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc', width: '100%' };
   const mainAreaStyle = { flex: 1, padding: '30px 30px 30px 110px', position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '25px' };
-  
   const cardStyle = { backgroundColor: '#fff', borderRadius: '16px', border: '1px solid #e2e8f0', boxShadow: '0 2px 5px rgba(0,0,0,0.02)', padding: '24px' };
-  
   const tabBtnStyle = (isActive) => ({
     padding: '10px 20px', borderRadius: '8px', border: 'none', 
-    backgroundColor: isActive ? '#0f172a' : 'transparent', 
-    color: isActive ? 'white' : '#64748b', 
-    fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s',
-    fontSize: '0.9rem'
+    backgroundColor: isActive ? '#0f172a' : 'transparent', color: isActive ? 'white' : '#64748b', 
+    fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s', fontSize: '0.9rem'
   });
-
   const filterInputStyle = { padding: '8px 12px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '0.9rem', width: '100%', outline: 'none' };
   const filterLabelStyle = { fontSize: '0.8rem', fontWeight: '700', color: '#475569', marginBottom: '4px', display: 'block' };
 
@@ -168,7 +222,6 @@ export default function DesempenoKpisEmp() {
       <Sidebar />
       <main style={mainAreaStyle}>
         
-        {/* HEADER */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
                 <h1 style={{ fontSize: '1.8rem', fontWeight: '800', color: '#1e293b', margin: 0 }}>Desempeño & KPIs</h1>
@@ -179,7 +232,6 @@ export default function DesempenoKpisEmp() {
             </Link>
         </div>
 
-        {/* QUICK STATS CARDS */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px' }}>
              <div style={cardStyle}>
                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -190,7 +242,6 @@ export default function DesempenoKpisEmp() {
                      </div>
                  </div>
              </div>
-
              <div style={cardStyle}>
                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                      <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#16a34a' }}><i className='bx bx-trending-up' style={{ fontSize: '1.5rem' }}></i></div>
@@ -204,7 +255,6 @@ export default function DesempenoKpisEmp() {
                      </div>
                  </div>
              </div>
-
              <div style={cardStyle}>
                  <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                      <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: '#fef9c3', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ca8a04' }}><i className='bx bx-star' style={{ fontSize: '1.5rem' }}></i></div>
@@ -217,9 +267,7 @@ export default function DesempenoKpisEmp() {
              </div>
         </div>
 
-        {/* TABS & FILTERS */}
         <div style={{ ...cardStyle, padding: '15px 24px' }}>
-            {/* Tabs */}
             <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '15px', borderBottom: '1px solid #f1f5f9' }}>
                 <button onClick={() => setTab("asignados")} style={tabBtnStyle(tab === "asignados")}>Asignados</button>
                 <button onClick={() => { setTab("resultados"); cargarResultados(); }} style={tabBtnStyle(tab === "resultados")}>Resultados</button>
@@ -228,58 +276,30 @@ export default function DesempenoKpisEmp() {
                 <button onClick={loadAll} style={{ ...tabBtnStyle(false), marginLeft: 'auto', color: '#0f172a' }}><i className='bx bx-refresh'></i></button>
             </div>
 
-            {/* Filters */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '15px', marginTop: '20px' }}>
                 <div>
                     <label style={filterLabelStyle}>Filtrar por KPI</label>
                     <select name="kpi_id" value={filtro.kpi_id} onChange={onFiltro} style={filterInputStyle}>
                         <option value="">(Todos los KPIs)</option>
-                        {catalogoKpi.map((k) => (
-                            <option key={k.id} value={k.id}>{k.codigo} - {k.nombre}</option>
-                        ))}
+                        {catalogoKpi.map((k) => <option key={k.id} value={k.id}>{k.codigo} - {k.nombre}</option>)}
                     </select>
                 </div>
-                <div>
-                    <label style={filterLabelStyle}>Periodo Exacto</label>
-                    <input name="periodo" value={filtro.periodo} onChange={onFiltro} placeholder="Ej: 2026-01" style={filterInputStyle} />
-                </div>
-                <div>
-                    <label style={filterLabelStyle}>Desde</label>
-                    <input name="desde" value={filtro.desde} onChange={onFiltro} placeholder="Ej: 2025-01" style={filterInputStyle} />
-                </div>
-                <div>
-                    <label style={filterLabelStyle}>Hasta</label>
-                    <input name="hasta" value={filtro.hasta} onChange={onFiltro} placeholder="Ej: 2026-12" style={filterInputStyle} />
-                </div>
+                <div><label style={filterLabelStyle}>Periodo Exacto</label><input name="periodo" value={filtro.periodo} onChange={onFiltro} placeholder="Ej: 2026-01" style={filterInputStyle} /></div>
+                <div><label style={filterLabelStyle}>Desde</label><input name="desde" value={filtro.desde} onChange={onFiltro} placeholder="Ej: 2025-01" style={filterInputStyle} /></div>
+                <div><label style={filterLabelStyle}>Hasta</label><input name="hasta" value={filtro.hasta} onChange={onFiltro} placeholder="Ej: 2026-12" style={filterInputStyle} /></div>
                 <div style={{ display: 'flex', alignItems: 'end', gap: '10px' }}>
-                    <button 
-                        onClick={() => {
-                            if (tab === "resultados") cargarResultados();
-                            if (tab === "evaluaciones") cargarEvaluaciones();
-                            if (tab === "evolucion") cargarEvolucion();
-                        }}
-                        style={{ padding: '8px 16px', backgroundColor: '#0f172a', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', height: '38px', flex: 1 }}
-                    >
-                        Filtrar
-                    </button>
-                    <button 
-                        onClick={() => setFiltro({ kpi_id: "", desde: "", hasta: "", periodo: "" })}
-                        style={{ padding: '8px 16px', backgroundColor: 'transparent', color: '#64748b', border: '1px solid #cbd5e1', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', height: '38px' }}
-                    >
-                        Limpiar
-                    </button>
+                    <button onClick={() => { if (tab === "resultados") cargarResultados(); if (tab === "evaluaciones") cargarEvaluaciones(); if (tab === "evolucion") cargarEvolucion(); }} style={{ padding: '8px 16px', backgroundColor: '#0f172a', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', height: '38px', flex: 1 }}>Filtrar</button>
+                    <button onClick={() => setFiltro({ kpi_id: "", desde: "", hasta: "", periodo: "" })} style={{ padding: '8px 16px', backgroundColor: 'transparent', color: '#64748b', border: '1px solid #cbd5e1', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', height: '38px' }}>Limpiar</button>
                 </div>
             </div>
         </div>
 
-        {/* CONTENT AREA */}
         {loading && <p style={{ textAlign: 'center', color: '#64748b', marginTop: '40px' }}>Cargando datos...</p>}
         {err && <div style={{ padding: '15px', backgroundColor: '#fee2e2', color: '#dc2626', borderRadius: '8px', fontWeight: '600' }}>{err}</div>}
 
         {!loading && (
             <div style={cardStyle}>
                 
-                {/* --- TAB: ASIGNADOS --- */}
                 {tab === "asignados" && (
                     <>
                         <h3 style={{ fontSize: '1.1rem', color: '#1e293b', marginBottom: '20px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>KPIs Asignados Activos</h3>
@@ -301,14 +321,15 @@ export default function DesempenoKpisEmp() {
                                                 <td style={{ padding: '15px', fontSize: '0.9rem', color: '#4b5563' }}>
                                                     {String(a.desde).slice(0, 10)} <i className='bx bx-right-arrow-alt'></i> {a.hasta ? String(a.hasta).slice(0, 10) : "Indefinido"}
                                                 </td>
-                                                <td style={{ padding: '15px' }}>
-                                                    <div style={{ backgroundColor: '#f8fafc', padding: '8px', borderRadius: '6px', fontSize: '0.8rem', fontFamily: 'monospace', color: '#334155' }}>
-                                                        {JSON.stringify(a.plantilla_objetivos, null, 2).slice(0, 50)}...
-                                                    </div>
+                                                
+                                                {/* IMPLEMENTACIÓN DE renderObjetivos PARA CORREGIR LA VISUALIZACIÓN */}
+                                                <td style={{ padding: '15px', verticalAlign: 'top' }}>
+                                                    {renderObjetivos(a.plantilla_objetivos)}
                                                 </td>
+
                                                 <td style={{ padding: '15px' }}>
                                                      <div style={{ fontSize: '0.85rem', color: '#64748b' }}>
-                                                        {a.ajustes_personalizados && Object.keys(a.ajustes_personalizados).length > 0 ? "Sí (Personalizado)" : "Estándar"}
+                                                        {a.ajustes_personalizados && Object.keys(a.ajustes_personalizados).length > 0 ? renderObjetivos(a.ajustes_personalizados) : "Estándar"}
                                                      </div>
                                                 </td>
                                             </tr>
@@ -320,11 +341,11 @@ export default function DesempenoKpisEmp() {
                     </>
                 )}
 
-                {/* --- TAB: RESULTADOS --- */}
+                {/* Resto de Tabs (Resultados, Evaluaciones, Evolución) se mantienen igual... */}
                 {tab === "resultados" && (
                     <>
                         <h3 style={{ fontSize: '1.1rem', color: '#1e293b', marginBottom: '20px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>Historial de Resultados</h3>
-                        {resultados.length === 0 ? <p style={{color: '#94a3b8'}}>No hay resultados para los filtros seleccionados.</p> : (
+                        {resultados.length === 0 ? <p style={{color: '#94a3b8'}}>No hay resultados.</p> : (
                             <div style={{ overflowX: 'auto' }}>
                                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                                     <thead style={{ backgroundColor: '#f8fafc' }}>
@@ -369,11 +390,10 @@ export default function DesempenoKpisEmp() {
                     </>
                 )}
 
-                {/* --- TAB: EVALUACIONES --- */}
                 {tab === "evaluaciones" && (
                     <>
                         <h3 style={{ fontSize: '1.1rem', color: '#1e293b', marginBottom: '20px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>Evaluaciones de Desempeño</h3>
-                        {evaluaciones.length === 0 ? <p style={{color: '#94a3b8'}}>No hay evaluaciones registradas.</p> : (
+                        {evaluaciones.length === 0 ? <p style={{color: '#94a3b8'}}>No hay evaluaciones.</p> : (
                              <div style={{ overflowX: 'auto' }}>
                                 <table style={{ width: "100%", borderCollapse: "collapse" }}>
                                     <thead style={{ backgroundColor: '#f8fafc' }}>
@@ -391,15 +411,11 @@ export default function DesempenoKpisEmp() {
                                                 <td style={{ padding: '15px', fontWeight: '700', color: '#0f172a' }}>{e.periodo}</td>
                                                 <td style={{ padding: '15px', fontSize: '0.9rem', color: '#475569' }}>{e.tipo}</td>
                                                 <td style={{ padding: '15px', textAlign: 'center' }}>
-                                                    <div style={{ 
-                                                        width: '32px', height: '32px', borderRadius: '50%', 
-                                                        background: '#f1f5f9', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                                                        fontWeight: '700', color: '#0f172a'
-                                                    }}>
+                                                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f1f5f9', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700', color: '#0f172a' }}>
                                                         {e.puntaje_total}
                                                     </div>
                                                 </td>
-                                                <td style={{ padding: '15px', fontSize: '0.9rem' }}>{e.evaluador_id ? `${e.evaluador_nombres} ${e.evaluador_apellidos}` : "Autoevaluación/Sistema"}</td>
+                                                <td style={{ padding: '15px', fontSize: '0.9rem' }}>{e.evaluador_id ? `${e.evaluador_nombres} ${e.evaluador_apellidos}` : "Sistema"}</td>
                                                 <td style={{ padding: '15px', fontSize: '0.85rem', color: '#64748b', fontStyle: 'italic' }}>"{e.comentarios}"</td>
                                             </tr>
                                         ))}
@@ -410,13 +426,10 @@ export default function DesempenoKpisEmp() {
                     </>
                 )}
 
-                {/* --- TAB: EVOLUCIÓN --- */}
                 {tab === "evolucion" && (
                     <>
                          <h3 style={{ fontSize: '1.1rem', color: '#1e293b', marginBottom: '20px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>Evolución Temporal</h3>
                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '30px' }}>
-                             
-                             {/* Tabla Gráfica KPI */}
                              <div>
                                  <h4 style={{ fontSize: '0.9rem', color: '#64748b', marginBottom: '15px', textTransform: 'uppercase' }}>Promedio Cumplimiento KPI</h4>
                                  {evolucion.kpi_avg?.length ? (
@@ -424,17 +437,13 @@ export default function DesempenoKpisEmp() {
                                          {evolucion.kpi_avg.map((x) => (
                                              <div key={`k-${x.periodo}`} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                                  <span style={{ width: '60px', fontSize: '0.85rem', fontWeight: '700', color: '#334155' }}>{x.periodo}</span>
-                                                 <div style={{ flex: 1 }}>
-                                                     <PctBar value={x.avg_cumplimiento} />
-                                                 </div>
+                                                 <div style={{ flex: 1 }}><PctBar value={x.avg_cumplimiento} /></div>
                                                  <span style={{ width: '50px', fontSize: '0.85rem', fontWeight: '600', textAlign: 'right' }}>{Number(x.avg_cumplimiento).toFixed(1)}%</span>
                                              </div>
                                          ))}
                                      </div>
-                                 ) : <p style={{color: '#94a3b8', fontStyle: 'italic'}}>Sin datos suficientes.</p>}
+                                 ) : <p style={{color: '#94a3b8', fontStyle: 'italic'}}>Sin datos.</p>}
                              </div>
-
-                             {/* Tabla Gráfica Evaluaciones */}
                              <div>
                                  <h4 style={{ fontSize: '0.9rem', color: '#64748b', marginBottom: '15px', textTransform: 'uppercase' }}>Promedio Puntaje Evaluación</h4>
                                  {evolucion.eval_avg?.length ? (
@@ -443,14 +452,13 @@ export default function DesempenoKpisEmp() {
                                              <div key={`e-${x.periodo}`} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                                  <span style={{ width: '60px', fontSize: '0.85rem', fontWeight: '700', color: '#334155' }}>{x.periodo}</span>
                                                  <div style={{ flex: 1, backgroundColor: '#f1f5f9', height: '8px', borderRadius: '4px', overflow: 'hidden' }}>
-                                                     {/* Asumiendo puntaje sobre 10 o 100, ajustamos ancho */}
                                                      <div style={{ width: `${Math.min(x.avg_puntaje * 10, 100)}%`, height: '100%', backgroundColor: '#8b5cf6' }}></div>
                                                  </div>
                                                  <span style={{ width: '50px', fontSize: '0.85rem', fontWeight: '600', textAlign: 'right' }}>{Number(x.avg_puntaje).toFixed(1)}</span>
                                              </div>
                                          ))}
                                      </div>
-                                 ) : <p style={{color: '#94a3b8', fontStyle: 'italic'}}>Sin datos suficientes.</p>}
+                                 ) : <p style={{color: '#94a3b8', fontStyle: 'italic'}}>Sin datos.</p>}
                              </div>
                          </div>
                     </>
