@@ -54,8 +54,6 @@ export default function EditarPuestoEmp() {
         }
 
         // 3. Obtener Nombre de la Empresa (para mostrar bonito)
-        // Opción A: Si tienes un endpoint individual de empresa, úsalo.
-        // Opción B: Cargar lista y buscar (como hacemos aquí para asegurar compatibilidad con tu código previo)
         const resEmpresas = await apiFetch(`${API_BASE}/api/listado-empresas/`, { headers });
         if (resEmpresas.ok) {
             const listaEmpresas = await resEmpresas.json();
@@ -137,7 +135,8 @@ export default function EditarPuestoEmp() {
   if (loading) return <div className="layout" style={{justifyContent:'center', alignItems:'center', background:'#f8fafc'}}>Cargando...</div>;
 
   return (
-    <div className="layout" style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
+    // AQUÍ ESTÁ EL CAMBIO: layout-watermark AÑADIDO
+    <div className="layout layout-watermark" style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
       <Sidebar />
       <main className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         

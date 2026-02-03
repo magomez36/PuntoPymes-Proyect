@@ -78,19 +78,17 @@ export default function CrearTurnoEmp() {
     }));
   };
 
-  // Prepara el JSON de días para el backend
   const diasSemanaPayload = useMemo(() => {
     const nums = Array.from(selectedDays).sort((a, b) => a - b);
     return nums.map((n) => {
         const dayObj = DAYS.find((d) => d.num === n);
-        return { num: dayObj.num, nombre: dayObj.nombre.toLowerCase() }; // Enviamos nombre minúscula para backend
+        return { num: dayObj.num, nombre: dayObj.nombre.toLowerCase() };
     }).filter(Boolean);
   }, [selectedDays]);
 
   const submit = async (e) => {
     e.preventDefault();
 
-    // Validaciones
     if (!form.empresa) return alert("Seleccione una empresa.");
     if (!form.hora_inicio || !form.hora_fin) return alert("Defina el horario completo.");
     if (selectedDays.size === 0) return alert("Seleccione al menos un día laboral.");
@@ -138,7 +136,8 @@ export default function CrearTurnoEmp() {
   const iconStyle = { position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#9ca3af', fontSize: '1.25rem', pointerEvents: 'none' };
 
   return (
-    <div className="layout" style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
+    // AQUÍ: layout-watermark AÑADIDO
+    <div className="layout layout-watermark" style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
       <Sidebar />
       <main className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         
@@ -155,13 +154,14 @@ export default function CrearTurnoEmp() {
             
             <div style={{ marginBottom: '24px' }}>
                 <h1 style={{ fontSize: '1.75rem', fontWeight: 'bold', color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>Nuevo Turno Laboral</h1>
-                <p style={{ color: '#64748b', marginTop: '6px', fontSize: '1rem' }}>Define los horarios, días laborales y reglas de validación para la asistencia.</p>
+                <p style={{ color: '#64748b', marginTop: '6px', fontSize: '1rem' }}>Define los horarios, días laborales y reglas de validación.</p>
             </div>
 
-            <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+            {/* LAYOUT DE 2 COLUMNAS (FLEX) */}
+            <div style={{ display: 'flex', gap: '30px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
                 
-                {/* --- CARD FORMULARIO --- */}
-                <div style={{ flex: '2', minWidth: '600px', background: 'white', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03)', border: '1px solid #e2e8f0' }}>
+                {/* --- CARD FORMULARIO (Expandible) --- */}
+                <div style={{ flex: '1 1 500px', background: 'white', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03)', border: '1px solid #e2e8f0' }}>
                     <form onSubmit={submit} style={{ padding: '32px' }}>
                         
                         <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94a3b8', fontWeight: '700', marginBottom: '20px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>
@@ -250,7 +250,7 @@ export default function CrearTurnoEmp() {
                                     );
                                 })}
                             </div>
-                            <p style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '8px' }}>Selecciona los días que aplica este turno.</p>
+                            <p style={{ fontSize: '0.75rem', color: '#94a3b8', marginTop: '8px' }}>Días seleccionados serán laborables. Deselecciona para días libres.</p>
                         </div>
 
                         <h4 style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#94a3b8', fontWeight: '700', marginBottom: '20px', marginTop: '10px', borderBottom: '1px solid #f1f5f9', paddingBottom: '10px' }}>
@@ -287,8 +287,8 @@ export default function CrearTurnoEmp() {
                     </form>
                 </div>
 
-                {/* --- PANEL INFO --- */}
-                <div style={{ flex: '0 0 320px', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', padding: '24px', height: 'fit-content' }}>
+                {/* --- PANEL INFO (Fijo 320px) --- */}
+                <div style={{ flex: '0 0 320px', background: '#f8fafc', borderRadius: '16px', border: '1px dashed #cbd5e1', padding: '25px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
                         <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: '#fef3c7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#d97706' }}><i className='bx bx-bulb' style={{ fontSize: '20px' }}></i></div>
                         <h3 style={{ fontSize: '1rem', fontWeight: '700', margin: 0, color: '#0f172a' }}>Tips de Configuración</h3>
@@ -297,14 +297,21 @@ export default function CrearTurnoEmp() {
                     <div style={{ marginBottom: '24px' }}>
                         <h4 style={{ fontSize: '0.85rem', fontWeight: '700', color: '#334155', marginBottom: '8px' }}>Tolerancia</h4>
                         <p style={{ fontSize: '0.85rem', color: '#64748b', lineHeight: '1.5', margin: 0 }}>
-                            Son los minutos extra permitidos después de la hora de entrada antes de contar como "Atraso". Ej: Entrada 08:00, Tolerancia 10 min -> Marca 08:09 es puntual.
+                            Minutos permitidos después de la hora de entrada antes de marcar "Atraso". <br/>Ej: Entrada 08:00, Tolerancia 10 min. Marcar 08:09 es puntual.
                         </p>
                     </div>
 
                     <div style={{ marginBottom: '24px' }}>
                         <h4 style={{ fontSize: '0.85rem', fontWeight: '700', color: '#334155', marginBottom: '8px' }}>Días Libres</h4>
                         <p style={{ fontSize: '0.85rem', color: '#64748b', lineHeight: '1.5', margin: 0 }}>
-                            Los días que <strong>NO</strong> selecciones serán considerados días libres. El sistema no esperará marcaciones en esos días.
+                            Los días <strong>NO seleccionados</strong> se consideran libres. El sistema no generará faltas si no hay marcación en esos días.
+                        </p>
+                    </div>
+
+                    <div style={{ marginBottom: '24px' }}>
+                        <h4 style={{ fontSize: '0.85rem', fontWeight: '700', color: '#334155', marginBottom: '8px' }}>App Móvil</h4>
+                        <p style={{ fontSize: '0.85rem', color: '#64748b', lineHeight: '1.5', margin: 0 }}>
+                            Si activas <strong>GPS</strong> o <strong>Foto</strong>, los empleados necesitarán la app móvil para registrar su asistencia.
                         </p>
                     </div>
                 </div>

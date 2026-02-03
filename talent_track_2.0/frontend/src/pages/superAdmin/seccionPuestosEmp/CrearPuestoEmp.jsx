@@ -132,7 +132,8 @@ export default function CrearPuestoEmp() {
   const textareaStyle = { ...inputStyle, padding: '10px 12px', minHeight: '80px', resize: 'vertical' }; // Ajuste para textarea
 
   return (
-    <div className="layout" style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
+    // SE AGREGÓ LA CLASE layout-watermark AQUÍ
+    <div className="layout layout-watermark" style={{ display: 'flex', minHeight: '100vh', background: '#f8fafc' }}>
       <Sidebar />
       <main className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         
